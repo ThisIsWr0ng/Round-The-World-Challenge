@@ -57,6 +57,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.numCitiesSelector = new System.Windows.Forms.NumericUpDown();
             this.btnStart = new System.Windows.Forms.Button();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -67,6 +68,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.maxHopDistanceBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minHopDistanceBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCitiesSelector)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -79,7 +83,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.worldMap);
+            this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
             // 
             // splitContainer1.Panel2
             // 
@@ -122,7 +126,7 @@
             this.worldMap.Dock = System.Windows.Forms.DockStyle.Fill;
             this.worldMap.Location = new System.Drawing.Point(0, 0);
             this.worldMap.Name = "worldMap";
-            this.worldMap.Size = new System.Drawing.Size(1093, 519);
+            this.worldMap.Size = new System.Drawing.Size(934, 519);
             this.worldMap.TabIndex = 0;
             // 
             // label13
@@ -327,7 +331,7 @@
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(3, 63);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(143, 16);
+            this.label2.Size = new System.Drawing.Size(144, 16);
             this.label2.TabIndex = 6;
             this.label2.Text = "Restricted connections";
             // 
@@ -372,7 +376,7 @@
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(9, 21);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(105, 16);
+            this.label1.Size = new System.Drawing.Size(106, 16);
             this.label1.TabIndex = 2;
             this.label1.Text = "Number of Cities";
             // 
@@ -409,6 +413,23 @@
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
+            // splitContainer2
+            // 
+            this.splitContainer2.BackColor = System.Drawing.Color.White;
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainer2.IsSplitterFixed = true;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Name = "splitContainer2";
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.splitContainer2.Panel1.Controls.Add(this.worldMap);
+            this.splitContainer2.Size = new System.Drawing.Size(1093, 519);
+            this.splitContainer2.SplitterDistance = 934;
+            this.splitContainer2.TabIndex = 0;
+            // 
             // MapView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -429,6 +450,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.maxHopDistanceBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minHopDistanceBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCitiesSelector)).EndInit();
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -464,6 +488,7 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.SplitContainer splitContainer2;
     }
 }
 
