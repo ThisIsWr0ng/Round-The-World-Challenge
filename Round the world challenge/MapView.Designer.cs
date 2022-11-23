@@ -391,7 +391,7 @@
             this.numCitiesSelector.Size = new System.Drawing.Size(60, 29);
             this.numCitiesSelector.TabIndex = 1;
             this.numCitiesSelector.Value = new decimal(new int[] {
-            30,
+            10,
             0,
             0,
             0});
