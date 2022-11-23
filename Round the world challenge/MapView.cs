@@ -26,7 +26,7 @@ namespace Round_the_world_challenge
         private PointF startLoc;
         private PointF[] currentRoute;
         private PointF[] bestRoute;
-
+        double distance;
 
         public MapView()
         {
@@ -95,7 +95,7 @@ namespace Round_the_world_challenge
             double temperature = 400.0;
             double epsilon = 0.001;
             double delta;
-            double distance;
+            
             PointF[] cities = ExtractCities(continents, numCities);
             GenerateRoute(cities, minHop, maxHop, minTot, maxTot);
             DisplayRoute(currentRoute);
@@ -137,9 +137,20 @@ namespace Round_the_world_challenge
                 
             }
             // calculate distance
+            distance = CalcDistance(currentRoute);
 
             //Check if route is valid
             
+        }
+
+        private double CalcDistance(PointF[] currentRoute)
+        {
+            double temp = 0;
+            for (int i = 0; i < currentRoute.Length - 1; i++)
+            {
+                temp += CalcDistance(currentRoute[i], currentRoute[i + 1]);
+            }
+            return temp;
         }
 
         private PointF[] ExtractCities(Continent[] continents, int num)
@@ -218,7 +229,11 @@ namespace Round_the_world_challenge
 
 
         }
-   
+        private static double CalcDistance(PointF p1, PointF p2) =>
+             // Pythagoras
+             Math.Sqrt(((p2.X - p1.X) * (p2.X - p1.X)) + ((p2.Y - p1.Y) * (p2.Y - p1.Y)));
+
+
         private void minHopDistanceBar_ValueChanged(object sender, EventArgs e)
         {
             tbxMinHop.Text = minHopDistanceBar.Value.ToString();
