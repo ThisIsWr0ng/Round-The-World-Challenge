@@ -34,7 +34,12 @@ namespace Round_the_world_challenge
         private PointF[] bestRoute;
         double distance;
         private Graphics grap = null;
-        
+        //Variables for Simmulated Annealing
+        private double alpha = 0.95;
+        private double temperature = 400.0;
+        private double epsilon = 0.001;
+
+
         public MapView()
         {
             random = new Random();
@@ -50,6 +55,9 @@ namespace Round_the_world_challenge
             tbxMaxHop.Text = maxHopDistanceBar.Value.ToString();
             tbxMinTot.Text = minTotDistBar.Value.ToString();
             tbxMaxTot.Text = maxTotDistBar.Value.ToString();
+            lblSAAlpha.Text = alpha.ToString();
+            lblSATemp.Text = temperature.ToString();
+            lblSAEpsilon.Text = epsilon.ToString();
             btnStop.Visible = false;
 
         }
@@ -78,7 +86,7 @@ namespace Round_the_world_challenge
             stopSignal = false;
             startTime = DateTime.UtcNow;
 
-            //stopWatch.Start();
+            stopWatch.Start();
             if (!keepMap || continents == null)
             {
                 continents = C.CreateContinents(worldMap1.Width, worldMap1.Height, numCities); //Create continents and cities
@@ -100,12 +108,9 @@ namespace Round_the_world_challenge
         {
             int iteration = -1;
             double proba;
-            double alpha = 0.95;
-            double temperature = 400.0;
-            double epsilon = 0.001;
             double delta;
-            int noChange = 0;
-            
+            int noChange = 0; //tracking for how many iterations route was not updated
+
 
             PointF[] cities = ExtractCities(continents, numCities);
             GenerateRoute(cities);
@@ -115,69 +120,65 @@ namespace Round_the_world_challenge
             await DisplayRoute(bestRoute);
 
             //while the temperature didnt reach epsilon
-            while (temperature > epsilon /*|| noChange < numCities * 100 */&& !stopSignal)
+            while (temperature > epsilon || noChange < 50 && !stopSignal)
             {
-
-                //for (int i = 1; i < bestRoute.Length - 2; i++)
-                //{
-                //for (int k = i + 1; k < bestRoute.Length - 1; k++)
-                //{
                 RefreshDisplay(iteration, temperature);
-                if (temperature < epsilon /*&& noChange > numCities * 100 */|| stopSignal)
-                        {
-                            btnStop.Visible = false;
-                            stopSignal= false;
-                            return;
-                        }
-                        iteration++;
-                        noChange++;
+                if (temperature < epsilon && noChange > 50 || stopSignal)
+                {
+                    btnStop.Visible = false;
+                    stopSignal = false;
+                    return;
+                }
+                iteration++;
+                noChange++;
 
-                        //get the next random permutation of distances 
-                        //currentRoute = ComputeNext();
-                       //currentRoute = TwoOpt(i, k);
-                       currentRoute = TwoOptChk();
-                        //compute the distance of the new permuted configuration
-                        delta = CalcDistance(currentRoute) - distance;
-                        //if the new distance is better accept it and assign it
-                        if (delta < 0)
-                        {
-                            grap.Clear(Color.Transparent);
-                            bestRoute = currentRoute;
-                            distance = delta + distance;
-                            noChange = 0;
-                            await Task.Run(() => DisplayRoute(bestRoute));
-                            
+                //perform 2-opt
+                currentRoute = TwoOptChk();
+                //compute the distance of the new permuted configuration
+                delta = CalcDistance(currentRoute) - distance;
+
+               
+                if (delta == 0)//don't update the screen if there's no need for it
+                {
+
+                }
+                else if (delta < 0) //if the new distance is better accept it and assign it
+                {
+                    grap.Clear(Color.Transparent);
+                    bestRoute = currentRoute;
+                    distance = delta + distance;
+                    noChange = 0;
+                    if(chkPerform.Checked == false)
+                        await Task.Run(() => DisplayRoute(bestRoute));
+                    else
+                        DisplayRoute(bestRoute);
+                }
+                else
+                {
+                    proba = random.NextDouble();
+                    //if the new distance is worse accept it with certain probability
+                    if (proba < Math.Exp(-delta / temperature))
+                    {
+                        bestRoute = currentRoute;
+                        distance = delta + distance;
+                        noChange = 0;
+                        await Task.Run(() => DisplayRoute(bestRoute));
+
+                    }
+                }
+                //cooling proces on every iteration
+                temperature *= alpha;
 
 
-                            //await signal.WaitAsync();
-                        }
-                        else
-                        {
-                            proba = random.NextDouble();
-                            //if the new distance is worse accept it but with a probability level
-                            // if the probability is less than E to the power -delta/temperature.
-                            //otherwise the old value is kept
-                            if (proba < Math.Exp(-delta / temperature))
-                            {
-                                //currentRoute = TwoOpt(4, bestRoute.Length - bestRoute.Length/2);
-                                bestRoute = currentRoute;
-                                distance = delta + distance;
-                                noChange = 0;
-                                await Task.Run(() => DisplayRoute(bestRoute));
-                                
-                            }
-                        }
-                        //cooling proces on every iteration
-                        temperature *= alpha;
-                     
-                       
 
-                    //}
+                //}
                 //}
             }
+            stopWatch.Stop();
             RefreshDisplay(iteration, temperature);
             btnStop.Visible = false;
             
+
         }
 
 
@@ -205,29 +206,28 @@ namespace Round_the_world_challenge
         private PointF[] TwoOptChk()
         {
             PointF[] best = bestRoute;
-            bool isBetter = true;
+
             int n = best.Length;
-           // while (isBetter)
-            //{
-                isBetter= false;
-                for (int i = 0; i < best.Length - 2; i++)
+
+
+            for (int i = 0; i < best.Length - 2; i++)
+            {
+                for (int k = i + 1; k < best.Length - 1; k++)
                 {
-                    for (int k = i + 1; k < best.Length - 1; k++)
-                    {
                     //double lengthDelta = - CalcDistance(best[i], best[i+1]) - CalcDistance(best[k], best[k+1]) + CalcDistance(best[i+1], best[k+1]) + CalcDistance(best[1], best[k]);
-                    double lengthDelta = -CalcDistance(best[i], best[(i+1)%n]) - CalcDistance(best[k], best[(k + 1)%n])  + CalcDistance(best[i], best[k]) + CalcDistance(best[(i+1)%n], best[(k+1)%n]);
+                    double lengthDelta = -CalcDistance(best[i], best[(i + 1) % n]) - CalcDistance(best[k], best[(k + 1) % n]) + CalcDistance(best[i], best[k]) + CalcDistance(best[(i + 1) % n], best[(k + 1) % n]);
                     if (lengthDelta < 0)
-                        {
-                            //distance += lengthDelta;
-                           
-                            best = TwoOpt(best, i, k);
-                        //DisplayRoute(best);
-                        isBetter = true;
-                        }
+                    {
+                        //distance += lengthDelta;
+
+                        best = TwoOpt(best, i, k);
+                        // DisplayRoute(best);
+
                     }
                 }
-            
-            //}
+            }
+
+
 
             return best;
 
@@ -236,7 +236,7 @@ namespace Round_the_world_challenge
 
         private void RefreshDisplay(int iteration, double temperature)
         {
-            
+            lblTime.Text = stopWatch.ElapsedMilliseconds.ToString() + " ms";
             lblIter.Text = iteration.ToString();
             lblTemp.Text = Math.Floor(temperature).ToString();
             lblDistance.Text = Math.Floor(distance).ToString();
@@ -263,7 +263,7 @@ namespace Round_the_world_challenge
         private async Task<int> DisplayRoute(PointF[] route)
         {
             //worldMap1.BackgroundImage = Resources.World_Map;
-          
+
             grap.Clear(Color.White);
 
 
@@ -271,8 +271,10 @@ namespace Round_the_world_challenge
 
 
             List<Task<int>> tasks = new List<Task<int>>();
-            tasks.Add(Task.Run(() => DisplayCities()));
-            tasks.Add(Task.Run(() => DisplayCityNumbers(route)));
+            if(chkCities.Checked == true)
+                tasks.Add(Task.Run(() => DisplayCities()));
+            if(chkNumbers.Checked == true)
+                tasks.Add(Task.Run(() => DisplayCityNumbers(route)));
             tasks.Add(Task.Run(() => DisplayRestrictions()));
             tasks.Add(Task.Run(() => DisplayLines(route)));
 
@@ -296,7 +298,7 @@ namespace Round_the_world_challenge
                 for (int j = 0; j < continents[i].Cities.Length; j++)
                 {
                     g.DrawEllipse(pen, Convert.ToSingle(continents[i].Cities[j].X) - 5, Convert.ToSingle(continents[i].Cities[j].Y) - 5, 10, 10);
-                    
+
                 }
 
             }
@@ -315,7 +317,7 @@ namespace Round_the_world_challenge
             Graphics g = worldMap1.CreateGraphics();
             for (int i = 0; i < route.Length - 1; i++)
             {
-                g.DrawString(i.ToString(), font,  Brushes.Black, route[i]);
+                g.DrawString(i.ToString(), font, Brushes.Black, route[i]);
             }
 
 
@@ -411,7 +413,7 @@ namespace Round_the_world_challenge
                     return 9999999999;//return -1 if any hop is longer than permitted
                 }
                 else*/
-                    temp += chk;
+                temp += chk;
             }
             return temp;
         }
@@ -424,7 +426,7 @@ namespace Round_the_world_challenge
             for (int i = 0; i < route.Length - 1; i++)
             {
                 temp += CalcDistance(route[i], route[i + 1]);
-               
+
             }
             return temp;
         }
@@ -463,10 +465,12 @@ namespace Round_the_world_challenge
         private void Reset()//Clear previous stuff
         {
             stopWatch.Stop();
+            stopWatch.Restart();
+
 
 
         }
-  
+
         private void minHopDistanceBar_ValueChanged(object sender, EventArgs e)
         {
             tbxMinHop.Text = minHopDistanceBar.Value.ToString();
@@ -534,12 +538,49 @@ namespace Round_the_world_challenge
         {
             if (bestRoute == null)
                 return;
-            
+
         }
 
         private void numCitiesSelector_ValueChanged(object sender, EventArgs e)
         {
-            chkKeepMap.Checked= false;
+            chkKeepMap.Checked = false;
+        }
+
+        private void lblIter_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void trackBar2_Scroll(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tbAlpha_ValueChanged(object sender, EventArgs e)
+        {
+            double a  = (double)tbAlpha.Value / 100;
+            lblSAAlpha.Text = String.Format("{0:F2}", a);
+
+
+            alpha = (double)tbAlpha.Value /100;
+        }
+
+        private void tbTemp_ValueChanged(object sender, EventArgs e)
+        {
+            lblSATemp.Text= tbTemp.Value.ToString();
+            temperature= tbTemp.Value;
+        }
+
+        private void tbEpsilon_ValueChanged(object sender, EventArgs e)
+        {
+            double a = (double)tbEpsilon.Value / 1000;
+            lblSAEpsilon.Text = String.Format("{0:F3}", a);
+            epsilon = (double)tbEpsilon.Value /1000;
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
