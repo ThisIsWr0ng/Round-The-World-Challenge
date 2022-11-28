@@ -81,6 +81,8 @@
             this.numCitiesSelector = new System.Windows.Forms.NumericUpDown();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
+            this.cbxAlgo = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -119,6 +121,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.Color.White;
+            this.splitContainer1.Panel2.Controls.Add(this.label6);
+            this.splitContainer1.Panel2.Controls.Add(this.cbxAlgo);
             this.splitContainer1.Panel2.Controls.Add(this.label5);
             this.splitContainer1.Panel2.Controls.Add(this.numMult);
             this.splitContainer1.Panel2.Controls.Add(this.chkTotEnabled);
@@ -765,6 +769,29 @@
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
+            // cbxAlgo
+            // 
+            this.cbxAlgo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbxAlgo.FormattingEnabled = true;
+            this.cbxAlgo.Items.AddRange(new object[] {
+            "2 - Opt",
+            "3 - Opt",
+            "None - Random"});
+            this.cbxAlgo.Location = new System.Drawing.Point(964, 22);
+            this.cbxAlgo.Name = "cbxAlgo";
+            this.cbxAlgo.Size = new System.Drawing.Size(121, 21);
+            this.cbxAlgo.TabIndex = 34;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(974, 1);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(101, 20);
+            this.label6.TabIndex = 35;
+            this.label6.Text = "Optimisation:";
+            // 
             // MapView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -857,6 +884,8 @@
         private System.Windows.Forms.CheckBox chkHopEnabled;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.NumericUpDown numMult;
+        private System.Windows.Forms.ComboBox cbxAlgo;
+        private System.Windows.Forms.Label label6;
     }
 }
 
