@@ -30,6 +30,22 @@
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.lblLengths = new System.Windows.Forms.Label();
+            this.lengthsBox = new System.Windows.Forms.PictureBox();
+            this.worldMap1 = new System.Windows.Forms.PictureBox();
+            this.chkPerform = new System.Windows.Forms.CheckBox();
+            this.chkCities = new System.Windows.Forms.CheckBox();
+            this.chkNumbers = new System.Windows.Forms.CheckBox();
+            this.lblSAEpsilon = new System.Windows.Forms.Label();
+            this.lblSATemp = new System.Windows.Forms.Label();
+            this.lblSAAlpha = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.tbEpsilon = new System.Windows.Forms.TrackBar();
+            this.tbTemp = new System.Windows.Forms.TrackBar();
+            this.tbAlpha = new System.Windows.Forms.TrackBar();
             this.label17 = new System.Windows.Forms.Label();
             this.lblStartDist = new System.Windows.Forms.Label();
             this.lblIter = new System.Windows.Forms.Label();
@@ -39,22 +55,22 @@
             this.label15 = new System.Windows.Forms.Label();
             this.chkKeepMap = new System.Windows.Forms.CheckBox();
             this.lblDistance = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.numMult = new System.Windows.Forms.NumericUpDown();
+            this.chkTotEnabled = new System.Windows.Forms.CheckBox();
+            this.chkHopEnabled = new System.Windows.Forms.CheckBox();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.tbxMaxTot = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
             this.tbxMinTot = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
             this.maxTotDistBar = new System.Windows.Forms.TrackBar();
             this.minTotDistBar = new System.Windows.Forms.TrackBar();
             this.lblTime = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.tbxMaxHop = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.tbxMinHop = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -65,20 +81,6 @@
             this.numCitiesSelector = new System.Windows.Forms.NumericUpDown();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
-            this.tbAlpha = new System.Windows.Forms.TrackBar();
-            this.tbTemp = new System.Windows.Forms.TrackBar();
-            this.tbEpsilon = new System.Windows.Forms.TrackBar();
-            this.label16 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
-            this.lblSAAlpha = new System.Windows.Forms.Label();
-            this.lblSATemp = new System.Windows.Forms.Label();
-            this.lblSAEpsilon = new System.Windows.Forms.Label();
-            this.chkNumbers = new System.Windows.Forms.CheckBox();
-            this.chkCities = new System.Windows.Forms.CheckBox();
-            this.chkPerform = new System.Windows.Forms.CheckBox();
-            this.worldMap1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -87,16 +89,18 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.lengthsBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.worldMap1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbEpsilon)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbTemp)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbAlpha)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numMult)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxTotDistBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minTotDistBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numRestrSelector)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxHopDistanceBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minHopDistanceBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCitiesSelector)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tbAlpha)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tbTemp)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tbEpsilon)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.worldMap1)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -115,22 +119,22 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.Color.White;
+            this.splitContainer1.Panel2.Controls.Add(this.label5);
+            this.splitContainer1.Panel2.Controls.Add(this.numMult);
+            this.splitContainer1.Panel2.Controls.Add(this.chkTotEnabled);
+            this.splitContainer1.Panel2.Controls.Add(this.chkHopEnabled);
             this.splitContainer1.Panel2.Controls.Add(this.label13);
             this.splitContainer1.Panel2.Controls.Add(this.label14);
             this.splitContainer1.Panel2.Controls.Add(this.label12);
             this.splitContainer1.Panel2.Controls.Add(this.label11);
             this.splitContainer1.Panel2.Controls.Add(this.tbxMaxTot);
-            this.splitContainer1.Panel2.Controls.Add(this.label9);
             this.splitContainer1.Panel2.Controls.Add(this.tbxMinTot);
-            this.splitContainer1.Panel2.Controls.Add(this.label10);
             this.splitContainer1.Panel2.Controls.Add(this.maxTotDistBar);
             this.splitContainer1.Panel2.Controls.Add(this.minTotDistBar);
             this.splitContainer1.Panel2.Controls.Add(this.lblTime);
             this.splitContainer1.Panel2.Controls.Add(this.label8);
             this.splitContainer1.Panel2.Controls.Add(this.tbxMaxHop);
-            this.splitContainer1.Panel2.Controls.Add(this.label6);
             this.splitContainer1.Panel2.Controls.Add(this.tbxMinHop);
-            this.splitContainer1.Panel2.Controls.Add(this.label5);
             this.splitContainer1.Panel2.Controls.Add(this.label4);
             this.splitContainer1.Panel2.Controls.Add(this.label3);
             this.splitContainer1.Panel2.Controls.Add(this.label2);
@@ -157,6 +161,8 @@
             // splitContainer2.Panel1
             // 
             this.splitContainer2.Panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.splitContainer2.Panel1.Controls.Add(this.lblLengths);
+            this.splitContainer2.Panel1.Controls.Add(this.lengthsBox);
             this.splitContainer2.Panel1.Controls.Add(this.worldMap1);
             this.splitContainer2.Panel1MinSize = 900;
             // 
@@ -188,6 +194,183 @@
             this.splitContainer2.Size = new System.Drawing.Size(1093, 519);
             this.splitContainer2.SplitterDistance = 934;
             this.splitContainer2.TabIndex = 0;
+            // 
+            // lblLengths
+            // 
+            this.lblLengths.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblLengths.AutoSize = true;
+            this.lblLengths.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblLengths.Location = new System.Drawing.Point(395, 465);
+            this.lblLengths.Name = "lblLengths";
+            this.lblLengths.Size = new System.Drawing.Size(10, 16);
+            this.lblLengths.TabIndex = 32;
+            this.lblLengths.Text = "l";
+            this.lblLengths.Visible = false;
+            // 
+            // lengthsBox
+            // 
+            this.lengthsBox.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.lengthsBox.Location = new System.Drawing.Point(0, 464);
+            this.lengthsBox.Name = "lengthsBox";
+            this.lengthsBox.Size = new System.Drawing.Size(934, 55);
+            this.lengthsBox.TabIndex = 31;
+            this.lengthsBox.TabStop = false;
+            this.lengthsBox.Visible = false;
+            this.lengthsBox.MouseLeave += new System.EventHandler(this.lengthsBox_MouseLeave);
+            // 
+            // worldMap1
+            // 
+            this.worldMap1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.worldMap1.Image = global::Round_the_world_challenge.Properties.Resources.World_Map;
+            this.worldMap1.Location = new System.Drawing.Point(0, 0);
+            this.worldMap1.Name = "worldMap1";
+            this.worldMap1.Size = new System.Drawing.Size(934, 519);
+            this.worldMap1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.worldMap1.TabIndex = 30;
+            this.worldMap1.TabStop = false;
+            // 
+            // chkPerform
+            // 
+            this.chkPerform.AutoSize = true;
+            this.chkPerform.Location = new System.Drawing.Point(9, 418);
+            this.chkPerform.Name = "chkPerform";
+            this.chkPerform.Size = new System.Drawing.Size(128, 17);
+            this.chkPerform.TabIndex = 50;
+            this.chkPerform.Text = "Don\'t wait for drawing";
+            this.chkPerform.UseVisualStyleBackColor = true;
+            // 
+            // chkCities
+            // 
+            this.chkCities.AutoSize = true;
+            this.chkCities.Checked = true;
+            this.chkCities.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkCities.Location = new System.Drawing.Point(9, 441);
+            this.chkCities.Name = "chkCities";
+            this.chkCities.Size = new System.Drawing.Size(87, 17);
+            this.chkCities.TabIndex = 49;
+            this.chkCities.Text = "Display cities";
+            this.chkCities.UseVisualStyleBackColor = true;
+            // 
+            // chkNumbers
+            // 
+            this.chkNumbers.AutoSize = true;
+            this.chkNumbers.Location = new System.Drawing.Point(9, 464);
+            this.chkNumbers.Name = "chkNumbers";
+            this.chkNumbers.Size = new System.Drawing.Size(122, 17);
+            this.chkNumbers.TabIndex = 48;
+            this.chkNumbers.Text = "Display city numbers";
+            this.chkNumbers.UseVisualStyleBackColor = true;
+            // 
+            // lblSAEpsilon
+            // 
+            this.lblSAEpsilon.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblSAEpsilon.AutoSize = true;
+            this.lblSAEpsilon.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSAEpsilon.Location = new System.Drawing.Point(99, 332);
+            this.lblSAEpsilon.Name = "lblSAEpsilon";
+            this.lblSAEpsilon.Size = new System.Drawing.Size(18, 20);
+            this.lblSAEpsilon.TabIndex = 47;
+            this.lblSAEpsilon.Text = "0";
+            // 
+            // lblSATemp
+            // 
+            this.lblSATemp.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblSATemp.AutoSize = true;
+            this.lblSATemp.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSATemp.Location = new System.Drawing.Point(99, 271);
+            this.lblSATemp.Name = "lblSATemp";
+            this.lblSATemp.Size = new System.Drawing.Size(18, 20);
+            this.lblSATemp.TabIndex = 46;
+            this.lblSATemp.Text = "0";
+            // 
+            // lblSAAlpha
+            // 
+            this.lblSAAlpha.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblSAAlpha.AutoSize = true;
+            this.lblSAAlpha.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSAAlpha.Location = new System.Drawing.Point(99, 214);
+            this.lblSAAlpha.Name = "lblSAAlpha";
+            this.lblSAAlpha.Size = new System.Drawing.Size(18, 20);
+            this.lblSAAlpha.TabIndex = 45;
+            this.lblSAAlpha.Text = "0";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label20.Location = new System.Drawing.Point(5, 332);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(65, 20);
+            this.label20.TabIndex = 44;
+            this.label20.Text = "Epsilon:";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label19.Location = new System.Drawing.Point(5, 271);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(53, 20);
+            this.label19.TabIndex = 43;
+            this.label19.Text = "Temp:";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label18.Location = new System.Drawing.Point(5, 214);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(54, 20);
+            this.label18.TabIndex = 42;
+            this.label18.Text = "Alpha:";
+            // 
+            // label16
+            // 
+            this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(3, 194);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(144, 13);
+            this.label16.TabIndex = 41;
+            this.label16.Text = "Simulated Annealing Settings";
+            // 
+            // tbEpsilon
+            // 
+            this.tbEpsilon.LargeChange = 50;
+            this.tbEpsilon.Location = new System.Drawing.Point(2, 355);
+            this.tbEpsilon.Maximum = 1000;
+            this.tbEpsilon.Name = "tbEpsilon";
+            this.tbEpsilon.Size = new System.Drawing.Size(153, 45);
+            this.tbEpsilon.TabIndex = 40;
+            this.tbEpsilon.Value = 1;
+            this.tbEpsilon.ValueChanged += new System.EventHandler(this.tbEpsilon_ValueChanged);
+            // 
+            // tbTemp
+            // 
+            this.tbTemp.LargeChange = 50;
+            this.tbTemp.Location = new System.Drawing.Point(3, 294);
+            this.tbTemp.Maximum = 2000;
+            this.tbTemp.Name = "tbTemp";
+            this.tbTemp.Size = new System.Drawing.Size(153, 45);
+            this.tbTemp.SmallChange = 10;
+            this.tbTemp.TabIndex = 39;
+            this.tbTemp.Value = 400;
+            this.tbTemp.ValueChanged += new System.EventHandler(this.tbTemp_ValueChanged);
+            // 
+            // tbAlpha
+            // 
+            this.tbAlpha.Location = new System.Drawing.Point(3, 237);
+            this.tbAlpha.Maximum = 100;
+            this.tbAlpha.Name = "tbAlpha";
+            this.tbAlpha.Size = new System.Drawing.Size(153, 45);
+            this.tbAlpha.TabIndex = 38;
+            this.tbAlpha.Value = 95;
+            this.tbAlpha.ValueChanged += new System.EventHandler(this.tbAlpha_ValueChanged);
             // 
             // label17
             // 
@@ -222,7 +405,6 @@
             this.lblIter.Size = new System.Drawing.Size(18, 20);
             this.lblIter.TabIndex = 34;
             this.lblIter.Text = "0";
-            this.lblIter.Click += new System.EventHandler(this.lblIter_Click);
             // 
             // lblTemp
             // 
@@ -255,7 +437,6 @@
             this.lbldgfdf.Size = new System.Drawing.Size(104, 20);
             this.lbldgfdf.TabIndex = 30;
             this.lbldgfdf.Text = "Temperature:";
-            this.lbldgfdf.Click += new System.EventHandler(this.label16_Click);
             // 
             // label15
             // 
@@ -289,6 +470,50 @@
             this.lblDistance.TabIndex = 14;
             this.lblDistance.Text = "0";
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(760, 97);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(75, 20);
+            this.label5.TabIndex = 33;
+            this.label5.Text = "Multiplier:";
+            // 
+            // numMult
+            // 
+            this.numMult.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numMult.Location = new System.Drawing.Point(841, 96);
+            this.numMult.Name = "numMult";
+            this.numMult.Size = new System.Drawing.Size(93, 22);
+            this.numMult.TabIndex = 32;
+            this.numMult.Value = new decimal(new int[] {
+            8,
+            0,
+            0,
+            0});
+            this.numMult.ValueChanged += new System.EventHandler(this.numMult_ValueChanged);
+            // 
+            // chkTotEnabled
+            // 
+            this.chkTotEnabled.AutoSize = true;
+            this.chkTotEnabled.Location = new System.Drawing.Point(841, 5);
+            this.chkTotEnabled.Name = "chkTotEnabled";
+            this.chkTotEnabled.Size = new System.Drawing.Size(64, 17);
+            this.chkTotEnabled.TabIndex = 31;
+            this.chkTotEnabled.Text = "enabled";
+            this.chkTotEnabled.UseVisualStyleBackColor = true;
+            // 
+            // chkHopEnabled
+            // 
+            this.chkHopEnabled.AutoSize = true;
+            this.chkHopEnabled.Location = new System.Drawing.Point(486, 3);
+            this.chkHopEnabled.Name = "chkHopEnabled";
+            this.chkHopEnabled.Size = new System.Drawing.Size(64, 17);
+            this.chkHopEnabled.TabIndex = 30;
+            this.chkHopEnabled.Text = "enabled";
+            this.chkHopEnabled.UseVisualStyleBackColor = true;
+            // 
             // label13
             // 
             this.label13.AutoSize = true;
@@ -313,7 +538,7 @@
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(683, 5);
+            this.label12.Location = new System.Drawing.Point(622, 3);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(161, 20);
             this.label12.TabIndex = 26;
@@ -323,7 +548,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(328, 2);
+            this.label11.Location = new System.Drawing.Point(271, 2);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(170, 20);
             this.label11.TabIndex = 25;
@@ -334,36 +559,16 @@
             this.tbxMaxTot.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbxMaxTot.Location = new System.Drawing.Point(841, 63);
             this.tbxMaxTot.Name = "tbxMaxTot";
-            this.tbxMaxTot.Size = new System.Drawing.Size(58, 29);
+            this.tbxMaxTot.Size = new System.Drawing.Size(93, 29);
             this.tbxMaxTot.TabIndex = 24;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(905, 65);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(38, 24);
-            this.label9.TabIndex = 23;
-            this.label9.Text = "KM";
             // 
             // tbxMinTot
             // 
             this.tbxMinTot.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbxMinTot.Location = new System.Drawing.Point(841, 26);
             this.tbxMinTot.Name = "tbxMinTot";
-            this.tbxMinTot.Size = new System.Drawing.Size(58, 29);
+            this.tbxMinTot.Size = new System.Drawing.Size(93, 29);
             this.tbxMinTot.TabIndex = 22;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(905, 29);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(38, 24);
-            this.label10.TabIndex = 21;
-            this.label10.Text = "KM";
             // 
             // maxTotDistBar
             // 
@@ -376,6 +581,8 @@
             this.maxTotDistBar.TabIndex = 18;
             this.maxTotDistBar.Value = 900000;
             this.maxTotDistBar.ValueChanged += new System.EventHandler(this.maxTotDistBar_ValueChanged);
+            this.maxTotDistBar.MouseLeave += new System.EventHandler(this.maxTotDistBar_MouseLeave);
+            this.maxTotDistBar.MouseHover += new System.EventHandler(this.maxTotDistBar_MouseHover);
             // 
             // minTotDistBar
             // 
@@ -387,6 +594,8 @@
             this.minTotDistBar.SmallChange = 10000;
             this.minTotDistBar.TabIndex = 17;
             this.minTotDistBar.ValueChanged += new System.EventHandler(this.minTotDistBar_ValueChanged);
+            this.minTotDistBar.MouseLeave += new System.EventHandler(this.minTotDistBar_MouseLeave);
+            this.minTotDistBar.MouseHover += new System.EventHandler(this.minTotDistBar_MouseHover);
             // 
             // lblTime
             // 
@@ -415,36 +624,16 @@
             this.tbxMaxHop.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbxMaxHop.Location = new System.Drawing.Point(486, 61);
             this.tbxMaxHop.Name = "tbxMaxHop";
-            this.tbxMaxHop.Size = new System.Drawing.Size(58, 29);
+            this.tbxMaxHop.Size = new System.Drawing.Size(79, 29);
             this.tbxMaxHop.TabIndex = 12;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(550, 63);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(38, 24);
-            this.label6.TabIndex = 11;
-            this.label6.Text = "KM";
             // 
             // tbxMinHop
             // 
             this.tbxMinHop.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbxMinHop.Location = new System.Drawing.Point(486, 24);
             this.tbxMinHop.Name = "tbxMinHop";
-            this.tbxMinHop.Size = new System.Drawing.Size(58, 29);
+            this.tbxMinHop.Size = new System.Drawing.Size(79, 29);
             this.tbxMinHop.TabIndex = 10;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(550, 27);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(38, 24);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "KM";
             // 
             // label4
             // 
@@ -500,6 +689,7 @@
             this.maxHopDistanceBar.TabIndex = 4;
             this.maxHopDistanceBar.Value = 10000;
             this.maxHopDistanceBar.ValueChanged += new System.EventHandler(this.maxHopDistanceBar_ValueChanged);
+            this.maxHopDistanceBar.MouseHover += new System.EventHandler(this.maxHopDistanceBar_MouseHover);
             // 
             // minHopDistanceBar
             // 
@@ -510,6 +700,8 @@
             this.minHopDistanceBar.TabIndex = 3;
             this.minHopDistanceBar.Value = 50;
             this.minHopDistanceBar.ValueChanged += new System.EventHandler(this.minHopDistanceBar_ValueChanged);
+            this.minHopDistanceBar.MouseLeave += new System.EventHandler(this.minHopDistanceBar_MouseLeave);
+            this.minHopDistanceBar.MouseHover += new System.EventHandler(this.minHopDistanceBar_MouseHover);
             // 
             // label1
             // 
@@ -541,7 +733,7 @@
             this.numCitiesSelector.Size = new System.Drawing.Size(60, 29);
             this.numCitiesSelector.TabIndex = 1;
             this.numCitiesSelector.Value = new decimal(new int[] {
-            10,
+            30,
             0,
             0,
             0});
@@ -573,162 +765,6 @@
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
-            // tbAlpha
-            // 
-            this.tbAlpha.Location = new System.Drawing.Point(3, 237);
-            this.tbAlpha.Maximum = 100;
-            this.tbAlpha.Name = "tbAlpha";
-            this.tbAlpha.Size = new System.Drawing.Size(153, 45);
-            this.tbAlpha.TabIndex = 38;
-            this.tbAlpha.Value = 95;
-            this.tbAlpha.ValueChanged += new System.EventHandler(this.tbAlpha_ValueChanged);
-            // 
-            // tbTemp
-            // 
-            this.tbTemp.LargeChange = 50;
-            this.tbTemp.Location = new System.Drawing.Point(3, 294);
-            this.tbTemp.Maximum = 2000;
-            this.tbTemp.Name = "tbTemp";
-            this.tbTemp.Size = new System.Drawing.Size(153, 45);
-            this.tbTemp.SmallChange = 10;
-            this.tbTemp.TabIndex = 39;
-            this.tbTemp.Value = 400;
-            this.tbTemp.Scroll += new System.EventHandler(this.trackBar2_Scroll);
-            this.tbTemp.ValueChanged += new System.EventHandler(this.tbTemp_ValueChanged);
-            // 
-            // tbEpsilon
-            // 
-            this.tbEpsilon.LargeChange = 50;
-            this.tbEpsilon.Location = new System.Drawing.Point(2, 355);
-            this.tbEpsilon.Maximum = 1000;
-            this.tbEpsilon.Name = "tbEpsilon";
-            this.tbEpsilon.Size = new System.Drawing.Size(153, 45);
-            this.tbEpsilon.TabIndex = 40;
-            this.tbEpsilon.Value = 1;
-            this.tbEpsilon.ValueChanged += new System.EventHandler(this.tbEpsilon_ValueChanged);
-            // 
-            // label16
-            // 
-            this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(3, 194);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(144, 13);
-            this.label16.TabIndex = 41;
-            this.label16.Text = "Simulated Annealing Settings";
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label18.Location = new System.Drawing.Point(5, 214);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(54, 20);
-            this.label18.TabIndex = 42;
-            this.label18.Text = "Alpha:";
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label19.Location = new System.Drawing.Point(5, 271);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(53, 20);
-            this.label19.TabIndex = 43;
-            this.label19.Text = "Temp:";
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label20.Location = new System.Drawing.Point(5, 332);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(65, 20);
-            this.label20.TabIndex = 44;
-            this.label20.Text = "Epsilon:";
-            // 
-            // lblSAAlpha
-            // 
-            this.lblSAAlpha.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblSAAlpha.AutoSize = true;
-            this.lblSAAlpha.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSAAlpha.Location = new System.Drawing.Point(99, 214);
-            this.lblSAAlpha.Name = "lblSAAlpha";
-            this.lblSAAlpha.Size = new System.Drawing.Size(18, 20);
-            this.lblSAAlpha.TabIndex = 45;
-            this.lblSAAlpha.Text = "0";
-            // 
-            // lblSATemp
-            // 
-            this.lblSATemp.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblSATemp.AutoSize = true;
-            this.lblSATemp.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSATemp.Location = new System.Drawing.Point(99, 271);
-            this.lblSATemp.Name = "lblSATemp";
-            this.lblSATemp.Size = new System.Drawing.Size(18, 20);
-            this.lblSATemp.TabIndex = 46;
-            this.lblSATemp.Text = "0";
-            // 
-            // lblSAEpsilon
-            // 
-            this.lblSAEpsilon.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblSAEpsilon.AutoSize = true;
-            this.lblSAEpsilon.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSAEpsilon.Location = new System.Drawing.Point(99, 332);
-            this.lblSAEpsilon.Name = "lblSAEpsilon";
-            this.lblSAEpsilon.Size = new System.Drawing.Size(18, 20);
-            this.lblSAEpsilon.TabIndex = 47;
-            this.lblSAEpsilon.Text = "0";
-            // 
-            // chkNumbers
-            // 
-            this.chkNumbers.AutoSize = true;
-            this.chkNumbers.Location = new System.Drawing.Point(9, 464);
-            this.chkNumbers.Name = "chkNumbers";
-            this.chkNumbers.Size = new System.Drawing.Size(122, 17);
-            this.chkNumbers.TabIndex = 48;
-            this.chkNumbers.Text = "Display city numbers";
-            this.chkNumbers.UseVisualStyleBackColor = true;
-            // 
-            // chkCities
-            // 
-            this.chkCities.AutoSize = true;
-            this.chkCities.Checked = true;
-            this.chkCities.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkCities.Location = new System.Drawing.Point(9, 441);
-            this.chkCities.Name = "chkCities";
-            this.chkCities.Size = new System.Drawing.Size(87, 17);
-            this.chkCities.TabIndex = 49;
-            this.chkCities.Text = "Display cities";
-            this.chkCities.UseVisualStyleBackColor = true;
-            this.chkCities.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
-            // 
-            // chkPerform
-            // 
-            this.chkPerform.AutoSize = true;
-            this.chkPerform.Location = new System.Drawing.Point(9, 418);
-            this.chkPerform.Name = "chkPerform";
-            this.chkPerform.Size = new System.Drawing.Size(128, 17);
-            this.chkPerform.TabIndex = 50;
-            this.chkPerform.Text = "Don\'t wait for drawing";
-            this.chkPerform.UseVisualStyleBackColor = true;
-            // 
-            // worldMap1
-            // 
-            this.worldMap1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.worldMap1.Image = global::Round_the_world_challenge.Properties.Resources.World_Map;
-            this.worldMap1.Location = new System.Drawing.Point(0, 0);
-            this.worldMap1.Name = "worldMap1";
-            this.worldMap1.Size = new System.Drawing.Size(934, 519);
-            this.worldMap1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.worldMap1.TabIndex = 30;
-            this.worldMap1.TabStop = false;
-            this.worldMap1.Paint += new System.Windows.Forms.PaintEventHandler(this.worldMap1_Paint);
-            // 
             // MapView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -738,26 +774,30 @@
             this.Name = "MapView";
             this.Text = "Round The World Challenge by Dawid Olesko";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Resize += new System.EventHandler(this.MapView_Resize);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);
             this.splitContainer2.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.lengthsBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.worldMap1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbEpsilon)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbTemp)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbAlpha)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numMult)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxTotDistBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minTotDistBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numRestrSelector)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxHopDistanceBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minHopDistanceBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCitiesSelector)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tbAlpha)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tbTemp)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tbEpsilon)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.worldMap1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -775,16 +815,12 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox tbxMaxHop;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox tbxMinHop;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label lblDistance;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label lblTime;
         private System.Windows.Forms.TextBox tbxMaxTot;
-        private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox tbxMinTot;
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TrackBar maxTotDistBar;
         private System.Windows.Forms.TrackBar minTotDistBar;
         private System.Windows.Forms.Label label13;
@@ -815,6 +851,12 @@
         private System.Windows.Forms.CheckBox chkNumbers;
         private System.Windows.Forms.CheckBox chkPerform;
         private System.Windows.Forms.PictureBox worldMap1;
+        private System.Windows.Forms.Label lblLengths;
+        private System.Windows.Forms.PictureBox lengthsBox;
+        private System.Windows.Forms.CheckBox chkTotEnabled;
+        private System.Windows.Forms.CheckBox chkHopEnabled;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.NumericUpDown numMult;
     }
 }
 
