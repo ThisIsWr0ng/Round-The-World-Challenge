@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -14,10 +16,13 @@ namespace Round_the_world_challenge
         private readonly Stopwatch stopWatch;
         private bool stopSignal = false;
         private int iteration = 0;
+        private int totLoops = 0;
+        private const int MapWidth = 40075;
+        private const double PixelToKM = 2.645833E-7;
+
 
         //initialize variables for continents and restrictions
         private Continent C = new Continent();
-
         private DateTime startTime;
         private Continent[] continents = null;
         private PointF[,] restrictions = new PointF[0, 0];
@@ -26,17 +31,16 @@ namespace Round_the_world_challenge
 
         //Variables for routes
         private PointF startLoc = PointF.Empty;
-
         private PointF[] currentRoute;
         private PointF[] bestRoute;
         private double distance;
         private Graphics grap = null;
         private List<PointF[]> routes = new List<PointF[]>();
+        private List<int[]> details = new List<int[]>();
 
         //Variables for Simmulated Annealing
-        private double alpha = 0.95;
-
-        private double temperature = 50;
+        private double alpha = 0.99;
+        private double temperature = 400;
         private double epsilon = 0.001;
 
         public MapView()
@@ -61,6 +65,7 @@ namespace Round_the_world_challenge
             btnStop.Visible = false;
             lblLengths.Visible = false;
             cbxAlgo.SelectedIndex = 0;
+            
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -85,16 +90,13 @@ namespace Round_the_world_challenge
             grap.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
             StartRace(numCities, numRestrConn);
             routes = new List<PointF[]>();
+            
         }
 
         private void StartRace(int numCities, int numRestrConn)
         {
             Reset();
-            btnStop.Visible = true;
-            stopSignal = false;
-            startTime = DateTime.UtcNow;
-            iteration = 0;
-            trkProgress.Enabled = false;
+            
 
             stopWatch.Start();
             if (!keepMap || continents == null)
@@ -117,12 +119,14 @@ namespace Round_the_world_challenge
             double proba;
             double delta = 0;
             int noChange = 0; //tracking for how many iterations route was not updated
+            int max = maxTotDistBar.Value;
+            int min = minTotDistBar.Value;
 
             PointF[] cities = ExtractCities(continents, numCities);
             GenerateRoute(cities);//Generate first route
             routes.Add(bestRoute);//Add it to the list of routes
 
-            lblStartDist.Text = ((int)distance).ToString();
+            lblStartDist.Text = ((int)distance).ToString() + " KM";
             //Draw it on a map
             await DisplayRoute(bestRoute);
 
@@ -132,48 +136,10 @@ namespace Round_the_world_challenge
                 //Perform selected algorithm
                 if (cbxAlgo.SelectedIndex == 0)//perform 2-opt
                 {
-                    //currentRoute = await Task.Run(() => TwoOptCheck());
-                    PointF[] best = bestRoute;
+                    
+                    await Task.Run(() => TwoOptCheck(max, min));//Run 2-Opt
+                    RefreshDisplay(iteration, (int)temperature); //refresh labels
 
-                    int n = best.Length;
-
-                    for (int i = 0; i < best.Length - 2; i++)
-                    {
-                        for (int k = i + 1; k < best.Length - 1; k++)
-                        {
-                            //Calculate delta of lengths between i and k to find crossed connections
-                            delta = -CalcDistance(best[i], best[(i + 1) % n]) - CalcDistance(best[k], best[(k + 1) % n]) + CalcDistance(best[i], best[k]) + CalcDistance(best[(i + 1) % n], best[(k + 1) % n]);
-                            if (delta < 0)//If the route is shorter, then swap cities
-                            {
-                                best = ReverseSwap(best, i, k);
-                                bestRoute = best;
-                                distance = distance + delta;
-                                noChange = 0;
-                                routes.Add(best);
-                            }
-                            else//if the new distance is worse accept it with certain probability
-                            {
-                                proba = random.NextDouble();
-
-                                if (proba < Math.Exp(-delta / temperature))
-                                {
-                                    best = ReverseSwap(best, i, k);
-                                    bestRoute = best;
-                                    distance = distance + delta;
-                                    noChange = 0;
-                                }
-                            }
-                            if (chkPerform.Checked == false)//Display route every 200 iterations if checkbox is checked
-                                if (iteration % 200 == 1)
-                                    DisplayRoute(bestRoute);
-
-                            noChange++;//count how many times there was no change of distance
-                            RefreshDisplay(iteration, (int)temperature); //refresh labels
-                        }
-                        iteration++;
-                        temperature *= alpha;//Cooling down
-                    }
-                    UpdateTrackBar(routes.Count);
                 }
                 else if (cbxAlgo.SelectedIndex == 1)//Perforn 3-Opt
                 {
@@ -213,14 +179,13 @@ namespace Round_the_world_challenge
                     RefreshDisplay(iteration, (int)temperature);
                     routes.Add(bestRoute);
                     iteration++;
-                    UpdateTrackBar(routes.Count);
                     temperature *= alpha;//cooling proces on each iteration
                 }
                 else if (cbxAlgo.SelectedIndex == 2)
                 {
                     currentRoute = ComputeNext();// perforn random route generation
 
-                    UpdateTrackBar(routes.Count);
+                    
                     //compute the distance of the new permuted configuration
                     delta = CalcDistance(currentRoute) - distance;
 
@@ -253,6 +218,7 @@ namespace Round_the_world_challenge
                     RefreshDisplay(iteration, (int)temperature);
                 }
             }
+            UpdateTrackBar(routes.Count);
             DisplayRoute(bestRoute);
             stopWatch.Stop();
             RefreshDisplay(iteration, (int)temperature);
@@ -263,6 +229,55 @@ namespace Round_the_world_challenge
             {
                 Font font = new Font("Times New Roman", 30, FontStyle.Bold);
                 grap.DrawString("Route Invalid / Change Hop Distances", font, Brushes.Red, (int)Math.Floor(worldMap1.Width * 0.2), 13);
+            }
+        }
+
+        private void TwoOptCheck(int maxHop, int minHop)
+        {
+            PointF[] best = bestRoute;
+
+            int n = best.Length;
+
+            for (int i = 0; i < best.Length - 2; i++)
+            {
+                for (int k = i + 1; k < best.Length - 1; k++)
+                {
+                    //Calculate delta of lengths between i and k to find crossed connections
+                    double delta = -CalcDistance(best[i], best[(i + 1) % n], maxHop, minHop) - CalcDistance(best[k], best[(k + 1) % n], maxHop, minHop)
+                        + CalcDistance(best[i], best[k], maxHop, minHop) + CalcDistance(best[(i + 1) % n], best[(k + 1) % n], maxHop, minHop);
+                    if (delta < 0)//If the route is shorter, then swap cities
+                    {
+                        best = ReverseSwap(best, i, k);
+                        bestRoute = best;
+                        distance += delta;
+                        //Store details
+                        routes.Add(best);
+                        int[] d = new int[] {(int)distance, (int)temperature, iteration };
+                        details.Add(d);
+                    }
+                    else//if the new distance is worse accept it with certain probability
+                    {
+                        double proba = random.NextDouble();
+
+                        if (proba < Math.Exp(-delta / temperature))
+                        {
+                            best = ReverseSwap(best, i, k);
+                            bestRoute = best;
+                            distance += delta;
+                            //Store details
+                            routes.Add(best);
+                            int[] d = new int[] { (int)distance, (int)temperature, iteration };
+                            details.Add(d);
+                        }
+                    }
+                    if (chkPerform.Checked == false)//Display route every 200 iterations if checkbox is checked
+                        if (iteration % 200 == 1)
+                            DisplayRoute(bestRoute);
+
+                   
+                }
+                iteration++;
+                temperature *= alpha;//Cooling down
             }
         }
 
@@ -391,12 +406,13 @@ namespace Round_the_world_challenge
 
         private void DisplayLengths(int length, string txt)//displays lengths of hop and total distance restrictions
         {
+            float len = Convert.ToSingle(length / (MapWidth / worldMap1.Width));
             lblLengths.Visible = true;
             lblLengths.Text = txt;
             var g = lengthsBox.CreateGraphics();
             g.Clear(Color.White);
             Pen pen = new Pen(Color.DarkRed, 8);
-            g.DrawLine(pen, lengthsBox.Width / 2 - length / 2, lengthsBox.Height - 20, lengthsBox.Width / 2 + length / 2
+            g.DrawLine(pen, lengthsBox.Width / 2 - len / 2, lengthsBox.Height - 20, lengthsBox.Width / 2 + len / 2
                 , lengthsBox.Height - 20);
             System.Threading.Thread.Sleep(100);
         }
@@ -406,20 +422,21 @@ namespace Round_the_world_challenge
             lblTime.Text = stopWatch.ElapsedMilliseconds.ToString() + " ms";
             lblIter.Text = iteration.ToString();
             lblTemp.Text = temperature.ToString();
-            lblDistance.Text = Math.Floor(distance).ToString();
+            lblDistance.Text = Math.Floor(distance).ToString() + " KM";
         }
 
         private void SyncDistancesToWindow()
         {
-            minHopDistanceBar.Maximum = worldMap1.Width;
-            maxHopDistanceBar.Maximum = worldMap1.Width;
-            minTotDistBar.Maximum = worldMap1.Width * multiplier;
-            maxTotDistBar.Maximum = worldMap1.Width * multiplier;
+            
+            minHopDistanceBar.Maximum = MapWidth;
+            maxHopDistanceBar.Maximum = MapWidth;
+            minTotDistBar.Maximum = MapWidth * multiplier;
+            maxTotDistBar.Maximum = MapWidth * multiplier;
 
             minHopDistanceBar.Value = 0;
-            maxHopDistanceBar.Value = (int)Math.Floor(worldMap1.Width * 0.9);
-            minTotDistBar.Value = (int)Math.Floor((worldMap1.Width * multiplier) * 0.01);
-            maxTotDistBar.Value = (int)Math.Floor((worldMap1.Width * multiplier) * 0.9);
+            maxHopDistanceBar.Value = (int)Math.Floor(MapWidth * 0.9);
+            minTotDistBar.Value = (int)Math.Floor((MapWidth * multiplier) * 0.01);
+            maxTotDistBar.Value = (int)Math.Floor((MapWidth * multiplier) * 0.9);
         }
 
         private PointF[] ComputeNext()//Swap two random connections
@@ -588,20 +605,20 @@ namespace Round_the_world_challenge
             {
                 for (int r = 0; r < restrictions.GetLength(0); r++)
                 {
-                    if (numRestrSelector.Value != 0 && restrictions[r, 0] == route[i] & restrictions[r, 1] == route[i + 1] || restrictions[r, 0] == route[i + 1] & restrictions[r, 1] == route[i])
+                    if (numRestrSelector.Value != 0 && (restrictions[r, 0] == route[i] & restrictions[r, 1] == route[i + 1] || restrictions[r, 0] == route[i + 1] & restrictions[r, 1] == route[i]))
                     {
                         return 99999999999999;
                     }
                 }
                 double chk = CalcDistance(route[i], route[i + 1]);//Calculate the distance
-                if (chkHopEnabled.Checked == true & chk > maxHopDistanceBar.Value || chk < minHopDistanceBar.Value)
+                if (chkHopEnabled.Checked == true && (chk > maxHopDistanceBar.Value || chk < minHopDistanceBar.Value))
                 {
                     return 99999999999999;//return an awfuly big number if any hop is longer or shorter than permitted
                 }
                 else
                     temp += chk;
             }
-            if (chkTotEnabled.Checked == true && temp > maxTotDistBar.Value || temp < minTotDistBar.Value)
+            if (chkTotEnabled.Checked == true && (temp > maxTotDistBar.Value || temp < minTotDistBar.Value))
                 return 99999999999999;//return awfuly big number if the whole route distance is longer than permitted
 
             return temp;
@@ -617,12 +634,21 @@ namespace Round_the_world_challenge
             return temp;
         }
 
+        private double CalcDistance(PointF p1, PointF p2, int max, int min)
+        {
+            // Pythagoras
+            double d = Math.Sqrt(((p2.X - p1.X) * (p2.X - p1.X)) + ((p2.Y - p1.Y) * (p2.Y - p1.Y)))  *(MapWidth/ worldMap1.Width);
+            if (chkHopEnabled.Checked == true)
+                if (d > max || d < min)
+                    return 9999999999999;
+            return d;
+        }
         private double CalcDistance(PointF p1, PointF p2)
         {
             // Pythagoras
-            double d = Math.Sqrt(((p2.X - p1.X) * (p2.X - p1.X)) + ((p2.Y - p1.Y) * (p2.Y - p1.Y)) / 10);
+            double d = Math.Sqrt(((p2.X - p1.X) * (p2.X - p1.X)) + ((p2.Y - p1.Y) * (p2.Y - p1.Y))) * (MapWidth / worldMap1.Width);
             if (chkHopEnabled.Checked == true)
-                if (d > maxHopDistanceBar.Value || d < minHopDistanceBar.Value)
+                if (d > maxTotDistBar.Value || d < minTotDistBar.Value)
                     return 9999999999999;
             return d;
         }
@@ -662,6 +688,13 @@ namespace Round_the_world_challenge
         {
             stopWatch.Stop();
             stopWatch.Restart();
+            btnStop.Visible = true;
+            stopSignal = false;
+            startTime = DateTime.UtcNow;
+            iteration = 0;
+            totLoops = 0;
+            trkProgress.Enabled = false;
+            details = new List<int[]>();
         }
 
         private void minHopDistanceBar_ValueChanged(object sender, EventArgs e)
@@ -822,6 +855,9 @@ namespace Round_the_world_challenge
             if (trkProgress.Enabled == false)
                 return;
             DisplayRoute(routes[trkProgress.Value]);
+            lblDistance.Text = details[trkProgress.Value][0].ToString();
+            lblTemp.Text = details[trkProgress.Value][1].ToString();
+            lblIter.Text = details[trkProgress.Value][2].ToString();
         }
     }
 }
