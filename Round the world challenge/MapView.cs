@@ -131,7 +131,7 @@ namespace Round_the_world_challenge
             await DisplayRoute(bestRoute);
 
             //while the temperature didnt reach epsilon
-            while (temperature >= epsilon & !stopSignal)
+            while ((temperature >= epsilon && noChange < 50) & !stopSignal)
             { 
                 //Perform selected algorithm
                 if (cbxAlgo.SelectedIndex == 0)//perform 2-opt
@@ -148,14 +148,14 @@ namespace Round_the_world_challenge
                         {
                           
                             //Calculate delta of lengths between i and k to find crossed connections
-                            double lengthDelta = -CalcDistance(best[i], best[(i + 1) % n]) - CalcDistance(best[k], best[(k + 1) % n]) + CalcDistance(best[i], best[k]) + CalcDistance(best[(i + 1) % n], best[(k + 1) % n]);
-                            if (lengthDelta < 0)//If the route is shorter, then swap cities
+                            delta = -CalcDistance(best[i], best[(i + 1) % n]) - CalcDistance(best[k], best[(k + 1) % n]) + CalcDistance(best[i], best[k]) + CalcDistance(best[(i + 1) % n], best[(k + 1) % n]);
+                            if (delta < 0)//If the route is shorter, then swap cities
                             {
 
-
-                                best = ReverseSwap(best, i, k);
+                                bestRoute = ReverseSwap(best, i, k);
                                 distance = distance + delta;
-
+                                noChange = 0;
+                                routes.Add(best);
                             }
                             else//if the new distance is worse accept it with certain probability
                             {
@@ -166,24 +166,22 @@ namespace Round_the_world_challenge
                                     bestRoute = best;
                                     distance = distance + delta;
                                     noChange = 0;
-                                   /* if (chkPerform.Checked == false)
-                                        await Task.Run(() => DisplayRoute(bestRoute));
-                                    else
-                                    {
-                                        grap.Clear(Color.White);
-                                        DisplayRoute(bestRoute);
-                                    }*/
                                 }
                             }
-                            //cooling proces on each iteration
-                            temperature *= alpha;
+                            if (chkPerform.Checked == false)
+                                if(iteration % 200 == 1)
+                                    DisplayRoute(bestRoute);
+                           
+                           
                             iteration++;
                             noChange++;
                             RefreshDisplay(iteration, (int)temperature);
-                            routes.Add(best);
-                            UpdateTrackBar(routes.Count);
+                            
+                            
                         }
+                        temperature *= alpha;
                     }
+                    UpdateTrackBar(routes.Count);
 
                 }
                 else if (cbxAlgo.SelectedIndex == 1)//Perforn 3-Opt 
@@ -198,11 +196,11 @@ namespace Round_the_world_challenge
                             break;
                         delta = await Task.Run(()=>ThreeOptSwap(best, i[0], i[1], i[2]));
                         //Update Progress Bar
-                        routes.Add(currentRoute);
-                        UpdateTrackBar(routes.Count);
+                        
+                        
                         
 
-                        DisplayRoute(currentRoute);
+                        
                         if (delta == 0)
                         {
                             proba = random.NextDouble();
@@ -214,7 +212,7 @@ namespace Round_the_world_challenge
                                 distance = delta + distance;
                                 bestRoute = currentRoute;
                                 noChange = 0;
-                                
+                                routes.Add(currentRoute);
                             }
                         }
                         else
@@ -222,14 +220,19 @@ namespace Round_the_world_challenge
                             bestRoute = currentRoute;
                             distance = delta + distance;
                             noChange = 0;
+                            routes.Add(currentRoute);
                         }
-
+                        if (chkPerform.Checked == false)
+                            if (iteration % 200 == 1)
+                                DisplayRoute(bestRoute);
                         //cooling proces on each iteration
-                        temperature *= alpha;
+                        
                         iteration++;
                         noChange++;
                         RefreshDisplay(iteration, (int)temperature);
                     }
+                    UpdateTrackBar(routes.Count);
+                    temperature *= alpha;
                 }
                 else if (cbxAlgo.SelectedIndex == 2)
                 {
@@ -312,28 +315,28 @@ namespace Round_the_world_challenge
             C = route[j - 1];
             D = route[j];
             E = route[k - 1];
-            F = route[k];
+            F = route[k % route.Length];
             double d0 = CalcDistance(A, B) + CalcDistance(C, D) + CalcDistance(E, F);
             double d1 = CalcDistance(A, C) + CalcDistance(B, D) + CalcDistance(E, F);
             double d2 = CalcDistance(A, B) + CalcDistance(C, E) + CalcDistance(D, F);
-            double d3 = CalcDistance(A, D) + CalcDistance(E, C) + CalcDistance(C, F);
+            double d3 = CalcDistance(A, D) + CalcDistance(E, B) + CalcDistance(C, F);
             double d4 = CalcDistance(F, B) + CalcDistance(C, D) + CalcDistance(E, A);
 
             if (d0 > d1)
             {
-                route = ReverseSwap(route, i, j);
+                route = ReverseSwapThreeOpt(route, i, j);
                currentRoute= route;
                 return -d0 + d1;
             }
             else if (d0 > d2)
             {
-                route = ReverseSwap(route, j, k);
+                route = ReverseSwapThreeOpt(route, j, k);
                 currentRoute = route;
                 return -d0 + d2;
             }
             else if (d0 > d4)
             {
-                route = ReverseSwap(route, i, k);
+                route = ReverseSwapThreeOpt(route, i, k);
                 currentRoute = route;
                 return -d0 + d4;
             }
@@ -354,14 +357,7 @@ namespace Round_the_world_challenge
                     route[l] = temp.First();
                     temp.RemoveAt(0);
                 }
-                /*for (int l = 0; l < temp.Count; l++)
-                {
-                    temp.Add(route.ElementAt(l));
-                }*/
-                /*for (int l = 0; l < temp.Count; l++)
-                {
-                    route[l] = temp[l];
-                }*/
+              
                 currentRoute = route;
                 return -d0 + d3;
             }
@@ -411,6 +407,28 @@ namespace Round_the_world_challenge
 
             return newRoute;
         }
+        private PointF[] ReverseSwapThreeOpt(PointF[] route, int i, int k)
+        {
+            PointF[] best = route;
+            PointF[] newRoute = new PointF[best.Length];
+            for (int j = 0; j < i; j++)
+            {
+                newRoute[j] = best[j];
+            }
+            int c = 0;
+            for (int j = i; j <= k; j++)
+            {
+                newRoute[j] = best[k - c];
+                c++;
+            }
+            for (int j = k + 1; j < bestRoute.Length; j++)
+            {
+                newRoute[j] = best[j];
+            }
+
+            return newRoute;
+        }
+
         private PointF[] TwoOptCheck()
         {
             PointF[] best = bestRoute;
