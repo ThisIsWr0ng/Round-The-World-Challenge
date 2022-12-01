@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Round_the_world_challenge
 {
@@ -18,13 +13,13 @@ namespace Round_the_world_challenge
         public PointF[] Cities { get; set; }
 
 
-        public Continent() 
-        { 
+        public Continent()
+        {
 
         }
         public Continent[] CreateContinents(int mapWidth, int mapHeight, int cities)
-        {            
-            Random random= new Random();
+        {
+            Random random = new Random();
             string[] continentNames = { "North America", "South America", "Europe", "Africa", "Asia", "Australasia" };
             Continent[] continents = new Continent[continentNames.Length];
             int[] numCities = new int[continentNames.Length];
@@ -34,7 +29,7 @@ namespace Round_the_world_challenge
             {
                 numCities[i] = random.Next(1, (cities / 6));
                 citiesLeft -= numCities[i];
-                if(i == continentNames.Length - 1 && citiesLeft > 0)
+                if (i == continentNames.Length - 1 && citiesLeft > 0)
                 {
                     for (int j = 0; j < citiesLeft; j++)
                     {
@@ -47,7 +42,7 @@ namespace Round_the_world_challenge
 
             //create continent borders and add random cities
             for (int i = 0; i < continentNames.Length; i++)
-            { 
+            {
                 Continent cont = new Continent();
                 cont.Name = continentNames[i];
                 if (i == 0)//North America 
@@ -57,7 +52,7 @@ namespace Round_the_world_challenge
                     cont.minY = mapHeight * 0.4;
                     cont.maxY = mapHeight * 0.1;
                 }
-                else if(i == 1)//South America
+                else if (i == 1)//South America
                 {
                     cont.minX = mapWidth * 0.2;
                     cont.maxX = mapWidth * 0.3;
@@ -98,8 +93,8 @@ namespace Round_the_world_challenge
                 {
 
                     PointF city = new PointF(
-                        Convert.ToSingle((random.NextDouble() * (cont.maxX - cont.minX) + cont.minX)), 
-                        Convert.ToSingle((random.NextDouble() * (cont.maxY - cont.minY) + cont.minY))); 
+                        Convert.ToSingle((random.NextDouble() * (cont.maxX - cont.minX) + cont.minX)),
+                        Convert.ToSingle((random.NextDouble() * (cont.maxY - cont.minY) + cont.minY)));
                     cont.Cities[j] = city;
 
                 }
@@ -110,7 +105,7 @@ namespace Round_the_world_challenge
 
 
 
-        } 
+        }
         public PointF[] GetCities()
         {
             return Cities;

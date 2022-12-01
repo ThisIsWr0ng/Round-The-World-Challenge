@@ -55,6 +55,9 @@
             this.label15 = new System.Windows.Forms.Label();
             this.chkKeepMap = new System.Windows.Forms.CheckBox();
             this.lblDistance = new System.Windows.Forms.Label();
+            this.trkProgress = new System.Windows.Forms.TrackBar();
+            this.label6 = new System.Windows.Forms.Label();
+            this.cbxAlgo = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.numMult = new System.Windows.Forms.NumericUpDown();
             this.chkTotEnabled = new System.Windows.Forms.CheckBox();
@@ -81,8 +84,6 @@
             this.numCitiesSelector = new System.Windows.Forms.NumericUpDown();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
-            this.cbxAlgo = new System.Windows.Forms.ComboBox();
-            this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -96,6 +97,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tbEpsilon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbTemp)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbAlpha)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trkProgress)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMult)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxTotDistBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minTotDistBar)).BeginInit();
@@ -109,7 +111,6 @@
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.splitContainer1.IsSplitterFixed = true;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -121,6 +122,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.Color.White;
+            this.splitContainer1.Panel2.Controls.Add(this.trkProgress);
             this.splitContainer1.Panel2.Controls.Add(this.label6);
             this.splitContainer1.Panel2.Controls.Add(this.cbxAlgo);
             this.splitContainer1.Panel2.Controls.Add(this.label5);
@@ -149,7 +151,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.numCitiesSelector);
             this.splitContainer1.Panel2.Controls.Add(this.btnStop);
             this.splitContainer1.Panel2.Controls.Add(this.btnStart);
-            this.splitContainer1.Size = new System.Drawing.Size(1093, 643);
+            this.splitContainer1.Size = new System.Drawing.Size(1093, 686);
             this.splitContainer1.SplitterDistance = 519;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -226,7 +228,7 @@
             // worldMap1
             // 
             this.worldMap1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.worldMap1.Image = global::Round_the_world_challenge.Properties.Resources.World_Map;
+            this.worldMap1.Image = global::Round_the_world_challenge.Properties.Resources.World_Map_min;
             this.worldMap1.Location = new System.Drawing.Point(0, 0);
             this.worldMap1.Name = "worldMap1";
             this.worldMap1.Size = new System.Drawing.Size(934, 519);
@@ -347,7 +349,8 @@
             // 
             this.tbEpsilon.LargeChange = 50;
             this.tbEpsilon.Location = new System.Drawing.Point(2, 355);
-            this.tbEpsilon.Maximum = 1000;
+            this.tbEpsilon.Maximum = 10000;
+            this.tbEpsilon.Minimum = 1;
             this.tbEpsilon.Name = "tbEpsilon";
             this.tbEpsilon.Size = new System.Drawing.Size(153, 45);
             this.tbEpsilon.TabIndex = 40;
@@ -363,13 +366,14 @@
             this.tbTemp.Size = new System.Drawing.Size(153, 45);
             this.tbTemp.SmallChange = 10;
             this.tbTemp.TabIndex = 39;
-            this.tbTemp.Value = 400;
+            this.tbTemp.Value = 50;
             this.tbTemp.ValueChanged += new System.EventHandler(this.tbTemp_ValueChanged);
             // 
             // tbAlpha
             // 
             this.tbAlpha.Location = new System.Drawing.Point(3, 237);
-            this.tbAlpha.Maximum = 100;
+            this.tbAlpha.Maximum = 99;
+            this.tbAlpha.Minimum = 1;
             this.tbAlpha.Name = "tbAlpha";
             this.tbAlpha.Size = new System.Drawing.Size(153, 45);
             this.tbAlpha.TabIndex = 38;
@@ -473,6 +477,41 @@
             this.lblDistance.Size = new System.Drawing.Size(18, 20);
             this.lblDistance.TabIndex = 14;
             this.lblDistance.Text = "0";
+            // 
+            // trkProgress
+            // 
+            this.trkProgress.Enabled = false;
+            this.trkProgress.LargeChange = 1;
+            this.trkProgress.Location = new System.Drawing.Point(0, 118);
+            this.trkProgress.Name = "trkProgress";
+            this.trkProgress.Size = new System.Drawing.Size(958, 45);
+            this.trkProgress.TabIndex = 33;
+            this.trkProgress.Value = 10;
+            this.trkProgress.Scroll += new System.EventHandler(this.trackBar1_Scroll);
+            this.trkProgress.ValueChanged += new System.EventHandler(this.trkProgress_ValueChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(974, 1);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(101, 20);
+            this.label6.TabIndex = 35;
+            this.label6.Text = "Optimisation:";
+            // 
+            // cbxAlgo
+            // 
+            this.cbxAlgo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbxAlgo.FormattingEnabled = true;
+            this.cbxAlgo.Items.AddRange(new object[] {
+            "2 - Opt",
+            "3 - Opt",
+            "None - Random"});
+            this.cbxAlgo.Location = new System.Drawing.Point(960, 27);
+            this.cbxAlgo.Name = "cbxAlgo";
+            this.cbxAlgo.Size = new System.Drawing.Size(121, 21);
+            this.cbxAlgo.TabIndex = 34;
             // 
             // label5
             // 
@@ -606,7 +645,7 @@
             this.lblTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTime.AutoSize = true;
             this.lblTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTime.Location = new System.Drawing.Point(1012, 64);
+            this.lblTime.Location = new System.Drawing.Point(1005, 89);
             this.lblTime.Name = "lblTime";
             this.lblTime.Size = new System.Drawing.Size(18, 20);
             this.lblTime.TabIndex = 16;
@@ -617,7 +656,7 @@
             this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(997, 45);
+            this.label8.Location = new System.Drawing.Point(997, 69);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(47, 20);
             this.label8.TabIndex = 15;
@@ -737,7 +776,7 @@
             this.numCitiesSelector.Size = new System.Drawing.Size(60, 29);
             this.numCitiesSelector.TabIndex = 1;
             this.numCitiesSelector.Value = new decimal(new int[] {
-            30,
+            10,
             0,
             0,
             0});
@@ -748,7 +787,7 @@
             this.btnStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStop.Location = new System.Drawing.Point(964, 87);
+            this.btnStop.Location = new System.Drawing.Point(964, 130);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(129, 34);
             this.btnStop.TabIndex = 29;
@@ -761,7 +800,7 @@
             this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStart.Location = new System.Drawing.Point(964, 87);
+            this.btnStart.Location = new System.Drawing.Point(964, 130);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(129, 34);
             this.btnStart.TabIndex = 0;
@@ -769,34 +808,11 @@
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
-            // cbxAlgo
-            // 
-            this.cbxAlgo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbxAlgo.FormattingEnabled = true;
-            this.cbxAlgo.Items.AddRange(new object[] {
-            "2 - Opt",
-            "3 - Opt",
-            "None - Random"});
-            this.cbxAlgo.Location = new System.Drawing.Point(964, 22);
-            this.cbxAlgo.Name = "cbxAlgo";
-            this.cbxAlgo.Size = new System.Drawing.Size(121, 21);
-            this.cbxAlgo.TabIndex = 34;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(974, 1);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(101, 20);
-            this.label6.TabIndex = 35;
-            this.label6.Text = "Optimisation:";
-            // 
             // MapView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1093, 643);
+            this.ClientSize = new System.Drawing.Size(1093, 686);
             this.Controls.Add(this.splitContainer1);
             this.Name = "MapView";
             this.Text = "Round The World Challenge by Dawid Olesko";
@@ -818,6 +834,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tbEpsilon)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbTemp)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbAlpha)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trkProgress)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMult)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxTotDistBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minTotDistBar)).EndInit();
@@ -886,6 +903,7 @@
         private System.Windows.Forms.NumericUpDown numMult;
         private System.Windows.Forms.ComboBox cbxAlgo;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TrackBar trkProgress;
     }
 }
 
