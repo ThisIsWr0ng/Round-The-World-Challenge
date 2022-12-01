@@ -83,6 +83,8 @@ namespace Round_the_world_challenge
             else
                 keepMap = false;
             grap = worldMap1.CreateGraphics();
+            grap.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+            grap.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
             StartRace(numCities, numRestrConn);
             routes = new List<PointF[]>();
         }
@@ -131,7 +133,7 @@ namespace Round_the_world_challenge
             await DisplayRoute(bestRoute);
 
             //while the temperature didnt reach epsilon
-            while ((temperature >= epsilon && noChange < 50) & !stopSignal)
+            while ((temperature >= epsilon /*&& noChange < 10*/) & !stopSignal)
             { 
                 //Perform selected algorithm
                 if (cbxAlgo.SelectedIndex == 0)//perform 2-opt
@@ -152,7 +154,8 @@ namespace Round_the_world_challenge
                             if (delta < 0)//If the route is shorter, then swap cities
                             {
 
-                                bestRoute = ReverseSwap(best, i, k);
+                                best = ReverseSwap(best, i, k);
+                                bestRoute = best;
                                 distance = distance + delta;
                                 noChange = 0;
                                 routes.Add(best);
@@ -163,6 +166,7 @@ namespace Round_the_world_challenge
                                 
                                 if (proba < Math.Exp(-delta / temperature))
                                 {
+                                    best = ReverseSwap(best, i, k);
                                     bestRoute = best;
                                     distance = distance + delta;
                                     noChange = 0;
@@ -173,12 +177,13 @@ namespace Round_the_world_challenge
                                     DisplayRoute(bestRoute);
                            
                            
-                            iteration++;
+                            
                             noChange++;
                             RefreshDisplay(iteration, (int)temperature);
                             
                             
                         }
+                        iteration++;
                         temperature *= alpha;
                     }
                     UpdateTrackBar(routes.Count);
@@ -188,49 +193,47 @@ namespace Round_the_world_challenge
                 {
                     //currentRoute = await Task.Run(() => ThreeOpt()); 
                     PointF[] best = bestRoute;
-                    List<int[]> segments = GenSegments(best.Length);
-                    
-                    foreach (var i in segments)
+                    List<int[]> segments = GenSegments(best.Length);//Generate all possible segments for the route
+
+                    foreach (var i in segments)//go through all the segments
                     {
                         if (stopSignal | temperature < epsilon)
                             break;
-                        delta = await Task.Run(()=>ThreeOptSwap(best, i[0], i[1], i[2]));
-                        //Update Progress Bar
+                        delta += ThreeOptSwap(best, i[0], i[1], i[2]);//Calculate and swap if route is better
                         
-                        
-                        
-
-                        
-                        if (delta == 0)
-                        {
-                            proba = random.NextDouble();
-                            //if the new distance is worse accept it with certain probability
-                            if (proba < Math.Exp(-delta / temperature))
-                            {
-                                //compute the distance of the new permuted configuration
-                                delta = CalcDistance(currentRoute) - distance;
-                                distance = delta + distance;
-                                bestRoute = currentRoute;
-                                noChange = 0;
-                                routes.Add(currentRoute);
-                            }
-                        }
-                        else
-                        {
-                            bestRoute = currentRoute;
-                            distance = delta + distance;
-                            noChange = 0;
-                            routes.Add(currentRoute);
-                        }
-                        if (chkPerform.Checked == false)
-                            if (iteration % 200 == 1)
-                                DisplayRoute(bestRoute);
-                        //cooling proces on each iteration
-                        
-                        iteration++;
-                        noChange++;
-                        RefreshDisplay(iteration, (int)temperature);
                     }
+                    delta = CalcDistance(currentRoute) - distance;
+                    if (delta >= 0)
+                    {
+                        proba = random.NextDouble();
+                        //if the new distance is worse accept it with certain probability
+                        if (proba < Math.Exp(-delta / temperature))
+                        {
+                            //compute the distance of the new permuted configuration
+                            
+                            distance = delta + distance;
+                            bestRoute = currentRoute;
+                            noChange = 0;
+
+                        }
+                    }
+                    else
+                    {
+                        bestRoute = currentRoute;
+                        distance = delta + distance;
+                        noChange = 0;
+
+                    }
+                    if (chkPerform.Checked == false)
+                        if (iteration % 200 == 1)
+                            DisplayRoute(bestRoute);
+                    //cooling proces on each iteration
+
+
+                    noChange++;
+                    RefreshDisplay(iteration, (int)temperature);
+                    routes.Add(bestRoute);
+                    iteration++;
                     UpdateTrackBar(routes.Count);
                     temperature *= alpha;
                 }
@@ -238,20 +241,17 @@ namespace Round_the_world_challenge
                 {
                     currentRoute = ComputeNext();// perforn random route generation
                                                  //Update Progress Bar
-                    routes.Add(currentRoute);
+                    
                     UpdateTrackBar(routes.Count);
                     //compute the distance of the new permuted configuration
-                    //delta = CalcDistance(currentRoute) - distance;
+                    delta = CalcDistance(currentRoute) - distance;
 
                     if (delta < 0) //if the new distance is better accept it and assign it
                     {
-
-
                         bestRoute = currentRoute;
                         distance = delta + distance;
                         noChange = 0;
-                     
-
+                        routes.Add(currentRoute);
                     }
                     else
                     {
@@ -262,9 +262,12 @@ namespace Round_the_world_challenge
                             bestRoute = currentRoute;
                             distance = delta + distance;
                             noChange = 0;
-                         
+                            routes.Add(currentRoute);
                         }
                     }
+                    if (chkPerform.Checked == false)
+                        if (iteration % 200 == 1)
+                            DisplayRoute(bestRoute);
                     //cooling proces on each iteration
                     temperature *= alpha;
                     iteration++;
@@ -276,10 +279,10 @@ namespace Round_the_world_challenge
             }
             DisplayRoute(bestRoute);
             stopWatch.Stop();
-            
             RefreshDisplay(iteration, (int)temperature);
             btnStop.Visible = false;
             trkProgress.Enabled = true;
+
             if (CalcDistance(bestRoute) == 99999999999999)
             {
                 Font font = new Font("Times New Roman", 30, FontStyle.Bold);
@@ -315,7 +318,7 @@ namespace Round_the_world_challenge
             C = route[j - 1];
             D = route[j];
             E = route[k - 1];
-            F = route[k % route.Length];
+            F = route[k% route.Length];
             double d0 = CalcDistance(A, B) + CalcDistance(C, D) + CalcDistance(E, F);
             double d1 = CalcDistance(A, C) + CalcDistance(B, D) + CalcDistance(E, F);
             double d2 = CalcDistance(A, B) + CalcDistance(C, E) + CalcDistance(D, F);
@@ -517,7 +520,7 @@ namespace Round_the_world_challenge
         }
         private async Task<int> DisplayRoute(PointF[] route)//async display for drawing
         {
-            /*if (chkPerform.Checked == false)
+           /* if (chkPerform.Checked == false)
                 await Task.Run(() => UpdateBackground());
             else*/
                 grap.Clear(Color.White);
@@ -677,7 +680,7 @@ namespace Round_the_world_challenge
                     }
                 }
                 double chk = CalcDistance(route[i], route[i + 1]);//Calculate the distance
-                if (chkHopEnabled.Checked == true && chk > maxHopDistanceBar.Value || chk < minHopDistanceBar.Value)
+               if (chkHopEnabled.Checked == true & chk > maxHopDistanceBar.Value || chk < minHopDistanceBar.Value)
                 {
                     return 99999999999999;//return an awfuly big number if any hop is longer or shorter than permitted
                 }
@@ -698,9 +701,16 @@ namespace Round_the_world_challenge
             }
             return temp;
         }
-        private static double CalcDistance(PointF p1, PointF p2) =>
- // Pythagoras
- Math.Sqrt(((p2.X - p1.X) * (p2.X - p1.X)) + ((p2.Y - p1.Y) * (p2.Y - p1.Y)) / 10);
+        private double CalcDistance(PointF p1, PointF p2)
+        {
+
+            // Pythagoras
+            double d =  Math.Sqrt(((p2.X - p1.X) * (p2.X - p1.X)) + ((p2.Y - p1.Y) * (p2.Y - p1.Y)) / 10);
+            if (chkHopEnabled.Checked == true)
+                if (d > maxHopDistanceBar.Value || d < minHopDistanceBar.Value)
+                    return 9999999999999;
+            return d;
+        }
         private double QuickDist(PointF[] route)
         {
             double temp = 0;
