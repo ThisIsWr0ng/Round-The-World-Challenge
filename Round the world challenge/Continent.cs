@@ -5,18 +5,17 @@ namespace Round_the_world_challenge
 {
     public class Continent
     {
-        string Name { get; set; }
-        double minX { get; set; }
-        double minY { get; set; }
-        double maxX { get; set; }
-        double maxY { get; set; }
+        private string Name { get; set; }
+        private double minX { get; set; }
+        private double minY { get; set; }
+        private double maxX { get; set; }
+        private double maxY { get; set; }
         public PointF[] Cities { get; set; }
-
 
         public Continent()
         {
-
         }
+
         public Continent[] CreateContinents(int mapWidth, int mapHeight, int cities)
         {
             Random random = new Random();
@@ -34,7 +33,6 @@ namespace Round_the_world_challenge
                     for (int j = 0; j < citiesLeft; j++)
                     {
                         numCities[random.Next(0, 6)]++;
-
                     }
                     citiesLeft = 0;
                 }
@@ -45,7 +43,7 @@ namespace Round_the_world_challenge
             {
                 Continent cont = new Continent();
                 cont.Name = continentNames[i];
-                if (i == 0)//North America 
+                if (i == 0)//North America
                 {
                     cont.minX = mapWidth * 0.08;
                     cont.maxX = mapWidth * 0.21;
@@ -91,26 +89,19 @@ namespace Round_the_world_challenge
                 cont.Cities = new PointF[numCities[i]];
                 for (int j = 0; j < numCities[i]; j++)
                 {
-
                     PointF city = new PointF(
                         Convert.ToSingle((random.NextDouble() * (cont.maxX - cont.minX) + cont.minX)),
                         Convert.ToSingle((random.NextDouble() * (cont.maxY - cont.minY) + cont.minY)));
                     cont.Cities[j] = city;
-
                 }
                 continents[i] = cont;
-
             }
             return continents;
-
-
-
         }
+
         public PointF[] GetCities()
         {
             return Cities;
         }
-
     }
-
 }
