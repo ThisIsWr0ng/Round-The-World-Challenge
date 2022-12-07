@@ -39,9 +39,9 @@ namespace Round_the_world_challenge
         private List<int[]> details = new List<int[]>();
 
         //Variables for Simmulated Annealing
-        private double alpha = 0.99;
-        private double temperature = 400;
-        private double epsilon = 0.001;
+        private double alpha = 0.98;
+        private double temperature = 10;
+        private double epsilon = 0.477;
 
         public MapView()
         {
@@ -54,7 +54,6 @@ namespace Round_the_world_challenge
         {
             //populate text fields
             multiplier = (int)numMult.Value;
-            SyncDistancesToWindow();
             tbxMinHop.Text = minHopDistanceBar.Value.ToString();
             tbxMaxHop.Text = maxHopDistanceBar.Value.ToString();
             tbxMinTot.Text = minTotDistBar.Value.ToString();
@@ -62,43 +61,56 @@ namespace Round_the_world_challenge
             lblSAAlpha.Text = alpha.ToString();
             lblSATemp.Text = temperature.ToString();
             lblSAEpsilon.Text = epsilon.ToString();
+
+            //Adjust distances to the window size
+            SyncDistancesToWindow();
+
+            //Make stop button visible
             btnStop.Visible = false;
             lblLengths.Visible = false;
+
+            //select 2-OPT as default 
             cbxAlgo.SelectedIndex = 0;
+
+            //update simulated annealing track bar values
+            tbAlpha.Value = (int)(alpha * 100);
+            tbTemp.Value = (int)temperature;
+            tbEpsilon.Value = (int)(epsilon * 1000);
+            
             
         }
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            int numCities = (int)numCitiesSelector.Value;
-            int minHop = minHopDistanceBar.Value;
-            int maxHop = maxHopDistanceBar.Value;
-            int numRestrConn = (int)numRestrSelector.Value;
-            int minTot = minTotDistBar.Value;
-            int maxTot = maxTotDistBar.Value;
+            //Set simulated annealing settings
             temperature = tbTemp.Value;
             alpha = (double)tbAlpha.Value / 100;
             epsilon = (double)tbEpsilon.Value / 1000;
+            //Keep the same map if chosen
             if (chkKeepMap.Checked == true)
             {
                 keepMap = true;
             }
             else
                 keepMap = false;
+            //Prepare drawing
             grap = worldMap1.CreateGraphics();
             grap.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
             grap.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
-            StartRace(numCities, numRestrConn);
-            routes = new List<PointF[]>();
+            
+            StartRace((int)numCitiesSelector.Value, (int)numRestrSelector.Value);
+            
             
         }
 
         private void StartRace(int numCities, int numRestrConn)
         {
+            //Reset previous run data
             Reset();
             
-
+            //Start measuring time
             stopWatch.Start();
+            //Generate new map and restrictions
             if (!keepMap || continents == null)
             {
                 continents = C.CreateContinents(worldMap1.Width, worldMap1.Height, numCities); //Create continents and cities
@@ -110,6 +122,7 @@ namespace Round_the_world_challenge
                 int strt = random.Next(continents.Length);
                 startLoc = continents[strt].Cities[random.Next(continents[strt].Cities.Length)];
             }
+
             StartAnnealing(numCities);
         }
 
@@ -162,20 +175,21 @@ namespace Round_the_world_challenge
                         {
                             distance = delta + distance;
                             bestRoute = currentRoute;
-                            noChange = 0;
+                            //noChange = 0;
                         }
                     }
                     else
                     {
                         bestRoute = currentRoute;
                         distance = delta + distance;
-                        noChange = 0;
+                        //noChange = 0;
                     }
+                    //Display route every 200 iterations
                     if (chkPerform.Checked == false)
                         if (iteration % 200 == 1)
                             DisplayRoute(bestRoute);
 
-                    noChange++;
+                    //noChange++;
                     RefreshDisplay(iteration, (int)temperature);
                     routes.Add(bestRoute);
                     iteration++;
@@ -686,6 +700,7 @@ namespace Round_the_world_challenge
 
         private void Reset()//Clear previous stuff
         {
+            routes = new List<PointF[]>();
             stopWatch.Stop();
             stopWatch.Restart();
             btnStop.Visible = true;
