@@ -86,6 +86,7 @@
             this.numCitiesSelector = new System.Windows.Forms.NumericUpDown();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
+            this.chkAdvanced = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -124,6 +125,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.Color.White;
+            this.splitContainer1.Panel2.Controls.Add(this.chkAdvanced);
             this.splitContainer1.Panel2.Controls.Add(this.label22);
             this.splitContainer1.Panel2.Controls.Add(this.label21);
             this.splitContainer1.Panel2.Controls.Add(this.label10);
@@ -200,7 +202,7 @@
             this.splitContainer2.Panel2.Controls.Add(this.label15);
             this.splitContainer2.Panel2.Controls.Add(this.chkKeepMap);
             this.splitContainer2.Panel2.Controls.Add(this.lblDistance);
-            this.splitContainer2.Panel2MinSize = 100;
+            this.splitContainer2.Panel2MinSize = 0;
             this.splitContainer2.Size = new System.Drawing.Size(1111, 519);
             this.splitContainer2.SplitterDistance = 952;
             this.splitContainer2.TabIndex = 0;
@@ -830,6 +832,18 @@
             this.btnStart.UseVisualStyleBackColor = false;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
+            // chkAdvanced
+            // 
+            this.chkAdvanced.AutoSize = true;
+            this.chkAdvanced.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkAdvanced.Location = new System.Drawing.Point(975, 5);
+            this.chkAdvanced.Name = "chkAdvanced";
+            this.chkAdvanced.Size = new System.Drawing.Size(133, 22);
+            this.chkAdvanced.TabIndex = 40;
+            this.chkAdvanced.Text = "Advanced Mode";
+            this.chkAdvanced.UseVisualStyleBackColor = true;
+            this.chkAdvanced.CheckedChanged += new System.EventHandler(this.chkAdvanced_CheckedChanged);
+            // 
             // MapView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -928,6 +942,7 @@
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.CheckBox chkAdvanced;
     }
 }
 

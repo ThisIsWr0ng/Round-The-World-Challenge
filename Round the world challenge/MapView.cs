@@ -65,6 +65,7 @@ namespace Round_the_world_challenge
             tbAlpha.Value = (int)(alpha * 100);
             tbTemp.Value = (int)temperature;
             tbEpsilon.Value = (int)(epsilon * 1000);
+            splitContainer2.SplitterDistance = splitContainer2.Width; 
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -179,7 +180,7 @@ namespace Round_the_world_challenge
                                     continue;//return false if restrictions were not met
                                 distance = check;//update the distance
                             }
-                            
+                            distance += delta;
                             bestRoute = best;
                             
 
@@ -202,7 +203,7 @@ namespace Round_the_world_challenge
                                         continue;//return false if restrictions were not met
                                     distance = check;//update the distance
                                 }
-
+                                distance += delta;
                                 bestRoute = best;
 
 
@@ -661,6 +662,16 @@ namespace Round_the_world_challenge
             lblDistance.Text = details[trkProgress.Value][0].ToString();
             lblTemp.Text = details[trkProgress.Value][1].ToString();
             lblIter.Text = details[trkProgress.Value][2].ToString();
+        }
+
+        private void chkAdvanced_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkAdvanced.Checked)
+            {
+                splitContainer2.SplitterDistance = splitContainer2.Width - 160;
+            }
+            else
+                splitContainer2.SplitterDistance = splitContainer2.Width;
         }
     }
 }
