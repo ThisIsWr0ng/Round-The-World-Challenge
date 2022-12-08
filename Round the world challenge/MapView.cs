@@ -122,7 +122,7 @@ namespace Round_the_world_challenge
 
 
             //await Task.Run(() => StartAnnealing(max, min));//Run in async
-            StartAnnealing(max, min);  
+            StartAnnealing(max, min);
 
 
             UpdateTrackBar(routes.Count);//populate track bar with all routes
@@ -158,7 +158,7 @@ namespace Round_the_world_challenge
             while ((temperature >= epsilon) & !stopSignal)//Find better route
             {
                 PointF[] best = bestRoute;
-               
+
                 for (int i = 0; i < best.Length - 2; i++)
                 {
                     for (int j = i + 1; j < best.Length - 1; j++)
@@ -194,8 +194,9 @@ namespace Round_the_world_challenge
                                 distance = check;//update the distance
                             }
                         }
-                        if (chkPerform.Checked == false)//Display route every 200 iterations if checkbox is checked
-                            await DisplayRoute(bestRoute);
+                        if (chkPerform.Checked == false)//Display route every 10 iterations if checkbox is checked
+                            if (iteration % 10 == 1)
+                                await DisplayRoute(bestRoute);
 
                     }
                     iteration++;//increase iteration
@@ -390,23 +391,6 @@ namespace Round_the_world_challenge
                 // calculate distance
                 distance = CalcDistance(bestRoute);
 
-                //Check if route is valid and display best distance found
-                /*if (chkTotEnabled.Checked == true && (distance > maxTotDistBar.Value | distance < minTotDistBar.Value))
-                {
-                    int c = (int)CalcDistanceAnyway(bestRoute);
-                    if (CalcDistanceAnyway(bestRoute) < bestD)
-                        bestD = c;
-                    overTotAllowance = true;
-                    tries++;
-                    if (tries > 2000)
-                    {
-                        distance = CalcDistanceAnyway(bestRoute);
-                        DisplayRoute(bestRoute);
-                        MessageBox.Show($"Could not generate route within specified distances! Lowest distance was {Math.Floor(distance)}", "Unable to Complete Action!");
-                        stopSignal = true;
-                        return;
-                    }
-                }*/
             } while (overTotAllowance);
         }
 
