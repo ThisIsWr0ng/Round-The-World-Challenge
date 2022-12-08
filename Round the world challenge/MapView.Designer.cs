@@ -55,9 +55,11 @@
             this.label15 = new System.Windows.Forms.Label();
             this.chkKeepMap = new System.Windows.Forms.CheckBox();
             this.lblDistance = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
             this.trkProgress = new System.Windows.Forms.TrackBar();
-            this.label6 = new System.Windows.Forms.Label();
-            this.cbxAlgo = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.numMult = new System.Windows.Forms.NumericUpDown();
             this.chkTotEnabled = new System.Windows.Forms.CheckBox();
@@ -84,10 +86,6 @@
             this.numCitiesSelector = new System.Windows.Forms.NumericUpDown();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label21 = new System.Windows.Forms.Label();
-            this.label22 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -131,8 +129,6 @@
             this.splitContainer1.Panel2.Controls.Add(this.label10);
             this.splitContainer1.Panel2.Controls.Add(this.label9);
             this.splitContainer1.Panel2.Controls.Add(this.trkProgress);
-            this.splitContainer1.Panel2.Controls.Add(this.label6);
-            this.splitContainer1.Panel2.Controls.Add(this.cbxAlgo);
             this.splitContainer1.Panel2.Controls.Add(this.label5);
             this.splitContainer1.Panel2.Controls.Add(this.numMult);
             this.splitContainer1.Panel2.Controls.Add(this.chkTotEnabled);
@@ -159,7 +155,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.numCitiesSelector);
             this.splitContainer1.Panel2.Controls.Add(this.btnStop);
             this.splitContainer1.Panel2.Controls.Add(this.btnStart);
-            this.splitContainer1.Size = new System.Drawing.Size(1093, 686);
+            this.splitContainer1.Size = new System.Drawing.Size(1111, 686);
             this.splitContainer1.SplitterDistance = 519;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -205,8 +201,8 @@
             this.splitContainer2.Panel2.Controls.Add(this.chkKeepMap);
             this.splitContainer2.Panel2.Controls.Add(this.lblDistance);
             this.splitContainer2.Panel2MinSize = 100;
-            this.splitContainer2.Size = new System.Drawing.Size(1093, 519);
-            this.splitContainer2.SplitterDistance = 934;
+            this.splitContainer2.Size = new System.Drawing.Size(1111, 519);
+            this.splitContainer2.SplitterDistance = 952;
             this.splitContainer2.TabIndex = 0;
             // 
             // lblLengths
@@ -227,7 +223,7 @@
             this.lengthsBox.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.lengthsBox.Location = new System.Drawing.Point(0, 464);
             this.lengthsBox.Name = "lengthsBox";
-            this.lengthsBox.Size = new System.Drawing.Size(934, 55);
+            this.lengthsBox.Size = new System.Drawing.Size(952, 55);
             this.lengthsBox.TabIndex = 31;
             this.lengthsBox.TabStop = false;
             this.lengthsBox.Visible = false;
@@ -239,7 +235,7 @@
             this.worldMap1.Image = global::Round_the_world_challenge.Properties.Resources.World_Map_min;
             this.worldMap1.Location = new System.Drawing.Point(0, 0);
             this.worldMap1.Name = "worldMap1";
-            this.worldMap1.Size = new System.Drawing.Size(934, 519);
+            this.worldMap1.Size = new System.Drawing.Size(952, 519);
             this.worldMap1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.worldMap1.TabIndex = 30;
             this.worldMap1.TabStop = false;
@@ -247,6 +243,8 @@
             // chkPerform
             // 
             this.chkPerform.AutoSize = true;
+            this.chkPerform.Checked = true;
+            this.chkPerform.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkPerform.Location = new System.Drawing.Point(9, 418);
             this.chkPerform.Name = "chkPerform";
             this.chkPerform.Size = new System.Drawing.Size(128, 17);
@@ -367,12 +365,11 @@
             // 
             // tbTemp
             // 
-            this.tbTemp.LargeChange = 50;
+            this.tbTemp.LargeChange = 10;
             this.tbTemp.Location = new System.Drawing.Point(3, 294);
-            this.tbTemp.Maximum = 2000;
+            this.tbTemp.Maximum = 10000;
             this.tbTemp.Name = "tbTemp";
             this.tbTemp.Size = new System.Drawing.Size(153, 45);
-            this.tbTemp.SmallChange = 10;
             this.tbTemp.TabIndex = 39;
             this.tbTemp.Value = 400;
             this.tbTemp.ValueChanged += new System.EventHandler(this.tbTemp_ValueChanged);
@@ -391,10 +388,10 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.Location = new System.Drawing.Point(13, 9);
+            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label17.Location = new System.Drawing.Point(2, 0);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(133, 20);
+            this.label17.Size = new System.Drawing.Size(109, 16);
             this.label17.TabIndex = 37;
             this.label17.Text = "Starting distance:";
             // 
@@ -403,10 +400,10 @@
             this.lblStartDist.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblStartDist.AutoSize = true;
-            this.lblStartDist.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStartDist.Location = new System.Drawing.Point(18, 29);
+            this.lblStartDist.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblStartDist.Location = new System.Drawing.Point(5, 16);
             this.lblStartDist.Name = "lblStartDist";
-            this.lblStartDist.Size = new System.Drawing.Size(18, 20);
+            this.lblStartDist.Size = new System.Drawing.Size(15, 16);
             this.lblStartDist.TabIndex = 36;
             this.lblStartDist.Text = "0";
             // 
@@ -415,10 +412,10 @@
             this.lblIter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblIter.AutoSize = true;
-            this.lblIter.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblIter.Location = new System.Drawing.Point(18, 149);
+            this.lblIter.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblIter.Location = new System.Drawing.Point(5, 136);
             this.lblIter.Name = "lblIter";
-            this.lblIter.Size = new System.Drawing.Size(18, 20);
+            this.lblIter.Size = new System.Drawing.Size(15, 16);
             this.lblIter.TabIndex = 34;
             this.lblIter.Text = "0";
             // 
@@ -427,40 +424,40 @@
             this.lblTemp.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTemp.AutoSize = true;
-            this.lblTemp.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTemp.Location = new System.Drawing.Point(18, 109);
+            this.lblTemp.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTemp.Location = new System.Drawing.Point(5, 96);
             this.lblTemp.Name = "lblTemp";
-            this.lblTemp.Size = new System.Drawing.Size(18, 20);
+            this.lblTemp.Size = new System.Drawing.Size(15, 16);
             this.lblTemp.TabIndex = 33;
             this.lblTemp.Text = "0";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(13, 129);
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(2, 120);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(72, 20);
+            this.label7.Size = new System.Drawing.Size(64, 16);
             this.label7.TabIndex = 31;
-            this.label7.Text = "Iteration:";
+            this.label7.Text = "Iterations:";
             // 
             // lbldgfdf
             // 
             this.lbldgfdf.AutoSize = true;
-            this.lbldgfdf.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbldgfdf.Location = new System.Drawing.Point(13, 89);
+            this.lbldgfdf.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbldgfdf.Location = new System.Drawing.Point(2, 80);
             this.lbldgfdf.Name = "lbldgfdf";
-            this.lbldgfdf.Size = new System.Drawing.Size(104, 20);
+            this.lbldgfdf.Size = new System.Drawing.Size(88, 16);
             this.lbldgfdf.TabIndex = 30;
             this.lbldgfdf.Text = "Temperature:";
             // 
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.Location = new System.Drawing.Point(13, 49);
+            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.Location = new System.Drawing.Point(2, 40);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(130, 20);
+            this.label15.Size = new System.Drawing.Size(106, 16);
             this.label15.TabIndex = 29;
             this.label15.Text = "Current distance:";
             // 
@@ -479,12 +476,48 @@
             this.lblDistance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblDistance.AutoSize = true;
-            this.lblDistance.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDistance.Location = new System.Drawing.Point(18, 69);
+            this.lblDistance.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDistance.Location = new System.Drawing.Point(5, 56);
             this.lblDistance.Name = "lblDistance";
-            this.lblDistance.Size = new System.Drawing.Size(18, 20);
+            this.lblDistance.Size = new System.Drawing.Size(15, 16);
             this.lblDistance.TabIndex = 14;
             this.lblDistance.Text = "0";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(903, 74);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(23, 13);
+            this.label22.TabIndex = 39;
+            this.label22.Text = "KM";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(903, 37);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(23, 13);
+            this.label21.TabIndex = 38;
+            this.label21.Text = "KM";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(525, 69);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(23, 13);
+            this.label10.TabIndex = 37;
+            this.label10.Text = "KM";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(525, 31);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(23, 13);
+            this.label9.TabIndex = 36;
+            this.label9.Text = "KM";
             // 
             // trkProgress
             // 
@@ -494,35 +527,11 @@
             this.trkProgress.LargeChange = 1;
             this.trkProgress.Location = new System.Drawing.Point(0, 118);
             this.trkProgress.Name = "trkProgress";
-            this.trkProgress.Size = new System.Drawing.Size(958, 45);
+            this.trkProgress.Size = new System.Drawing.Size(976, 45);
             this.trkProgress.TabIndex = 33;
             this.trkProgress.Value = 10;
             this.trkProgress.Scroll += new System.EventHandler(this.trackBar1_Scroll);
             this.trkProgress.ValueChanged += new System.EventHandler(this.trkProgress_ValueChanged);
-            // 
-            // label6
-            // 
-            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(967, 4);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(108, 18);
-            this.label6.TabIndex = 35;
-            this.label6.Text = "Optimisation:";
-            // 
-            // cbxAlgo
-            // 
-            this.cbxAlgo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbxAlgo.FormattingEnabled = true;
-            this.cbxAlgo.Items.AddRange(new object[] {
-            "2 - Opt",
-            "3 - Opt",
-            "None - Random"});
-            this.cbxAlgo.Location = new System.Drawing.Point(960, 27);
-            this.cbxAlgo.Name = "cbxAlgo";
-            this.cbxAlgo.Size = new System.Drawing.Size(121, 21);
-            this.cbxAlgo.TabIndex = 34;
             // 
             // label5
             // 
@@ -658,7 +667,7 @@
             this.lblTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTime.AutoSize = true;
             this.lblTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTime.Location = new System.Drawing.Point(1005, 89);
+            this.lblTime.Location = new System.Drawing.Point(1023, 89);
             this.lblTime.Name = "lblTime";
             this.lblTime.Size = new System.Drawing.Size(18, 20);
             this.lblTime.TabIndex = 16;
@@ -669,7 +678,7 @@
             this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(997, 69);
+            this.label8.Location = new System.Drawing.Point(1015, 69);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(47, 20);
             this.label8.TabIndex = 15;
@@ -799,7 +808,7 @@
             this.btnStop.BackColor = System.Drawing.Color.Salmon;
             this.btnStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStop.Location = new System.Drawing.Point(961, 117);
+            this.btnStop.Location = new System.Drawing.Point(979, 117);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(129, 34);
             this.btnStop.TabIndex = 29;
@@ -813,7 +822,7 @@
             this.btnStart.BackColor = System.Drawing.Color.LightGreen;
             this.btnStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStart.Location = new System.Drawing.Point(961, 117);
+            this.btnStart.Location = new System.Drawing.Point(979, 117);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(129, 34);
             this.btnStart.TabIndex = 0;
@@ -821,47 +830,11 @@
             this.btnStart.UseVisualStyleBackColor = false;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(525, 31);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(23, 13);
-            this.label9.TabIndex = 36;
-            this.label9.Text = "KM";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(525, 69);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(23, 13);
-            this.label10.TabIndex = 37;
-            this.label10.Text = "KM";
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(903, 37);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(23, 13);
-            this.label21.TabIndex = 38;
-            this.label21.Text = "KM";
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(903, 74);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(23, 13);
-            this.label22.TabIndex = 39;
-            this.label22.Text = "KM";
-            // 
             // MapView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1093, 686);
+            this.ClientSize = new System.Drawing.Size(1111, 686);
             this.Controls.Add(this.splitContainer1);
             this.Name = "MapView";
             this.Text = "Round The World Challenge by Dawid Olesko";
@@ -950,8 +923,6 @@
         private System.Windows.Forms.CheckBox chkHopEnabled;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.NumericUpDown numMult;
-        private System.Windows.Forms.ComboBox cbxAlgo;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TrackBar trkProgress;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label label21;
