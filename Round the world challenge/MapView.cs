@@ -153,6 +153,9 @@ namespace Round_the_world_challenge
 
         private async void StartAnnealing(int maxHop, int minHop)
         {
+            bool restrictions = false;
+            if (numRestrSelector.Value > 0 | chkHopEnabled.Checked | chkTotEnabled.Checked)
+                restrictions = true;
 
             //while the temperature didnt reach epsilon
             while ((temperature >= epsilon) & !stopSignal)//Find better route
@@ -169,13 +172,18 @@ namespace Round_the_world_challenge
                         if (delta < 0)//If the route is shorter, then swap cities
                         {
                             best = ReverseSwap(best, i, j);
-                            double check = CalcDistance(best);//calculate distance and check for restrictions
-                            if (check < 0)
-                                continue;//return false if restrictions were not met
+                            if (restrictions)
+                            {
+                                double check = CalcDistance(best);//calculate distance and check for restrictions
+                                if (check < 0)
+                                    continue;//return false if restrictions were not met
+                                distance = check;//update the distance
+                            }
+                            
                             bestRoute = best;
-                            distance = check;//update the distance
+                            
 
-                            //Store details
+                            //Log details
                             routes.Add(bestRoute);
                             double[] d = new double[] { (int)distance, temperature, iteration };
                             details.Add(d);
@@ -187,11 +195,21 @@ namespace Round_the_world_challenge
                             if (proba < prob2)//swap cities if temperature is still high enough
                             {
                                 best = ReverseSwap(best, i, j);
-                                double check = CalcDistance(best);//calculate distance and check for restrictions
-                                if (check < 0)
-                                    continue;//return false if restrictions were not met
+                                if (restrictions)
+                                {
+                                    double check = CalcDistance(best);//calculate distance and check for restrictions
+                                    if (check < 0)
+                                        continue;//return false if restrictions were not met
+                                    distance = check;//update the distance
+                                }
+
                                 bestRoute = best;
-                                distance = check;//update the distance
+
+
+                                //Log details
+                                routes.Add(bestRoute);
+                                double[] d = new double[] { (int)distance, temperature, iteration };
+                                details.Add(d);
                             }
                         }
                         if (chkPerform.Checked == false)//Display route every 10 iterations if checkbox is checked
