@@ -1,20 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace Round_the_world_challenge
 {
-    public class City
+     class City
     {
-        public PointF Location { get; set; }
-        public int Cost { get; set; }
+        private PointF location = new PointF() { X = 0, Y = 0 };
+        private int cost = 0;
+
+        public PointF Location
+        {
+            get { return location; }
+            set { location = new PointF(value.X, value.Y); }
+        }
+        public int Cost
+        {
+            get { return cost; }
+            set { cost = value; }
+        }
         public City()
         {
 
         }
-       
+        public City(bool t)
+        {
+            location = PointF.Empty;
+            cost = 0;
+        }
+        public City(PointF loc, int c)
+        {
+            this.location = loc;
+            this.cost = c;
+        }
+        public City CreateEmpty()
+        {
+            Location = PointF.Empty;
+            Cost = 0;
+            return this;
+        }
     }
 }

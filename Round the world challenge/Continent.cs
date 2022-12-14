@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace Round_the_world_challenge
 {
-    public class Continent
+     class Continent
     {
         private double minX { get; set; }
         private double minY { get; set; }
@@ -87,15 +87,21 @@ namespace Round_the_world_challenge
                 }
                 //Add Cities
                 cont.Cities = new City[numCities[i]];
+                for (int j = 0; j < numCities[i]; j++)
+                {
+                    cont.Cities[j] = new City();
+                }
 
                 for (int j = 0; j < numCities[i]; j++)
                 {
                     PointF city = new PointF(
                         Convert.ToSingle((random.NextDouble() * (cont.maxX - cont.minX) + cont.minX)),
-                        Convert.ToSingle((random.NextDouble() * (cont.maxY - cont.minY) + cont.minY)));
+                        Convert.ToSingle((random.NextDouble() * (cont.maxY - cont.minY) + cont.minY))
+                        );
                
-                    cont.Cities[j].Location = city;
+                    
                     cont.Cities[j].Cost = random.Next(10, 500);
+                    cont.Cities[j].Location = city;
                 }
                 continents[i] = cont;
             }

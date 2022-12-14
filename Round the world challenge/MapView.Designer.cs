@@ -55,6 +55,8 @@
             this.label15 = new System.Windows.Forms.Label();
             this.chkKeepMap = new System.Windows.Forms.CheckBox();
             this.lblDistance = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.numRouteLength = new System.Windows.Forms.NumericUpDown();
             this.chkAdvanced = new System.Windows.Forms.CheckBox();
             this.label22 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
@@ -87,8 +89,7 @@
             this.numCitiesSelector = new System.Windows.Forms.NumericUpDown();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
-            this.numRouteLength = new System.Windows.Forms.NumericUpDown();
+            this.chkDispCost = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -102,6 +103,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tbEpsilon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbTemp)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbAlpha)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numRouteLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trkProgress)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMult)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxTotDistBar)).BeginInit();
@@ -110,7 +112,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.maxHopDistanceBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minHopDistanceBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCitiesSelector)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numRouteLength)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -185,6 +186,7 @@
             // 
             // splitContainer2.Panel2
             // 
+            this.splitContainer2.Panel2.Controls.Add(this.chkDispCost);
             this.splitContainer2.Panel2.Controls.Add(this.chkPerform);
             this.splitContainer2.Panel2.Controls.Add(this.chkCities);
             this.splitContainer2.Panel2.Controls.Add(this.chkNumbers);
@@ -220,7 +222,7 @@
             this.lblLengths.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblLengths.Location = new System.Drawing.Point(395, 465);
             this.lblLengths.Name = "lblLengths";
-            this.lblLengths.Size = new System.Drawing.Size(11, 16);
+            this.lblLengths.Size = new System.Drawing.Size(10, 16);
             this.lblLengths.TabIndex = 32;
             this.lblLengths.Text = "l";
             this.lblLengths.Visible = false;
@@ -252,7 +254,7 @@
             this.chkPerform.AutoSize = true;
             this.chkPerform.Checked = true;
             this.chkPerform.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkPerform.Location = new System.Drawing.Point(9, 418);
+            this.chkPerform.Location = new System.Drawing.Point(9, 395);
             this.chkPerform.Name = "chkPerform";
             this.chkPerform.Size = new System.Drawing.Size(128, 17);
             this.chkPerform.TabIndex = 50;
@@ -264,7 +266,7 @@
             this.chkCities.AutoSize = true;
             this.chkCities.Checked = true;
             this.chkCities.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkCities.Location = new System.Drawing.Point(9, 441);
+            this.chkCities.Location = new System.Drawing.Point(9, 418);
             this.chkCities.Name = "chkCities";
             this.chkCities.Size = new System.Drawing.Size(87, 17);
             this.chkCities.TabIndex = 49;
@@ -398,7 +400,7 @@
             this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label17.Location = new System.Drawing.Point(2, 0);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(110, 16);
+            this.label17.Size = new System.Drawing.Size(109, 16);
             this.label17.TabIndex = 37;
             this.label17.Text = "Starting distance:";
             // 
@@ -410,7 +412,7 @@
             this.lblStartDist.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblStartDist.Location = new System.Drawing.Point(5, 16);
             this.lblStartDist.Name = "lblStartDist";
-            this.lblStartDist.Size = new System.Drawing.Size(16, 16);
+            this.lblStartDist.Size = new System.Drawing.Size(15, 16);
             this.lblStartDist.TabIndex = 36;
             this.lblStartDist.Text = "0";
             // 
@@ -422,7 +424,7 @@
             this.lblIter.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblIter.Location = new System.Drawing.Point(5, 136);
             this.lblIter.Name = "lblIter";
-            this.lblIter.Size = new System.Drawing.Size(16, 16);
+            this.lblIter.Size = new System.Drawing.Size(15, 16);
             this.lblIter.TabIndex = 34;
             this.lblIter.Text = "0";
             // 
@@ -434,7 +436,7 @@
             this.lblTemp.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTemp.Location = new System.Drawing.Point(5, 96);
             this.lblTemp.Name = "lblTemp";
-            this.lblTemp.Size = new System.Drawing.Size(16, 16);
+            this.lblTemp.Size = new System.Drawing.Size(15, 16);
             this.lblTemp.TabIndex = 33;
             this.lblTemp.Text = "0";
             // 
@@ -444,7 +446,7 @@
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.Location = new System.Drawing.Point(2, 120);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(65, 16);
+            this.label7.Size = new System.Drawing.Size(64, 16);
             this.label7.TabIndex = 31;
             this.label7.Text = "Iterations:";
             // 
@@ -454,7 +456,7 @@
             this.lbldgfdf.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbldgfdf.Location = new System.Drawing.Point(2, 80);
             this.lbldgfdf.Name = "lbldgfdf";
-            this.lbldgfdf.Size = new System.Drawing.Size(89, 16);
+            this.lbldgfdf.Size = new System.Drawing.Size(88, 16);
             this.lbldgfdf.TabIndex = 30;
             this.lbldgfdf.Text = "Temperature:";
             // 
@@ -464,7 +466,7 @@
             this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label15.Location = new System.Drawing.Point(2, 40);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(107, 16);
+            this.label15.Size = new System.Drawing.Size(106, 16);
             this.label15.TabIndex = 29;
             this.label15.Text = "Current distance:";
             // 
@@ -486,9 +488,43 @@
             this.lblDistance.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDistance.Location = new System.Drawing.Point(5, 56);
             this.lblDistance.Name = "lblDistance";
-            this.lblDistance.Size = new System.Drawing.Size(16, 16);
+            this.lblDistance.Size = new System.Drawing.Size(15, 16);
             this.lblDistance.TabIndex = 14;
             this.lblDistance.Text = "0";
+            // 
+            // label6
+            // 
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(3, 37);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(74, 38);
+            this.label6.TabIndex = 42;
+            this.label6.Text = "Route Length";
+            // 
+            // numRouteLength
+            // 
+            this.numRouteLength.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.numRouteLength.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numRouteLength.Location = new System.Drawing.Point(121, 42);
+            this.numRouteLength.Margin = new System.Windows.Forms.Padding(6);
+            this.numRouteLength.Maximum = new decimal(new int[] {
+            400,
+            0,
+            0,
+            0});
+            this.numRouteLength.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numRouteLength.Name = "numRouteLength";
+            this.numRouteLength.Size = new System.Drawing.Size(60, 29);
+            this.numRouteLength.TabIndex = 41;
+            this.numRouteLength.Value = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
             // 
             // chkAdvanced
             // 
@@ -850,39 +886,17 @@
             this.btnStart.UseVisualStyleBackColor = false;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
-            // label6
+            // chkDispCost
             // 
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(3, 37);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(74, 38);
-            this.label6.TabIndex = 42;
-            this.label6.Text = "Route Length";
-            // 
-            // numRouteLength
-            // 
-            this.numRouteLength.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.numRouteLength.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numRouteLength.Location = new System.Drawing.Point(121, 42);
-            this.numRouteLength.Margin = new System.Windows.Forms.Padding(6);
-            this.numRouteLength.Maximum = new decimal(new int[] {
-            400,
-            0,
-            0,
-            0});
-            this.numRouteLength.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numRouteLength.Name = "numRouteLength";
-            this.numRouteLength.Size = new System.Drawing.Size(60, 29);
-            this.numRouteLength.TabIndex = 41;
-            this.numRouteLength.Value = new decimal(new int[] {
-            30,
-            0,
-            0,
-            0});
+            this.chkDispCost.AutoSize = true;
+            this.chkDispCost.Checked = true;
+            this.chkDispCost.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkDispCost.Location = new System.Drawing.Point(9, 441);
+            this.chkDispCost.Name = "chkDispCost";
+            this.chkDispCost.Size = new System.Drawing.Size(83, 17);
+            this.chkDispCost.TabIndex = 51;
+            this.chkDispCost.Text = "Display cost";
+            this.chkDispCost.UseVisualStyleBackColor = true;
             // 
             // MapView
             // 
@@ -910,6 +924,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tbEpsilon)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbTemp)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbAlpha)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numRouteLength)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trkProgress)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMult)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxTotDistBar)).EndInit();
@@ -918,7 +933,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.maxHopDistanceBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minHopDistanceBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCitiesSelector)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numRouteLength)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -986,6 +1000,7 @@
         private System.Windows.Forms.CheckBox chkAdvanced;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.NumericUpDown numRouteLength;
+        private System.Windows.Forms.CheckBox chkDispCost;
     }
 }
 
