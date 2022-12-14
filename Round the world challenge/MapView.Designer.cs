@@ -55,6 +55,7 @@
             this.label15 = new System.Windows.Forms.Label();
             this.chkKeepMap = new System.Windows.Forms.CheckBox();
             this.lblDistance = new System.Windows.Forms.Label();
+            this.chkAdvanced = new System.Windows.Forms.CheckBox();
             this.label22 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
@@ -86,7 +87,8 @@
             this.numCitiesSelector = new System.Windows.Forms.NumericUpDown();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
-            this.chkAdvanced = new System.Windows.Forms.CheckBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.numRouteLength = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -108,6 +110,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.maxHopDistanceBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minHopDistanceBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCitiesSelector)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numRouteLength)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -125,6 +128,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.Color.White;
+            this.splitContainer1.Panel2.Controls.Add(this.label6);
+            this.splitContainer1.Panel2.Controls.Add(this.numRouteLength);
             this.splitContainer1.Panel2.Controls.Add(this.chkAdvanced);
             this.splitContainer1.Panel2.Controls.Add(this.label22);
             this.splitContainer1.Panel2.Controls.Add(this.label21);
@@ -215,7 +220,7 @@
             this.lblLengths.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblLengths.Location = new System.Drawing.Point(395, 465);
             this.lblLengths.Name = "lblLengths";
-            this.lblLengths.Size = new System.Drawing.Size(10, 16);
+            this.lblLengths.Size = new System.Drawing.Size(11, 16);
             this.lblLengths.TabIndex = 32;
             this.lblLengths.Text = "l";
             this.lblLengths.Visible = false;
@@ -379,12 +384,12 @@
             // tbAlpha
             // 
             this.tbAlpha.Location = new System.Drawing.Point(3, 237);
-            this.tbAlpha.Maximum = 99;
-            this.tbAlpha.Minimum = 70;
+            this.tbAlpha.Maximum = 999;
+            this.tbAlpha.Minimum = 500;
             this.tbAlpha.Name = "tbAlpha";
             this.tbAlpha.Size = new System.Drawing.Size(153, 45);
             this.tbAlpha.TabIndex = 38;
-            this.tbAlpha.Value = 99;
+            this.tbAlpha.Value = 990;
             this.tbAlpha.ValueChanged += new System.EventHandler(this.tbAlpha_ValueChanged);
             // 
             // label17
@@ -393,7 +398,7 @@
             this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label17.Location = new System.Drawing.Point(2, 0);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(109, 16);
+            this.label17.Size = new System.Drawing.Size(110, 16);
             this.label17.TabIndex = 37;
             this.label17.Text = "Starting distance:";
             // 
@@ -405,7 +410,7 @@
             this.lblStartDist.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblStartDist.Location = new System.Drawing.Point(5, 16);
             this.lblStartDist.Name = "lblStartDist";
-            this.lblStartDist.Size = new System.Drawing.Size(15, 16);
+            this.lblStartDist.Size = new System.Drawing.Size(16, 16);
             this.lblStartDist.TabIndex = 36;
             this.lblStartDist.Text = "0";
             // 
@@ -417,7 +422,7 @@
             this.lblIter.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblIter.Location = new System.Drawing.Point(5, 136);
             this.lblIter.Name = "lblIter";
-            this.lblIter.Size = new System.Drawing.Size(15, 16);
+            this.lblIter.Size = new System.Drawing.Size(16, 16);
             this.lblIter.TabIndex = 34;
             this.lblIter.Text = "0";
             // 
@@ -429,7 +434,7 @@
             this.lblTemp.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTemp.Location = new System.Drawing.Point(5, 96);
             this.lblTemp.Name = "lblTemp";
-            this.lblTemp.Size = new System.Drawing.Size(15, 16);
+            this.lblTemp.Size = new System.Drawing.Size(16, 16);
             this.lblTemp.TabIndex = 33;
             this.lblTemp.Text = "0";
             // 
@@ -439,7 +444,7 @@
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.Location = new System.Drawing.Point(2, 120);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(64, 16);
+            this.label7.Size = new System.Drawing.Size(65, 16);
             this.label7.TabIndex = 31;
             this.label7.Text = "Iterations:";
             // 
@@ -449,7 +454,7 @@
             this.lbldgfdf.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbldgfdf.Location = new System.Drawing.Point(2, 80);
             this.lbldgfdf.Name = "lbldgfdf";
-            this.lbldgfdf.Size = new System.Drawing.Size(88, 16);
+            this.lbldgfdf.Size = new System.Drawing.Size(89, 16);
             this.lbldgfdf.TabIndex = 30;
             this.lbldgfdf.Text = "Temperature:";
             // 
@@ -459,7 +464,7 @@
             this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label15.Location = new System.Drawing.Point(2, 40);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(106, 16);
+            this.label15.Size = new System.Drawing.Size(107, 16);
             this.label15.TabIndex = 29;
             this.label15.Text = "Current distance:";
             // 
@@ -481,9 +486,22 @@
             this.lblDistance.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDistance.Location = new System.Drawing.Point(5, 56);
             this.lblDistance.Name = "lblDistance";
-            this.lblDistance.Size = new System.Drawing.Size(15, 16);
+            this.lblDistance.Size = new System.Drawing.Size(16, 16);
             this.lblDistance.TabIndex = 14;
             this.lblDistance.Text = "0";
+            // 
+            // chkAdvanced
+            // 
+            this.chkAdvanced.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkAdvanced.AutoSize = true;
+            this.chkAdvanced.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkAdvanced.Location = new System.Drawing.Point(962, 5);
+            this.chkAdvanced.Name = "chkAdvanced";
+            this.chkAdvanced.Size = new System.Drawing.Size(146, 22);
+            this.chkAdvanced.TabIndex = 40;
+            this.chkAdvanced.Text = "Advanced Mode";
+            this.chkAdvanced.UseVisualStyleBackColor = true;
+            this.chkAdvanced.CheckedChanged += new System.EventHandler(this.chkAdvanced_CheckedChanged);
             // 
             // label22
             // 
@@ -725,7 +743,7 @@
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(12, 65);
+            this.label2.Location = new System.Drawing.Point(3, 75);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(109, 43);
             this.label2.TabIndex = 6;
@@ -735,7 +753,7 @@
             // 
             this.numRestrSelector.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.numRestrSelector.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numRestrSelector.Location = new System.Drawing.Point(130, 69);
+            this.numRestrSelector.Location = new System.Drawing.Point(121, 79);
             this.numRestrSelector.Margin = new System.Windows.Forms.Padding(6);
             this.numRestrSelector.Maximum = new decimal(new int[] {
             20,
@@ -772,7 +790,7 @@
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(12, 17);
+            this.label1.Location = new System.Drawing.Point(3, 1);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(74, 48);
             this.label1.TabIndex = 2;
@@ -782,7 +800,7 @@
             // 
             this.numCitiesSelector.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.numCitiesSelector.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numCitiesSelector.Location = new System.Drawing.Point(130, 22);
+            this.numCitiesSelector.Location = new System.Drawing.Point(121, 6);
             this.numCitiesSelector.Margin = new System.Windows.Forms.Padding(6);
             this.numCitiesSelector.Maximum = new decimal(new int[] {
             400,
@@ -798,7 +816,7 @@
             this.numCitiesSelector.Size = new System.Drawing.Size(60, 29);
             this.numCitiesSelector.TabIndex = 1;
             this.numCitiesSelector.Value = new decimal(new int[] {
-            30,
+            100,
             0,
             0,
             0});
@@ -832,17 +850,39 @@
             this.btnStart.UseVisualStyleBackColor = false;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
-            // chkAdvanced
+            // label6
             // 
-            this.chkAdvanced.AutoSize = true;
-            this.chkAdvanced.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkAdvanced.Location = new System.Drawing.Point(975, 5);
-            this.chkAdvanced.Name = "chkAdvanced";
-            this.chkAdvanced.Size = new System.Drawing.Size(133, 22);
-            this.chkAdvanced.TabIndex = 40;
-            this.chkAdvanced.Text = "Advanced Mode";
-            this.chkAdvanced.UseVisualStyleBackColor = true;
-            this.chkAdvanced.CheckedChanged += new System.EventHandler(this.chkAdvanced_CheckedChanged);
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(3, 37);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(74, 38);
+            this.label6.TabIndex = 42;
+            this.label6.Text = "Route Length";
+            // 
+            // numRouteLength
+            // 
+            this.numRouteLength.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.numRouteLength.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numRouteLength.Location = new System.Drawing.Point(121, 42);
+            this.numRouteLength.Margin = new System.Windows.Forms.Padding(6);
+            this.numRouteLength.Maximum = new decimal(new int[] {
+            400,
+            0,
+            0,
+            0});
+            this.numRouteLength.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numRouteLength.Name = "numRouteLength";
+            this.numRouteLength.Size = new System.Drawing.Size(60, 29);
+            this.numRouteLength.TabIndex = 41;
+            this.numRouteLength.Value = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
             // 
             // MapView
             // 
@@ -878,6 +918,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.maxHopDistanceBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minHopDistanceBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCitiesSelector)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numRouteLength)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -943,6 +984,8 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.CheckBox chkAdvanced;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.NumericUpDown numRouteLength;
     }
 }
 

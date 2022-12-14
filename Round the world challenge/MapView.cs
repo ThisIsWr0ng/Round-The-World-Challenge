@@ -4,11 +4,15 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO.Packaging;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml;
 
 namespace Round_the_world_challenge
 {
     public partial class MapView : Form
     {
+       // SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Create(@"C:\Temp\testing.xlsx", SpreadsheetDocumentType.Workbook);
         private readonly Random random;
         private readonly Stopwatch stopWatch;
         private bool stopSignal = false;
@@ -24,16 +28,16 @@ namespace Round_the_world_challenge
 
         //Variables for routes
         private PointF startLoc = PointF.Empty;
-        private PointF[] bestRoute;
+        private City[] bestRoute;
         private double distance;
         private Graphics grap = null;
-        private List<PointF[]> routes = new List<PointF[]>();
+        private List<City[]> routes = new List<City[]>();
         private List<double[]> details = new List<double[]>();
 
         //Variables for Simmulated Annealing
-        private double alpha = 0.98;
-        private double temperature = 10;
-        private double epsilon = 0.477;
+        private double alpha = 0.990;
+        private double temperature = 3810;
+        private double epsilon = 0.450;
 
         public MapView()
         {
@@ -62,7 +66,7 @@ namespace Round_the_world_challenge
             lblLengths.Visible = false;
 
             //update simulated annealing track bar values
-            tbAlpha.Value = (int)(alpha * 100);
+            tbAlpha.Value = (int)(alpha * 1000);
             tbTemp.Value = (int)temperature;
             tbEpsilon.Value = (int)(epsilon * 1000);
             splitContainer2.SplitterDistance = splitContainer2.Width; 
@@ -72,7 +76,7 @@ namespace Round_the_world_challenge
         {
             //Set simulated annealing settings
             temperature = tbTemp.Value;
-            alpha = (double)tbAlpha.Value / 100;
+            alpha = (double)tbAlpha.Value / 1000;
             epsilon = (double)tbEpsilon.Value / 1000;
             //Keep the same map if chosen
             if (chkKeepMap.Checked == true)
@@ -106,14 +110,14 @@ namespace Round_the_world_challenge
             {
                 //select starting point
                 int strt = random.Next(continents.Length);
-                startLoc = continents[strt].Cities[random.Next(continents[strt].Cities.Length)];
+                startLoc = continents[strt].Cities[random.Next(continents[strt].Cities.Length)].Location;
             }
 
             int startTemp = (int)temperature;
             int max = maxTotDistBar.Value;
             int min = minTotDistBar.Value;
 
-            PointF[] cities = ExtractCities(continents, numCities);//Get the list of cities from continents
+            City[] cities = ExtractCities(continents, numCities);//Get the list of cities from continents
             GenerateRoute(cities);//Generate first route
             routes.Add(bestRoute);//Add it to the list of routes
             lblStartDist.Text = ((int)distance).ToString() + " KM"; //display initial distance
@@ -157,11 +161,12 @@ namespace Round_the_world_challenge
             bool restrictions = false;
             if (numRestrSelector.Value > 0 | chkHopEnabled.Checked | chkTotEnabled.Checked)
                 restrictions = true;
-
+            
             //while the temperature didnt reach epsilon
             while ((temperature >= epsilon) & !stopSignal)//Find better route
             {
-                PointF[] best = bestRoute;
+               
+                City[] best = bestRoute;
 
                 for (int i = 0; i < best.Length - 2; i++)
                 {
@@ -216,22 +221,22 @@ namespace Round_the_world_challenge
                         if (chkPerform.Checked == false)//Display route every 10 iterations if checkbox is checked
                             if (iteration % 10 == 1)
                                 await DisplayRoute(bestRoute);
-
+                        
                     }
-                    iteration++;//increase iteration
-                    temperature *= alpha;//Cooling down process
-                    UpdateDetails(iteration, temperature); //refresh labels
+                    
+                    
                 }
-
-
+                UpdateDetails(iteration, temperature); //refresh labels
+                iteration++;//increase iteration
+                temperature *= alpha;//Cooling down process
             }
         }
 
         private double TwoOptCheck(PointF[] route, int i, int j)
         {
             int n = route.Length;
-            return -CalcDistance(route[i], route[(i + 1) % n]) - CalcDistance(route[j], route[(j + 1) % n])
-                           + CalcDistance(route[i], route[j]) + CalcDistance(route[(i + 1) % n], route[(j + 1) % n]);
+            return CalcDistance(route[i], route[j]) + CalcDistance(route[(i + 1) % n], route[(j + 1) % n]) 
+                   - CalcDistance(route[i], route[(i + 1) % n]) - CalcDistance(route[j], route[(j + 1) % n]);
         }
 
         private PointF[] ReverseSwap(PointF[] route, int start, int end)
@@ -291,7 +296,7 @@ namespace Round_the_world_challenge
             maxTotDistBar.Value = (int)Math.Floor((MapWidth * multiplier) * 0.9);
         }
 
-        private async Task<int> DisplayRoute(PointF[] route)//async display for drawing
+        private async Task<int> DisplayRoute(City[] route)//async display for drawing
         {
             grap.Clear(Color.White);//clear panel
 
@@ -321,7 +326,7 @@ namespace Round_the_world_challenge
                 //List<City> list = new List<City>();
                 for (int j = 0; j < continents[i].Cities.Length; j++)
                 {
-                    g.DrawEllipse(pen, Convert.ToSingle(continents[i].Cities[j].X) - 5, Convert.ToSingle(continents[i].Cities[j].Y) - 5, 10, 10);
+                    g.DrawEllipse(pen, Convert.ToSingle(continents[i].Cities[j].Location.X) - 5, Convert.ToSingle(continents[i].Cities[j].Location.Y) - 5, 10, 10);
                 }
             }
 
@@ -333,13 +338,13 @@ namespace Round_the_world_challenge
             return 1;
         }
 
-        private async Task<int> DisplayCityNumbers(PointF[] route)
+        private async Task<int> DisplayCityNumbers(City[] route)
         {
             Font font = new Font("Times New Roman", 18, FontStyle.Bold);
             Graphics g = worldMap1.CreateGraphics();
             for (int i = 0; i < route.Length - 1; i++)
             {
-                g.DrawString(i.ToString(), font, Brushes.Black, route[i]);
+                g.DrawString(i.ToString(), font, Brushes.Black, route[i].Location);
             }
 
             return 1;
@@ -360,16 +365,26 @@ namespace Round_the_world_challenge
             return 1;
         }
 
-        private async Task<int> DisplayLines(PointF[] route)
+        private async Task<int> DisplayLines(City[] route)
         {
             //display current route
             Pen pen4 = new Pen(Color.Blue, 3);
             Graphics g = worldMap1.CreateGraphics();
-            g.DrawLines(pen4, route);
+            g.DrawLines(pen4, ExtractPointFArray(route));
             return 1;
         }
+        private PointF[] ExtractPointFArray(City[] route)
+        {
+            PointF[] temp = new PointF[route.Length];
+            for (int i = 0; i < route.Length; i++)
+            {
+                temp[i] = route[i].Location;
+            }
 
-        private void GenerateRoute(PointF[] cities)
+            return temp;
+        }
+
+        private void GenerateRoute(City[] cities)
         {
             bool overTotAllowance = false;
             int tries = 0;
@@ -381,7 +396,7 @@ namespace Round_the_world_challenge
 
                 bestRoute = new PointF[cities.Length + 1];
                 bestRoute[0] = startLoc; //Assign start location to the first field
-                PointF[] temp = cities;
+                City[] temp = cities;
                 int[] check = new int[cities.Length];
                 check[Array.IndexOf<PointF>(temp, startLoc)] = 1;//Mark start location as added to the route
                                                                  //
@@ -458,10 +473,10 @@ namespace Round_the_world_challenge
             return d;
         }
 
-        private PointF[] ExtractCities(Continent[] continents, int num)
+        private City[] ExtractCities(Continent[] continents, int num)
         {
             int index = 0;
-            PointF[] temp = new PointF[num];
+            City[] temp = new City[num];
             for (int i = 0; i < continents.GetLength(0); i++)
             {
                 for (int j = 0; j < continents[i].Cities.Length; j++)
@@ -478,13 +493,13 @@ namespace Round_the_world_challenge
             for (int i = 0; i < numRestrConn; i++)
             {
                 int rndCont = random.Next(continents.Length);
-                restrictions[i, 0] = continents[rndCont].Cities[random.Next(continents[rndCont].Cities.Length)];
+                restrictions[i, 0] = continents[rndCont].Cities[random.Next(continents[rndCont].Cities.Length)].Location;
                 rndCont = random.Next(continents.Length);
-                restrictions[i, 1] = continents[rndCont].Cities[random.Next(continents[rndCont].Cities.Length)];
+                restrictions[i, 1] = continents[rndCont].Cities[random.Next(continents[rndCont].Cities.Length)].Location;
                 if (restrictions[i, 0] == restrictions[i, 1])
                 {
                     rndCont = random.Next(continents.Length);
-                    restrictions[i, 1] = continents[rndCont].Cities[random.Next(continents[rndCont].Cities.Length)];
+                    restrictions[i, 1] = continents[rndCont].Cities[random.Next(continents[rndCont].Cities.Length)].Location;
                 }
             }
         }
@@ -568,10 +583,10 @@ namespace Round_the_world_challenge
 
         private void tbAlpha_ValueChanged(object sender, EventArgs e)
         {
-            double a = (double)tbAlpha.Value / 100;
-            lblSAAlpha.Text = String.Format("{0:F2}", a);
+            double a = (double)tbAlpha.Value / 1000;
+            lblSAAlpha.Text = String.Format("{0:F3}", a);
 
-            alpha = (double)tbAlpha.Value / 100;
+            alpha = (double)tbAlpha.Value / 1000;
         }
 
         private void tbTemp_ValueChanged(object sender, EventArgs e)
