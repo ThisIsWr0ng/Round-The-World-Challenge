@@ -100,8 +100,9 @@ namespace Round_the_world_challenge
                         );
                
                     
-                    cont.Cities[j].Cost = random.Next(10, 500);
+                    cont.Cities[j].Bid = random.Next(2000, 10000);
                     cont.Cities[j].Location = city;
+                    cont.Cities[j].Continent = i;
                 }
                 continents[i] = cont;
             }

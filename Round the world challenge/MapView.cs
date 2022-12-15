@@ -9,16 +9,18 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml;
 using System.Linq;
 
+
 namespace Round_the_world_challenge
 {
     public partial class MapView : Form
     {
-       // SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Create(@"C:\Temp\testing.xlsx", SpreadsheetDocumentType.Workbook);
+        // SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Create(@"C:\Temp\testing.xlsx", SpreadsheetDocumentType.Workbook);
         private readonly Random random;
         private readonly Stopwatch stopWatch;
         private bool stopSignal = false;
         private int iteration = 0;
         private const int MapWidth = 40075;
+        private double CostPerKm = 0.8;
 
         //initialize variables for continents and restrictions
         private Continent C = new Continent();
@@ -31,6 +33,8 @@ namespace Round_the_world_challenge
         private City startLoc = new City(false);
         private City[] bestRoute;
         private double distance;
+        private double profit;
+        private List<double> profitList;
         private Graphics grap = null;
         private List<City[]> routes = new List<City[]>();
         private List<double[]> details = new List<double[]>();
@@ -70,7 +74,7 @@ namespace Round_the_world_challenge
             tbAlpha.Value = (int)(alpha * 1000);
             tbTemp.Value = (int)temperature;
             tbEpsilon.Value = (int)(epsilon * 1000);
-            splitContainer2.SplitterDistance = splitContainer2.Width; 
+            splitContainer2.SplitterDistance = splitContainer2.Width;
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -91,10 +95,10 @@ namespace Round_the_world_challenge
             grap.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
             grap.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
 
-            StartRace((int)numCitiesSelector.Value, (int)numRouteLength.Value, (int)numRestrSelector.Value);
+            StartRace((int)numCitiesSelector.Value, (int)numRestrSelector.Value);
         }
 
-        private async void StartRace(int numCities,int numConnections, int numRestrConn)
+        private async void StartRace(int numCities, int numRestrConn)
         {
             //Reset previous run data
             Reset();
@@ -107,19 +111,19 @@ namespace Round_the_world_challenge
                 continents = C.CreateContinents(worldMap1.Width, worldMap1.Height, numCities); //Create continents and cities
                 GenerateRestrictions(numRestrConn);
             }
-         
+
 
             int startTemp = (int)temperature;
             int max = maxTotDistBar.Value;
             int min = minTotDistBar.Value;
 
-            City[] cities = ExtractCities(continents,numCities, numConnections);//Get the list of cities from continents
+            City[] cities = ExtractCities(continents, numCities);//Get the list of cities from continents
             if (!keepMap || startLoc.Location == PointF.Empty)//Select random starting point
                 startLoc = cities[random.Next(cities.Length - 1)];
             GenerateRoute(cities);//Generate first route
             routes.Add(bestRoute);//Add it to the list of routes
             lblStartDist.Text = ((int)distance).ToString() + " KM"; //display initial distance
-          
+
 
             //Draw it on a map
             await DisplayRoute(bestRoute);
@@ -160,12 +164,19 @@ namespace Round_the_world_challenge
             bool restrictions = false;
             if (numRestrSelector.Value > 0 | chkHopEnabled.Checked | chkTotEnabled.Checked)
                 restrictions = true;
-            
+
             //while the temperature didnt reach epsilon
             while ((temperature >= epsilon) & !stopSignal)//Find better route
             {
-               
+
                 City[] best = bestRoute;
+                ProfitCheck(best);
+                if (iteration > 1)
+                {
+
+                    if (best.Length > numRouteLength.Value )
+                        best = RemoveLeastProfitable(best);//remove least profitable city
+                }
 
                 for (int i = 0; i < best.Length - 2; i++)
                 {
@@ -186,7 +197,7 @@ namespace Round_the_world_challenge
                             }
                             distance += delta;
                             bestRoute = best;
-                            
+
 
                             //Log details
                             routes.Add(bestRoute);
@@ -220,15 +231,46 @@ namespace Round_the_world_challenge
                         if (chkPerform.Checked == false)//Display route every 10 iterations if checkbox is checked
                             if (iteration % 10 == 1)
                                 await DisplayRoute(bestRoute);
-                        
+
                     }
-                    
-                    
+
+
                 }
                 UpdateDetails(iteration, temperature); //refresh labels
                 iteration++;//increase iteration
                 temperature *= alpha;//Cooling down process
+
             }
+        }
+
+        private City[] RemoveLeastProfitable(City[] route)
+        {
+            double lowestPr = profitList.Min();
+            int index = profitList.IndexOf(profitList.Find(x => x.Equals(lowestPr)));
+            if (index == route.Length | index == 0)
+                return route;
+            City[] newRoute = new City[route.Length - 1];
+            int j = 0;
+            for (int i = 0; i < newRoute.Length; i++)
+            {
+                if (i == index)
+                    j++;
+                newRoute[i] = route[j];
+                j++;
+            }
+            return newRoute;
+        }
+
+        private void ProfitCheck(City[] route)
+        {
+            profit = 0;
+            profitList = new List<double>();
+            for (int i = 0; i < route.Length -1; i++)
+            {
+                profitList.Add(route[i + 1].Bid - CalcDistance(route[i].Location, route[i + 1].Location)/CostPerKm  );
+                profit += profitList[i];
+            }
+          
         }
 
         private double TwoOptCheck(City[] route, int i, int j)
@@ -237,7 +279,7 @@ namespace Round_the_world_challenge
             return CalcDistance(route[i].Location, route[j].Location) + CalcDistance(route[(i + 1) % n].Location, route[(j + 1) % n].Location) 
                    - CalcDistance(route[i].Location, route[(i + 1) % n].Location) - CalcDistance(route[j].Location, route[(j + 1) % n].Location);
         }
-
+       
         private City[] ReverseSwap(City[] route, int start, int end)
         {
             City[] best = route;
@@ -252,7 +294,7 @@ namespace Round_the_world_challenge
                 newRoute[j] = best[end - c];
                 c++;
             }
-            for (int j = end + 1; j < bestRoute.Length; j++)//add the rest of cities
+            for (int j = end + 1; j < route.Length; j++)//add the rest of cities
             {
                 newRoute[j] = best[j];
             }
@@ -320,7 +362,7 @@ namespace Round_the_world_challenge
             Graphics g = worldMap1.CreateGraphics();
             for (int i = 0; i < route.Length - 1; i++)
             {
-                g.DrawString(route[i].Cost.ToString(), font, Brushes.Black, route[i].Location);
+                g.DrawString(route[i].Bid.ToString(), font, Brushes.Black, route[i].Location);
             }
 
             return 1;
@@ -484,12 +526,13 @@ namespace Round_the_world_challenge
 
             return d;
         }
+     
 
-        private City[] ExtractCities(Continent[] continents, int numCities, int numConn)
+        private City[] ExtractCities(Continent[] continents, int numCities)
         {
             
             List<City> a = new List<City>();
-            City[] b = new City[numConn];
+            City[] b = new City[numCities];
 
             for (int i = 0; i < continents.GetLength(0); i++)
             {
@@ -498,10 +541,10 @@ namespace Round_the_world_challenge
                     a.Add(continents[i].Cities[j]);
                 }
             }//extract all cities from their continents to array
-            for (int i = 0; i < numConn; i++)
+            for (int i = 0; i < numCities; i++)
             {
-                int c = a.Min(X => X.Cost);
-                int index = a.IndexOf(a.Find(x => x.Cost == c));
+                int c = a.Min(X => X.Bid);
+                int index = a.IndexOf(a.Find(x => x.Bid == c));
                 b[i] = a[index];
                 a.RemoveAt(index);
 
@@ -537,6 +580,7 @@ namespace Round_the_world_challenge
             iteration = 0;
             trkProgress.Enabled = false;
             details = new List<double[]>();
+            profit = 0;
         }
 
         private void minHopDistanceBar_ValueChanged(object sender, EventArgs e)

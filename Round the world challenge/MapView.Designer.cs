@@ -33,6 +33,7 @@
             this.lblLengths = new System.Windows.Forms.Label();
             this.lengthsBox = new System.Windows.Forms.PictureBox();
             this.worldMap1 = new System.Windows.Forms.PictureBox();
+            this.chkDispCost = new System.Windows.Forms.CheckBox();
             this.chkPerform = new System.Windows.Forms.CheckBox();
             this.chkCities = new System.Windows.Forms.CheckBox();
             this.chkNumbers = new System.Windows.Forms.CheckBox();
@@ -89,7 +90,7 @@
             this.numCitiesSelector = new System.Windows.Forms.NumericUpDown();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
-            this.chkDispCost = new System.Windows.Forms.CheckBox();
+            this.numRouteLengthMax = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -112,6 +113,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.maxHopDistanceBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minHopDistanceBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCitiesSelector)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numRouteLengthMax)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -129,6 +131,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.Color.White;
+            this.splitContainer1.Panel2.Controls.Add(this.numRouteLengthMax);
             this.splitContainer1.Panel2.Controls.Add(this.label6);
             this.splitContainer1.Panel2.Controls.Add(this.numRouteLength);
             this.splitContainer1.Panel2.Controls.Add(this.chkAdvanced);
@@ -248,6 +251,16 @@
             this.worldMap1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.worldMap1.TabIndex = 30;
             this.worldMap1.TabStop = false;
+            // 
+            // chkDispCost
+            // 
+            this.chkDispCost.AutoSize = true;
+            this.chkDispCost.Location = new System.Drawing.Point(9, 441);
+            this.chkDispCost.Name = "chkDispCost";
+            this.chkDispCost.Size = new System.Drawing.Size(83, 17);
+            this.chkDispCost.TabIndex = 51;
+            this.chkDispCost.Text = "Display cost";
+            this.chkDispCost.UseVisualStyleBackColor = true;
             // 
             // chkPerform
             // 
@@ -505,7 +518,7 @@
             // 
             this.numRouteLength.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.numRouteLength.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numRouteLength.Location = new System.Drawing.Point(121, 42);
+            this.numRouteLength.Location = new System.Drawing.Point(86, 41);
             this.numRouteLength.Margin = new System.Windows.Forms.Padding(6);
             this.numRouteLength.Maximum = new decimal(new int[] {
             400,
@@ -807,7 +820,7 @@
             this.maxHopDistanceBar.Name = "maxHopDistanceBar";
             this.maxHopDistanceBar.Size = new System.Drawing.Size(169, 45);
             this.maxHopDistanceBar.TabIndex = 4;
-            this.maxHopDistanceBar.Value = 10000;
+            this.maxHopDistanceBar.Value = 5000;
             this.maxHopDistanceBar.ValueChanged += new System.EventHandler(this.maxHopDistanceBar_ValueChanged);
             this.maxHopDistanceBar.MouseHover += new System.EventHandler(this.maxHopDistanceBar_MouseHover);
             // 
@@ -818,7 +831,7 @@
             this.minHopDistanceBar.Name = "minHopDistanceBar";
             this.minHopDistanceBar.Size = new System.Drawing.Size(169, 45);
             this.minHopDistanceBar.TabIndex = 3;
-            this.minHopDistanceBar.Value = 50;
+            this.minHopDistanceBar.Value = 300;
             this.minHopDistanceBar.ValueChanged += new System.EventHandler(this.minHopDistanceBar_ValueChanged);
             this.minHopDistanceBar.MouseLeave += new System.EventHandler(this.minHopDistanceBar_MouseLeave);
             this.minHopDistanceBar.MouseHover += new System.EventHandler(this.minHopDistanceBar_MouseHover);
@@ -886,17 +899,30 @@
             this.btnStart.UseVisualStyleBackColor = false;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
-            // chkDispCost
+            // numRouteLengthMax
             // 
-            this.chkDispCost.AutoSize = true;
-            this.chkDispCost.Checked = true;
-            this.chkDispCost.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkDispCost.Location = new System.Drawing.Point(9, 441);
-            this.chkDispCost.Name = "chkDispCost";
-            this.chkDispCost.Size = new System.Drawing.Size(83, 17);
-            this.chkDispCost.TabIndex = 51;
-            this.chkDispCost.Text = "Display cost";
-            this.chkDispCost.UseVisualStyleBackColor = true;
+            this.numRouteLengthMax.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.numRouteLengthMax.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numRouteLengthMax.Location = new System.Drawing.Point(156, 41);
+            this.numRouteLengthMax.Margin = new System.Windows.Forms.Padding(6);
+            this.numRouteLengthMax.Maximum = new decimal(new int[] {
+            400,
+            0,
+            0,
+            0});
+            this.numRouteLengthMax.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numRouteLengthMax.Name = "numRouteLengthMax";
+            this.numRouteLengthMax.Size = new System.Drawing.Size(60, 29);
+            this.numRouteLengthMax.TabIndex = 43;
+            this.numRouteLengthMax.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
             // 
             // MapView
             // 
@@ -933,6 +959,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.maxHopDistanceBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minHopDistanceBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCitiesSelector)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numRouteLengthMax)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1001,6 +1028,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.NumericUpDown numRouteLength;
         private System.Windows.Forms.CheckBox chkDispCost;
+        private System.Windows.Forms.NumericUpDown numRouteLengthMax;
     }
 }
 
