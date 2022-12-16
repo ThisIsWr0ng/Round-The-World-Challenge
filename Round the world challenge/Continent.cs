@@ -17,7 +17,7 @@ namespace Round_the_world_challenge
         {
         }
 
-        public Continent[] CreateContinents(int mapWidth, int mapHeight, int cities)
+        public Continent[] CreateContinents(int mapWidth, int mapHeight, int cities, int minBid, int maxBid)
         {
             Random random = new Random();
             int numContinents = 6;
@@ -100,7 +100,7 @@ namespace Round_the_world_challenge
                         );
                
                     
-                    cont.Cities[j].Bid = random.Next(2000, 10000);
+                    cont.Cities[j].Bid = random.Next(minBid, maxBid);
                     cont.Cities[j].Location = city;
                     cont.Cities[j].Continent = i;
                 }
