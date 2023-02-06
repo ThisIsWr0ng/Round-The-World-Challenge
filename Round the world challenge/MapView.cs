@@ -38,7 +38,7 @@ namespace Round_the_world_challenge
         private List<double[]> details = new List<double[]>();
 
         //Variables for Simmulated Annealing
-        private double alpha = 0.900;
+        private double alpha = 0.940;
         private double temperature = 3810;
         private double epsilon = 5.450;
 
@@ -171,22 +171,24 @@ namespace Round_the_world_challenge
             {
 
                 City[] best = bestRoute;
-                if (iteration > 5)
+                double profitDelta = profit - ProfitCheck(best);//check if profit is higher once every 
+                if (iteration > 40)
                 {
 
                     if (best.Length > numRouteLengthMax.Value)//if route is longer than maximum route length
-                        best = RemoveLeastProfitable(best, 999999);//remove least profitable city
+                        best = RemoveLeastProfitable(best, int.MaxValue);//remove least profitable city
                     else if(best.Length > numRouteLength.Value)//if route is longer than minimum route length
                         best = RemoveLeastProfitable(best, 0);//remove only cities with profit lower than 0
                 }
-
+                
                 for (int i = 0; i < best.Length - 2; i++)
                 {
+                    
                     for (int j = i + 1; j < best.Length - 1; j++)
                     {
                         //Calculate delta of lengths between i and j to find crossed connections
                         double distDelta = TwoOptCheck(best, i, j);//check if distance is shorter   
-                        double profitDelta = profit - ProfitCheck(best);//check if profit is higher
+                        
 
                         if (distDelta < 0 & profitDelta < 0)//If the route is shorter, and profit higher, then swap cities
                         {
@@ -200,7 +202,7 @@ namespace Round_the_world_challenge
                             }
                             distance += distDelta;
                             bestRoute = best;
-                            profit += -profitDelta;
+                            //profit += -profitDelta;
 
 
                         }
@@ -220,14 +222,21 @@ namespace Round_the_world_challenge
                                 }
                                 distance += distDelta;
                                 bestRoute = best;
-                                profit += -profitDelta;
+                                //profit += -profitDelta;
+                                
 
                             }
                         }
 
 
                     }
-
+                    if (chkPerform.Checked == false)//display live progress
+                        if (i % 3 == 1)
+                        {
+                            await DisplayRoute(bestRoute);
+                            UpdateDetails(iteration, temperature, profit, bestRoute.Length); //refresh labels
+                        }
+                           
 
                 }
                 //Log details
@@ -236,9 +245,7 @@ namespace Round_the_world_challenge
                 details.Add(d);
                 iteration++;//increase iteration
                 temperature *= alpha;//Cooling down process
-                if (chkPerform.Checked == false)//Display route every 10 iterations if checkbox is checked
-                    if (iteration % 10 == 1)
-                        await DisplayRoute(bestRoute);
+               
 
             }
             UpdateDetails(iteration, temperature, profit, bestRoute.Length); //refresh labels
@@ -259,7 +266,7 @@ namespace Round_the_world_challenge
                     return rt;
                 index = profitList.IndexOf(profitList.Find(x => x.Equals(lowestPr)));
                 if (index == route.Length | index == 0)//dont remove starting point
-                    profitList[index] = 9999999;
+                    profitList[index] = int.MaxValue;
                 else
                 {
                     for (int i = 0; i < newRoute.Length; i++)
@@ -272,7 +279,7 @@ namespace Round_the_world_challenge
                     if (CountContinentCities(newRoute) >= minContinentCities)
                         return newRoute;
                     else
-                        profitList[index] = 9999999;//make connection profitable if it cannot be removed due to restrictions
+                        profitList[index] = int.MaxValue;//make connection profitable if it cannot be removed due to restrictions
                 }
             }
             return rt;//
@@ -294,17 +301,23 @@ namespace Round_the_world_challenge
             profitList = new List<double>();
             for (int i = 0; i < route.Length -1; i++)
             {
-                profitList.Add(route[i + 1].Bid - CalcDistance(route[i].Location, route[i + 1].Location)*CostPerKm  );
+                profitList.Add(route[i + 1].Bid / CalcDistance(route[i].Location, route[i + 1].Location)*CostPerKm  );
                 prof += profitList[i];
             }
             return prof;
         }
 
+
         private double TwoOptCheck(City[] route, int i, int j)
         {
             int n = route.Length;
-            return CalcDistance(route[i].Location, route[j].Location) + CalcDistance(route[(i + 1) % n].Location, route[(j + 1) % n].Location) 
-                   - CalcDistance(route[i].Location, route[(i + 1) % n].Location) - CalcDistance(route[j].Location, route[(j + 1) % n].Location);
+            PointF iloc = route[i].Location;
+            PointF jloc = route[j].Location;
+            PointF ilocNext = route[(i + 1) ].Location;
+            PointF jlocNext = route[(j + 1) ].Location;
+
+            return CalcDistance(iloc, jloc) + CalcDistance(ilocNext, jlocNext) 
+                   - CalcDistance(iloc, ilocNext) - CalcDistance(jloc, jlocNext);
         }
        
         private City[] ReverseSwap(City[] route, int start, int end)
@@ -525,7 +538,7 @@ namespace Round_the_world_challenge
                 }
                 else if(chk == -2)
                 {
-                    return -1;
+                    return -1;//return -1 for restricted connection
                 }
                 else
                     temp += chk;

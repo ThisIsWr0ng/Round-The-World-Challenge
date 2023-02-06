@@ -30,13 +30,13 @@
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.lblRouteLength = new System.Windows.Forms.Label();
             this.lblProfit = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
             this.lblLengths = new System.Windows.Forms.Label();
             this.lengthsBox = new System.Windows.Forms.PictureBox();
             this.worldMap1 = new System.Windows.Forms.PictureBox();
-            this.lblRouteLength = new System.Windows.Forms.Label();
-            this.label27 = new System.Windows.Forms.Label();
             this.chkDispCost = new System.Windows.Forms.CheckBox();
             this.chkPerform = new System.Windows.Forms.CheckBox();
             this.chkCities = new System.Windows.Forms.CheckBox();
@@ -193,7 +193,9 @@
             // splitContainer2.Panel1
             // 
             this.splitContainer2.Panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.splitContainer2.Panel1.Controls.Add(this.lblRouteLength);
             this.splitContainer2.Panel1.Controls.Add(this.lblProfit);
+            this.splitContainer2.Panel1.Controls.Add(this.label27);
             this.splitContainer2.Panel1.Controls.Add(this.label25);
             this.splitContainer2.Panel1.Controls.Add(this.lblLengths);
             this.splitContainer2.Panel1.Controls.Add(this.lengthsBox);
@@ -202,8 +204,6 @@
             // 
             // splitContainer2.Panel2
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.lblRouteLength);
-            this.splitContainer2.Panel2.Controls.Add(this.label27);
             this.splitContainer2.Panel2.Controls.Add(this.chkDispCost);
             this.splitContainer2.Panel2.Controls.Add(this.chkPerform);
             this.splitContainer2.Panel2.Controls.Add(this.chkCities);
@@ -232,24 +232,44 @@
             this.splitContainer2.SplitterDistance = 1134;
             this.splitContainer2.TabIndex = 0;
             // 
+            // lblRouteLength
+            // 
+            this.lblRouteLength.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRouteLength.Location = new System.Drawing.Point(130, 40);
+            this.lblRouteLength.Name = "lblRouteLength";
+            this.lblRouteLength.Size = new System.Drawing.Size(60, 32);
+            this.lblRouteLength.TabIndex = 53;
+            this.lblRouteLength.Text = "0";
+            this.lblRouteLength.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // lblProfit
             // 
-            this.lblProfit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblProfit.Location = new System.Drawing.Point(96, 9);
+            this.lblProfit.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProfit.Location = new System.Drawing.Point(128, 9);
             this.lblProfit.Name = "lblProfit";
-            this.lblProfit.Size = new System.Drawing.Size(137, 32);
+            this.lblProfit.Size = new System.Drawing.Size(62, 32);
             this.lblProfit.TabIndex = 48;
             this.lblProfit.Text = "0";
             this.lblProfit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // label27
+            // 
+            this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label27.Location = new System.Drawing.Point(12, 40);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(109, 32);
+            this.label27.TabIndex = 52;
+            this.label27.Text = "Route length:";
+            this.label27.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // label25
             // 
-            this.label25.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label25.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label25.Location = new System.Drawing.Point(12, 9);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(78, 32);
+            this.label25.Size = new System.Drawing.Size(90, 32);
             this.label25.TabIndex = 47;
-            this.label25.Text = "Profit: £";
+            this.label25.Text = "Profit/KM:";
             this.label25.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblLengths
@@ -286,28 +306,6 @@
             this.worldMap1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.worldMap1.TabIndex = 30;
             this.worldMap1.TabStop = false;
-            // 
-            // lblRouteLength
-            // 
-            this.lblRouteLength.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblRouteLength.AutoSize = true;
-            this.lblRouteLength.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRouteLength.Location = new System.Drawing.Point(8, 178);
-            this.lblRouteLength.Name = "lblRouteLength";
-            this.lblRouteLength.Size = new System.Drawing.Size(15, 16);
-            this.lblRouteLength.TabIndex = 53;
-            this.lblRouteLength.Text = "0";
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label27.Location = new System.Drawing.Point(5, 162);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(85, 16);
-            this.label27.TabIndex = 52;
-            this.label27.Text = "Route length:";
             // 
             // chkDispCost
             // 
