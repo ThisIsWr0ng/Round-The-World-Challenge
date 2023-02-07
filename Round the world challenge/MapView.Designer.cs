@@ -98,6 +98,9 @@
             this.numCitiesSelector = new System.Windows.Forms.NumericUpDown();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
+            this.tbCostperKm = new System.Windows.Forms.TrackBar();
+            this.label26 = new System.Windows.Forms.Label();
+            this.lblCostPerKm = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -122,6 +125,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.maxHopDistanceBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minHopDistanceBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCitiesSelector)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbCostperKm)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -204,6 +208,9 @@
             // 
             // splitContainer2.Panel2
             // 
+            this.splitContainer2.Panel2.Controls.Add(this.lblCostPerKm);
+            this.splitContainer2.Panel2.Controls.Add(this.label26);
+            this.splitContainer2.Panel2.Controls.Add(this.tbCostperKm);
             this.splitContainer2.Panel2.Controls.Add(this.chkDispCost);
             this.splitContainer2.Panel2.Controls.Add(this.chkPerform);
             this.splitContainer2.Panel2.Controls.Add(this.chkCities);
@@ -722,7 +729,6 @@
             this.trkProgress.Size = new System.Drawing.Size(1158, 45);
             this.trkProgress.TabIndex = 33;
             this.trkProgress.Value = 10;
-            this.trkProgress.Scroll += new System.EventHandler(this.trackBar1_Scroll);
             this.trkProgress.ValueChanged += new System.EventHandler(this.trkProgress_ValueChanged);
             // 
             // label5
@@ -967,7 +973,6 @@
             this.label1.Size = new System.Drawing.Size(74, 48);
             this.label1.TabIndex = 2;
             this.label1.Text = "Number of Cities";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // numCitiesSelector
             // 
@@ -1023,6 +1028,39 @@
             this.btnStart.UseVisualStyleBackColor = false;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
+            // tbCostperKm
+            // 
+            this.tbCostperKm.Location = new System.Drawing.Point(5, 194);
+            this.tbCostperKm.Maximum = 999;
+            this.tbCostperKm.Minimum = 1;
+            this.tbCostperKm.Name = "tbCostperKm";
+            this.tbCostperKm.Size = new System.Drawing.Size(153, 45);
+            this.tbCostperKm.TabIndex = 52;
+            this.tbCostperKm.Value = 300;
+            this.tbCostperKm.ValueChanged += new System.EventHandler(this.tbCostperKm_ValueChanged);
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label26.Location = new System.Drawing.Point(5, 171);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(73, 20);
+            this.label26.TabIndex = 53;
+            this.label26.Text = "Cost/KM:";
+            // 
+            // lblCostPerKm
+            // 
+            this.lblCostPerKm.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblCostPerKm.AutoSize = true;
+            this.lblCostPerKm.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCostPerKm.Location = new System.Drawing.Point(98, 171);
+            this.lblCostPerKm.Name = "lblCostPerKm";
+            this.lblCostPerKm.Size = new System.Drawing.Size(18, 20);
+            this.lblCostPerKm.TabIndex = 54;
+            this.lblCostPerKm.Text = "0";
+            // 
             // MapView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1031,7 +1069,6 @@
             this.Controls.Add(this.splitContainer1);
             this.Name = "MapView";
             this.Text = "Blue Cow Route Finder";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MapView_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Resize += new System.EventHandler(this.MapView_Resize);
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -1061,6 +1098,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.maxHopDistanceBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minHopDistanceBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCitiesSelector)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbCostperKm)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1137,6 +1175,9 @@
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.Label lblRouteLength;
         private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Label lblCostPerKm;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.TrackBar tbCostperKm;
     }
 }
 

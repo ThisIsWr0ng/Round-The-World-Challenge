@@ -59,7 +59,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Annealing.cs" />
     <Compile Include="City.cs" />
     <Compile Include="Continent.cs" />
     <Compile Include="MapView.cs">
