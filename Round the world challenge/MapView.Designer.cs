@@ -260,7 +260,6 @@
             this.lblProfit.TabIndex = 48;
             this.lblProfit.Text = "0";
             this.lblProfit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblProfit.Click += new System.EventHandler(this.lblProfit_Click);
             // 
             // label27
             // 
