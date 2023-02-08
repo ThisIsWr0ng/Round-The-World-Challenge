@@ -5,6 +5,11 @@ using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Linq;
+using Excel = Microsoft.Office.Interop.Excel;
+using System.Data;
+using System.Data.OleDb;
+using System.IO;
+using OfficeOpenXml;
 
 
 
@@ -42,6 +47,9 @@ namespace Round_the_world_challenge
         private double alpha = 0.940;
         private double temperature = 3810;
         private double epsilon = 5.450;
+
+      
+
 
         public MapView()
         {
@@ -135,11 +143,11 @@ namespace Round_the_world_challenge
 
             //await Task.Run(() => StartAnnealing(max, min));//Run in async
             StartAnnealing(max, min);
-
+            stopWatch.Stop();
 
             UpdateTrackBar(routes.Count);//populate track bar with all routes
             DisplayRoute(bestRoute);
-            stopWatch.Stop();
+            
             lblTime.Text = stopWatch.ElapsedMilliseconds.ToString() + " ms";
             //UpdateDetails(iteration, temperature, 0, 0);//update final route details on gui
             btnStop.Visible = false;
@@ -161,6 +169,8 @@ namespace Round_the_world_challenge
                 Font font = new Font("Times New Roman", 30, FontStyle.Bold);
                 grap.DrawString("Route Invalid / Total distance not met", font, Brushes.Red, (int)Math.Floor(worldMap1.Width * 0.2), 13);
             }
+            //log details for testing
+            ExportData(new double[] { numCities, alpha, tbTemp.Value, epsilon, distance, profit, iteration, stopWatch.ElapsedMilliseconds });
         }
 
         private async void StartAnnealing(int maxHop, int minHop)
@@ -173,17 +183,16 @@ namespace Round_the_world_challenge
             //while the temperature didnt reach epsilon
             while ((temperature >= epsilon) & !stopSignal)//Find better route
             {
-
+                profit = ProfitCheck(bestRoute);
                 City[] best = bestRoute;
                 double profitDelta = profit - ProfitCheck(best);//check if profit is higher once every 
                 if (iteration > 40)
                 {
-
                     if (best.Length > numRouteLengthMax.Value)//if route is longer than maximum route length
-                        best = RemoveLowreturnRatio(best, int.MaxValue);//remove city with lowest bid to distance ratio
+                        best = RemoveLowReturnRatio(best, int.MaxValue);//remove city with lowest bid to distance ratio
                     else if (best.Length > numRouteLength.Value);//if route is longer than minimum route length
                         best = RemoveLeastProfitable(best, 0);//remove only cities with profit lower than 0
-                }
+                }//Remove least profitable connections when the route starts to stabilise around 40th iteration
 
                 for (int i = 0; i < best.Length - 2; i++)
                 {
@@ -253,8 +262,10 @@ namespace Round_the_world_challenge
 
             }
             UpdateDetails(iteration, temperature, profit, bestRoute.Length); //refresh labels
+           
         }
-        private City[] RemoveLowreturnRatio(City[] rt, int minProfit)
+
+        private City[] RemoveLowReturnRatio(City[] rt, int minProfit)
         {
             City[] route = rt;
             int index;
@@ -338,8 +349,8 @@ namespace Round_the_world_challenge
             profitRatioList = new List<double>();
             for (int i = 0; i < route.Length - 1; i++)
             {
-                profitList.Add(route[i + 1].Bid - CalcDistance(route[i].Location, route[i + 1].Location) * CostPerKm);//profitability of the connection by the distance, cost per km, and bid of city its heading to 
-                profitRatioList.Add(route[i + 1].Bid / CalcDistance(route[i].Location, route[i + 1].Location) * CostPerKm);
+                profitList.Add(route[i + 1].Bid - CalcDistance(route[i].Location, route[i + 1].Location) * CostPerKm);//bid minus the cost of travel
+                profitRatioList.Add(route[i + 1].Bid / CalcDistance(route[i].Location, route[i + 1].Location) * CostPerKm);//bid by the cost of travel
                 prof += profitList[i];
             }
             return prof;
@@ -671,6 +682,38 @@ namespace Round_the_world_challenge
             minContinentCities = (int)numMinContinents.Value;
         }
 
+        public static void ExportData(double[] details)
+        {
+            string appPath = Path.GetDirectoryName(Application.ExecutablePath);
+            string filePath = Path.Combine(appPath, "test.xlsx");
+
+            var newFile = new FileInfo(filePath);
+            using (var package = new OfficeOpenXml.ExcelPackage(newFile))
+            {
+                var worksheet = package.Workbook.Worksheets["Sheet1"];
+                if (worksheet == null)
+                {
+                    worksheet = package.Workbook.Worksheets.Add("Sheet1");
+                    worksheet.Cells[1, 1].Value = "NumCities";
+                    worksheet.Cells[1, 2].Value = "Alpha";
+                    worksheet.Cells[1, 3].Value = "Temp";
+                    worksheet.Cells[1, 4].Value = "Epsilon";
+                    worksheet.Cells[1, 5].Value = "Distance";
+                    worksheet.Cells[1, 6].Value = "Profit";
+                    worksheet.Cells[1, 7].Value = "Iterations";
+                    worksheet.Cells[1, 8].Value = "Time";
+                }
+
+                int nextRow = worksheet.Dimension.End.Row + 1;
+                for (int i = 0; i < 8; i++)
+                {
+                    worksheet.Cells[nextRow, i + 1].Value = details[i];
+                }
+
+                package.Save();
+            }
+        }
+
         private void minHopDistanceBar_ValueChanged(object sender, EventArgs e)
         {
             tbxMinHop.Text = minHopDistanceBar.Value.ToString();
@@ -848,6 +891,11 @@ namespace Round_the_world_challenge
             lblCostPerKm.Text = String.Format("{0:F3}", a);
 
             CostPerKm = a;
+        }
+
+        private void lblProfit_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
