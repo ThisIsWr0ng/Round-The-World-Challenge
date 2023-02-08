@@ -101,6 +101,7 @@
             this.numCitiesSelector = new System.Windows.Forms.NumericUpDown();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
+            this.chkLog = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -208,6 +209,7 @@
             // 
             // splitContainer2.Panel2
             // 
+            this.splitContainer2.Panel2.Controls.Add(this.chkLog);
             this.splitContainer2.Panel2.Controls.Add(this.lblCostPerKm);
             this.splitContainer2.Panel2.Controls.Add(this.label26);
             this.splitContainer2.Panel2.Controls.Add(this.tbCostperKm);
@@ -351,7 +353,7 @@
             // chkDispCost
             // 
             this.chkDispCost.AutoSize = true;
-            this.chkDispCost.Location = new System.Drawing.Point(9, 526);
+            this.chkDispCost.Location = new System.Drawing.Point(9, 511);
             this.chkDispCost.Name = "chkDispCost";
             this.chkDispCost.Size = new System.Drawing.Size(83, 17);
             this.chkDispCost.TabIndex = 51;
@@ -363,7 +365,7 @@
             this.chkPerform.AutoSize = true;
             this.chkPerform.Checked = true;
             this.chkPerform.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkPerform.Location = new System.Drawing.Point(9, 480);
+            this.chkPerform.Location = new System.Drawing.Point(9, 465);
             this.chkPerform.Name = "chkPerform";
             this.chkPerform.Size = new System.Drawing.Size(128, 17);
             this.chkPerform.TabIndex = 50;
@@ -375,7 +377,7 @@
             this.chkCities.AutoSize = true;
             this.chkCities.Checked = true;
             this.chkCities.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkCities.Location = new System.Drawing.Point(9, 503);
+            this.chkCities.Location = new System.Drawing.Point(9, 488);
             this.chkCities.Name = "chkCities";
             this.chkCities.Size = new System.Drawing.Size(87, 17);
             this.chkCities.TabIndex = 49;
@@ -385,7 +387,7 @@
             // chkNumbers
             // 
             this.chkNumbers.AutoSize = true;
-            this.chkNumbers.Location = new System.Drawing.Point(9, 549);
+            this.chkNumbers.Location = new System.Drawing.Point(9, 534);
             this.chkNumbers.Name = "chkNumbers";
             this.chkNumbers.Size = new System.Drawing.Size(122, 17);
             this.chkNumbers.TabIndex = 48;
@@ -582,7 +584,7 @@
             // chkKeepMap
             // 
             this.chkKeepMap.AutoSize = true;
-            this.chkKeepMap.Location = new System.Drawing.Point(9, 572);
+            this.chkKeepMap.Location = new System.Drawing.Point(9, 557);
             this.chkKeepMap.Name = "chkKeepMap";
             this.chkKeepMap.Size = new System.Drawing.Size(120, 17);
             this.chkKeepMap.TabIndex = 0;
@@ -1062,6 +1064,16 @@
             this.btnStart.UseVisualStyleBackColor = false;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
+            // chkLog
+            // 
+            this.chkLog.AutoSize = true;
+            this.chkLog.Location = new System.Drawing.Point(9, 580);
+            this.chkLog.Name = "chkLog";
+            this.chkLog.Size = new System.Drawing.Size(88, 17);
+            this.chkLog.TabIndex = 55;
+            this.chkLog.Text = "Log test data";
+            this.chkLog.UseVisualStyleBackColor = true;
+            // 
             // MapView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1179,6 +1191,7 @@
         private System.Windows.Forms.Label lblCostPerKm;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.TrackBar tbCostperKm;
+        private System.Windows.Forms.CheckBox chkLog;
     }
 }
 

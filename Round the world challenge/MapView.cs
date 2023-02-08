@@ -70,6 +70,7 @@ namespace Round_the_world_challenge
             lblSATemp.Text = temperature.ToString();
             lblSAEpsilon.Text = epsilon.ToString();
             lblCostPerKm.Text = String.Format("{0:F3}", (double)tbCostperKm.Value / 1000);
+            this.Text = $"Blue Cow Route Finder {GetGitVersion()}";//display version number in the window name
 
             //Adjust distances to the window size
             SyncDistancesToWindow();
@@ -170,7 +171,8 @@ namespace Round_the_world_challenge
                 grap.DrawString("Route Invalid / Total distance not met", font, Brushes.Red, (int)Math.Floor(worldMap1.Width * 0.2), 13);
             }
             //log details for testing
-            ExportData(new double[] { numCities, alpha, tbTemp.Value, epsilon, distance, profit, iteration, stopWatch.ElapsedMilliseconds });
+            if(chkLog.Checked == true)
+                ExportData(new double[] { numCities, alpha, tbTemp.Value, epsilon, distance, profit, iteration, stopWatch.ElapsedMilliseconds });
         }
 
         private async void StartAnnealing(int maxHop, int minHop)
@@ -896,6 +898,31 @@ namespace Round_the_world_challenge
         private void lblProfit_Click(object sender, EventArgs e)
         {
 
+        }
+        private static string GetGitVersion()
+        {
+            try
+            {
+                var process = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = "git",
+                        Arguments = "describe --tags --always",
+                        RedirectStandardOutput = true,
+                        UseShellExecute = false,
+                        CreateNoWindow = true,
+                    }
+                };
+                process.Start();
+                string version = process.StandardOutput.ReadToEnd().Trim();
+                process.WaitForExit();
+                return version;
+            }
+            catch (Exception)
+            {
+                return "Git not found";
+            }
         }
     }
 }
