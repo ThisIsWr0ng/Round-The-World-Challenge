@@ -171,7 +171,7 @@ namespace Round_the_world_challenge
                 grap.DrawString("Route Invalid / Total distance not met", font, Brushes.Red, (int)Math.Floor(worldMap1.Width * 0.2), 13);
             }
             //log details for testing
-            if(chkLog.Checked == true)
+            if(chkLog.Checked)
                 ExportData(new double[] { numCities, alpha, tbTemp.Value, epsilon, distance, profit, iteration, stopWatch.ElapsedMilliseconds });
         }
 
@@ -908,7 +908,7 @@ namespace Round_the_world_challenge
                     StartInfo = new ProcessStartInfo
                     {
                         FileName = "git",
-                        Arguments = "describe --tags --always",
+                        Arguments = "describe",
                         RedirectStandardOutput = true,
                         UseShellExecute = false,
                         CreateNoWindow = true,
@@ -924,5 +924,6 @@ namespace Round_the_world_challenge
                 return "Git not found";
             }
         }
+
     }
 }

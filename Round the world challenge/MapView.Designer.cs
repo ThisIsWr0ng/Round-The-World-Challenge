@@ -254,9 +254,9 @@
             // lblProfit
             // 
             this.lblProfit.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblProfit.Location = new System.Drawing.Point(128, 9);
+            this.lblProfit.Location = new System.Drawing.Point(130, 9);
             this.lblProfit.Name = "lblProfit";
-            this.lblProfit.Size = new System.Drawing.Size(62, 32);
+            this.lblProfit.Size = new System.Drawing.Size(97, 32);
             this.lblProfit.TabIndex = 48;
             this.lblProfit.Text = "0";
             this.lblProfit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -279,7 +279,7 @@
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(90, 32);
             this.label25.TabIndex = 47;
-            this.label25.Text = "Profit/KM:";
+            this.label25.Text = "Profit: £";
             this.label25.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblLengths
