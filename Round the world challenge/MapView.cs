@@ -1,4 +1,8 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Wordprocessing;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+using Round_the_world_challenge.Properties;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -6,6 +10,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Color = System.Drawing.Color;
+using Font = System.Drawing.Font;
 
 namespace Round_the_world_challenge
 {
@@ -96,6 +102,10 @@ namespace Round_the_world_challenge
                 keepMap = false;
             //Prepare drawing
             grap = worldMap1.CreateGraphics();
+            Bitmap image = new Bitmap(Resources.World_Mapsd_min);
+            worldMap1.Image = image;
+            worldMap1.SizeMode = PictureBoxSizeMode.StretchImage;
+
             grap.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
             grap.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
 
@@ -143,25 +153,13 @@ namespace Round_the_world_challenge
             btnStop.Visible = false;
             trkProgress.Enabled = true;
 
-            double chk = CalcDistance(bestRoute);
+            double chk = CalcDistance(bestRoute);//Check if restrictions were met
             if (chk == -2) //If route is over limits
-            {
                 DisplayMessage("Route Invalid / Change Hop Distances");
-                Font font = new Font("Times New Roman", 30, FontStyle.Bold);
-                grap.DrawString("Route Invalid / Change Hop Distances", font, Brushes.Red, (int)Math.Floor(worldMap1.Width * 0.2), 13);
-            }
             else if (chk == -1) //If route is over limits
-            {
                 DisplayMessage("Route Invalid / Used restricted connection");
-                Font font = new Font("Times New Roman", 30, FontStyle.Bold);
-                grap.DrawString("Route Invalid / Used restricted connection", font, Brushes.Red, (int)Math.Floor(worldMap1.Width * 0.2), 13);
-            }
             else if (chk == -3) //If route is over limits
-            {
                 DisplayMessage("Route Invalid / Total distance not met");
-                Font font = new Font("Times New Roman", 30, FontStyle.Bold);
-                grap.DrawString("Route Invalid / Total distance not met", font, Brushes.Red, (int)Math.Floor(worldMap1.Width * 0.2), 13);
-            }
             //log details for testing
             if (chkLog.Checked)
                 ExportData(new double[] { numCities, alpha, tbTemp.Value, epsilon, distance, profit, iteration, stopWatch.ElapsedMilliseconds });
@@ -408,21 +406,78 @@ namespace Round_the_world_challenge
 
         private async Task<int> DisplayRoute(City[] route)//async display for drawing
         {
-            grap.Clear(Color.White);//clear panel
 
-            List<Task<int>> tasks = new List<Task<int>>();//store tasks for async operation
+            worldMap1.Image = null;
+            worldMap1.Refresh();
 
-            if (chkCities.Checked == true)
-                tasks.Add(Task.Run(() => DisplayCities()));//Display cities as dots on a map
-            if (chkNumbers.Checked == true)
-                tasks.Add(Task.Run(() => DisplayCityNumbers(route)));//display numbers by each city
-            if (chkDispCost.Checked == true)
-                tasks.Add(Task.Run(() => DisplayCosts(route)));
-            tasks.Add(Task.Run(() => DisplayLines(route)));//Display route connection
-            tasks.Add(Task.Run(() => DisplayRestrictions()));//display restrictions
+            Bitmap image = new Bitmap(Resources.World_Mapsd_min);
 
-            var results = await Task.WhenAll(tasks);//Finish when all tasks are complete
-            return 1;
+            using (Graphics grap = worldMap1.CreateGraphics())
+            {
+                grap.DrawImage(image, 0, 0, worldMap1.Width, worldMap1.Height);
+
+                if (chkCities.Checked == true)
+                {
+
+                    Color[] contColours = { Color.DarkBlue, Color.DarkGreen, Color.DarkRed, Color.Orange, Color.DarkMagenta, Color.Black };
+
+                    //Draw cities on the map
+                    for (int i = 0; i < continents.Length; i++)
+                    {
+                        Pen pen = new Pen(contColours[i], 4);//Different colours for each continent
+                                                             //List<City> list = new List<City>();
+                        for (int j = 0; j < continents[i].Cities.Length; j++)
+                        {
+                            grap.DrawEllipse(pen, Convert.ToSingle(continents[i].Cities[j].Location.X) - 5, Convert.ToSingle(continents[i].Cities[j].Location.Y) - 5, 10, 10);
+                        }
+                    }
+
+                    //Display Start Point
+
+                    Pen pen2 = new Pen(Color.LimeGreen, 6);
+                    pen2.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+                    grap.DrawEllipse(pen2, startLoc.Location.X - 10, startLoc.Location.Y - 10, 20, 20);
+
+
+                }
+                if (chkNumbers.Checked == true)
+                {
+                    Font font = new Font("Times New Roman", 18, FontStyle.Bold);
+                    //Graphics g = worldMap1.CreateGraphics();
+                    for (int i = 0; i < route.Length - 1; i++)
+                    {
+                        grap.DrawString(i.ToString(), font, Brushes.Black, route[i].Location);
+                    }
+
+                }
+                if (chkDispCost.Checked == true)
+                {
+                    Font font = new Font("Times New Roman", 12, FontStyle.Bold);
+
+                    for (int i = 0; i < route.Length - 1; i++)
+                    {
+                        grap.DrawString(route[i].Bid.ToString(), font, Brushes.Black, route[i].Location);
+                    }
+                }
+
+                using (Pen pen4 = new Pen(Color.Blue, 3))
+                {
+                    grap.DrawLines(pen4, ExtractPointFArray(route));
+                }
+
+                if (restrictions != null)
+                {
+                    using (Pen pen3 = new Pen(Color.Red, 3))
+                    {
+                        pen3.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+                        for (int i = 0; i < restrictions.GetLength(0); i++)
+                        {
+                            grap.DrawLine(pen3, restrictions[i, 0], restrictions[i, 1]);
+                        }
+                    }
+                }
+            }
+            return await Task.FromResult(1);
         }
 
         private async Task<int> DisplayCosts(City[] route)
@@ -440,7 +495,7 @@ namespace Round_the_world_challenge
         private async Task<int> DisplayCities()
         {
             Color[] contColours = { Color.DarkBlue, Color.DarkGreen, Color.DarkRed, Color.Orange, Color.DarkMagenta, Color.Black };
-            Graphics g = worldMap1.CreateGraphics();
+            //Graphics g = worldMap1.CreateGraphics();
 
             //Draw cities on the map
             for (int i = 0; i < continents.Length; i++)
@@ -449,7 +504,7 @@ namespace Round_the_world_challenge
                 //List<City> list = new List<City>();
                 for (int j = 0; j < continents[i].Cities.Length; j++)
                 {
-                    g.DrawEllipse(pen, Convert.ToSingle(continents[i].Cities[j].Location.X) - 5, Convert.ToSingle(continents[i].Cities[j].Location.Y) - 5, 10, 10);
+                    grap.DrawEllipse(pen, Convert.ToSingle(continents[i].Cities[j].Location.X) - 5, Convert.ToSingle(continents[i].Cities[j].Location.Y) - 5, 10, 10);
                 }
             }
 
@@ -457,17 +512,17 @@ namespace Round_the_world_challenge
 
             Pen pen2 = new Pen(Color.LimeGreen, 6);
             pen2.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
-            g.DrawEllipse(pen2, startLoc.Location.X - 10, startLoc.Location.Y - 10, 20, 20);
+            grap.DrawEllipse(pen2, startLoc.Location.X - 10, startLoc.Location.Y - 10, 20, 20);
             return 1;
         }
 
         private async Task<int> DisplayCityNumbers(City[] route)
         {
             Font font = new Font("Times New Roman", 18, FontStyle.Bold);
-            Graphics g = worldMap1.CreateGraphics();
+            //Graphics g = worldMap1.CreateGraphics();
             for (int i = 0; i < route.Length - 1; i++)
             {
-                g.DrawString(i.ToString(), font, Brushes.Black, route[i].Location);
+                grap.DrawString(i.ToString(), font, Brushes.Black, route[i].Location);
             }
 
             return 1;
@@ -478,12 +533,12 @@ namespace Round_the_world_challenge
             //Display restrictions
             if (restrictions == null)
                 return 1;
-            Graphics g = worldMap1.CreateGraphics();
+            //Graphics g = worldMap1.CreateGraphics();
             Pen pen3 = new Pen(Color.Red, 3);
             pen3.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;//dashed line
             for (int i = 0; i < restrictions.GetLength(0); i++)
             {
-                g.DrawLine(pen3, restrictions[i, 0], restrictions[i, 1]);
+                grap.DrawLine(pen3, restrictions[i, 0], restrictions[i, 1]);
             }
             return 1;
         }
@@ -492,8 +547,8 @@ namespace Round_the_world_challenge
         {
             //display current route
             Pen pen4 = new Pen(Color.Blue, 3);
-            Graphics g = worldMap1.CreateGraphics();
-            g.DrawLines(pen4, ExtractPointFArray(route));
+            //Graphics g = worldMap1.CreateGraphics();
+            grap.DrawLines(pen4, ExtractPointFArray(route));
             return 1;
         }
 
