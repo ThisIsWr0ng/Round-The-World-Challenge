@@ -249,68 +249,78 @@ namespace Round_the_world_challenge
 
         private City[] RemoveLowReturnRatio(City[] rt, int minProfit)
         {
-            var route = new List<City>(rt);
-            var sortedIndexes = Enumerable.Range(0, rt.Length)
-                                          .OrderBy(i => profitRatioList[i]);
+            City[] route = rt;
+            int index;
+            City[] newRoute = new City[route.Length - 1];
 
-            foreach (var index in sortedIndexes)
+            for (int p = 0; p < profitRatioList.Count; p++)
             {
-                if (index == 0 || index == rt.Length - 1) // Don't remove starting/ending city
-                    continue;
-
-                if (profitRatioList[index] > minProfit) // Don't remove if the connection is profitable
-                    break;
-
-                var newRoute = new List<City>(route.Take(index).Concat(route.Skip(index + 1)));
-                if (CountContinentCities(newRoute) >= minContinentCities)
-                {
-                    route = newRoute;
-                    break;
-                }
+                int j = 0;
+                route = rt;
+                double lowestPr = profitRatioList.Min();
+                if (lowestPr > minProfit)//dont remove if city is over the profit limit
+                    return rt;
+                index = profitRatioList.IndexOf(profitRatioList.Find(x => x.Equals(lowestPr)));
+                if (index == route.Length | index == 0)//dont remove starting point
+                    profitRatioList[index] = int.MaxValue;
                 else
                 {
-                    profitRatioList[index] = int.MaxValue; // Make connection profitable if it cannot be removed due to restrictions
+                    for (int i = 0; i < newRoute.Length; i++)
+                    {
+                        if (i == index)
+                            j++;
+                        newRoute[i] = route[j];
+                        j++;
+                    }
+                    if (CountContinentCities(newRoute) >= minContinentCities)
+                        return newRoute;
+                    else
+                        profitRatioList[index] = int.MaxValue;//make connection profitable if it cannot be removed due to restrictions
                 }
             }
-
-            return route.ToArray();
+            return rt;//
         }
 
         private City[] RemoveLeastProfitable(City[] rt, int minProfit)
         {
-            var route = new List<City>(rt);
-            var sortedIndexes = Enumerable.Range(0, rt.Length)
-                                          .OrderBy(i => profitList[i]);
+            City[] route = rt;
+            int index;
+            City[] newRoute = new City[route.Length - 1];
 
-            foreach (var index in sortedIndexes)
+            for (int p = 0; p < profitList.Count; p++)
             {
-                if (index == 0 || index == rt.Length - 1) // Don't remove starting/ending city
-                    continue;
-
-                if (profitList[index] > minProfit) // Don't remove if the city is profitable
-                    break;
-
-                var newRoute = new List<City>(route.Take(index).Concat(route.Skip(index + 1)));
-                if (CountContinentCities(newRoute) >= minContinentCities)
-                {
-                    route = newRoute;
-                    break;
-                }
+                int j = 0;
+                route = rt;
+                double lowestPr = profitList.Min();
+                if (lowestPr > minProfit)//dont remove if city is over the profit limit
+                    return rt;
+                index = profitList.IndexOf(profitList.Find(x => x.Equals(lowestPr)));
+                if (index == route.Length | index == 0)//dont remove starting point
+                    profitList[index] = int.MaxValue;
                 else
                 {
-                    profitList[index] = int.MaxValue; // Make connection profitable if it cannot be removed due to restrictions
+                    for (int i = 0; i < newRoute.Length; i++)
+                    {
+                        if (i == index)
+                            j++;
+                        newRoute[i] = route[j];
+                        j++;
+                    }
+                    if (CountContinentCities(newRoute) >= minContinentCities)
+                        return newRoute;
+                    else
+                        profitList[index] = int.MaxValue;//make connection profitable if it cannot be removed due to restrictions
                 }
             }
-
-            return route.ToArray();
+            return rt;//
         }
 
-        private int CountContinentCities(List<City> route)//count how many cities each continent have on the route
+        private int CountContinentCities(City[] route)//count how many cities each continent have on the route
         {
             int[] count = new int[6];
-            foreach (City city in route)
+            for (int i = 0; i < route.Length; i++)
             {
-                count[city.Continent]++;
+                count[route[i].Continent]++;
             }
             return count.Min();
         }
