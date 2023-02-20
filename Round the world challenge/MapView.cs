@@ -314,6 +314,7 @@ namespace Round_the_world_challenge
             }
             return rt;//
         }
+ 
 
         private int CountContinentCities(City[] route)//count how many cities each continent have on the route
         {
@@ -332,8 +333,8 @@ namespace Round_the_world_challenge
             profitRatioList = new List<double>();
             for (int i = 0; i < route.Length - 1; i++)
             {
-                profitList.Add(route[i + 1].Bid - CalcDistance(route[i].Location, route[i + 1].Location) /** CostPerKm*/);//bid minus the cost of travel
-                profitRatioList.Add(route[i + 1].Bid / CalcDistance(route[i].Location, route[i + 1].Location) /** CostPerKm*/);//bid by the cost of travel
+                profitList.Add(route[i + 1].Bid - CalcDistance(route[i].Location, route[i + 1].Location) * CostPerKm);//bid minus the cost of travel
+                profitRatioList.Add(route[i + 1].Bid / CalcDistance(route[i].Location, route[i + 1].Location) * CostPerKm);//bid by the cost of travel
                 prof += profitList[i];
             }
             return prof;
@@ -636,34 +637,42 @@ namespace Round_the_world_challenge
 
         public static void ExportData(double[] details)
         {
-            string appPath = Path.GetDirectoryName(Application.ExecutablePath);
-            string filePath = Path.Combine(appPath, "test.xlsx");
-
-            var newFile = new FileInfo(filePath);
-            using (var package = new OfficeOpenXml.ExcelPackage(newFile))
+ 
+            try
             {
-                var worksheet = package.Workbook.Worksheets["Sheet1"];
-                if (worksheet == null)
-                {
-                    worksheet = package.Workbook.Worksheets.Add("Sheet1");
-                    worksheet.Cells[1, 1].Value = "NumCities";
-                    worksheet.Cells[1, 2].Value = "Alpha";
-                    worksheet.Cells[1, 3].Value = "Temp";
-                    worksheet.Cells[1, 4].Value = "Epsilon";
-                    worksheet.Cells[1, 5].Value = "Distance";
-                    worksheet.Cells[1, 6].Value = "Profit";
-                    worksheet.Cells[1, 7].Value = "Iterations";
-                    worksheet.Cells[1, 8].Value = "Time";
-                }
+                string filePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\Downloads\\test.xlsx";
 
-                int nextRow = worksheet.Dimension.End.Row + 1;
-                for (int i = 0; i < 8; i++)
+                var newFile = new FileInfo(filePath);
+                using (var package = new OfficeOpenXml.ExcelPackage(newFile))
                 {
-                    worksheet.Cells[nextRow, i + 1].Value = details[i];
-                }
+                    var worksheet = package.Workbook.Worksheets["Sheet1"];
+                    if (worksheet == null)
+                    {
+                        worksheet = package.Workbook.Worksheets.Add("Sheet1");
+                        worksheet.Cells[1, 1].Value = "NumCities";
+                        worksheet.Cells[1, 2].Value = "Alpha";
+                        worksheet.Cells[1, 3].Value = "Temp";
+                        worksheet.Cells[1, 4].Value = "Epsilon";
+                        worksheet.Cells[1, 5].Value = "Distance";
+                        worksheet.Cells[1, 6].Value = "Profit";
+                        worksheet.Cells[1, 7].Value = "Iterations";
+                        worksheet.Cells[1, 8].Value = "Time";
+                    }
 
-                package.Save();
+                    int nextRow = worksheet.Dimension.End.Row + 1;
+                    for (int i = 0; i < 8; i++)
+                    {
+                        worksheet.Cells[nextRow, i + 1].Value = details[i];
+                    }
+
+                    package.Save();
+                }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Could not save Log data: /n"+ ex.Message);
+            }
+           
         }
         public void DisplayMessage(string message)
         {
