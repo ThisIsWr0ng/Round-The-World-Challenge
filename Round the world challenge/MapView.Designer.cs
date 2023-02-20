@@ -37,6 +37,7 @@
             this.lblLengths = new System.Windows.Forms.Label();
             this.lengthsBox = new System.Windows.Forms.PictureBox();
             this.worldMap1 = new System.Windows.Forms.PictureBox();
+            this.chkLog = new System.Windows.Forms.CheckBox();
             this.lblCostPerKm = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
             this.tbCostperKm = new System.Windows.Forms.TrackBar();
@@ -101,7 +102,6 @@
             this.numCitiesSelector = new System.Windows.Forms.NumericUpDown();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
-            this.chkLog = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -256,7 +256,7 @@
             this.lblProfit.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblProfit.Location = new System.Drawing.Point(130, 9);
             this.lblProfit.Name = "lblProfit";
-            this.lblProfit.Size = new System.Drawing.Size(97, 32);
+            this.lblProfit.Size = new System.Drawing.Size(129, 32);
             this.lblProfit.TabIndex = 48;
             this.lblProfit.Text = "0";
             this.lblProfit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -278,7 +278,7 @@
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(90, 32);
             this.label25.TabIndex = 47;
-            this.label25.Text = "Profit: £";
+            this.label25.Text = "Profit:";
             this.label25.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblLengths
@@ -315,6 +315,16 @@
             this.worldMap1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.worldMap1.TabIndex = 30;
             this.worldMap1.TabStop = false;
+            // 
+            // chkLog
+            // 
+            this.chkLog.AutoSize = true;
+            this.chkLog.Location = new System.Drawing.Point(9, 580);
+            this.chkLog.Name = "chkLog";
+            this.chkLog.Size = new System.Drawing.Size(88, 17);
+            this.chkLog.TabIndex = 55;
+            this.chkLog.Text = "Log test data";
+            this.chkLog.UseVisualStyleBackColor = true;
             // 
             // lblCostPerKm
             // 
@@ -1062,16 +1072,6 @@
             this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = false;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
-            // 
-            // chkLog
-            // 
-            this.chkLog.AutoSize = true;
-            this.chkLog.Location = new System.Drawing.Point(9, 580);
-            this.chkLog.Name = "chkLog";
-            this.chkLog.Size = new System.Drawing.Size(88, 17);
-            this.chkLog.TabIndex = 55;
-            this.chkLog.Text = "Log test data";
-            this.chkLog.UseVisualStyleBackColor = true;
             // 
             // MapView
             // 

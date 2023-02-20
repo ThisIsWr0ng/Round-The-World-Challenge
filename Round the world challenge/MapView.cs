@@ -146,16 +146,19 @@ namespace Round_the_world_challenge
             double chk = CalcDistance(bestRoute);
             if (chk == -2) //If route is over limits
             {
+                DisplayMessage("Route Invalid / Change Hop Distances");
                 Font font = new Font("Times New Roman", 30, FontStyle.Bold);
                 grap.DrawString("Route Invalid / Change Hop Distances", font, Brushes.Red, (int)Math.Floor(worldMap1.Width * 0.2), 13);
             }
             else if (chk == -1) //If route is over limits
             {
+                DisplayMessage("Route Invalid / Used restricted connection");
                 Font font = new Font("Times New Roman", 30, FontStyle.Bold);
                 grap.DrawString("Route Invalid / Used restricted connection", font, Brushes.Red, (int)Math.Floor(worldMap1.Width * 0.2), 13);
             }
             else if (chk == -3) //If route is over limits
             {
+                DisplayMessage("Route Invalid / Total distance not met");
                 Font font = new Font("Times New Roman", 30, FontStyle.Bold);
                 grap.DrawString("Route Invalid / Total distance not met", font, Brushes.Red, (int)Math.Floor(worldMap1.Width * 0.2), 13);
             }
@@ -198,7 +201,7 @@ namespace Round_the_world_challenge
                             {
                                 double check = CalcDistance(best);//calculate distance and check for restrictions
                                 if (check < 0)
-                                    continue;//return false if restrictions were not met
+                                    continue;//don't accept the route if restrictions were not met
                                 distance = check;//update the distance
                             }
                             distance += distDelta;
@@ -327,8 +330,8 @@ namespace Round_the_world_challenge
             profitRatioList = new List<double>();
             for (int i = 0; i < route.Length - 1; i++)
             {
-                profitList.Add(route[i + 1].Bid - CalcDistance(route[i].Location, route[i + 1].Location) * CostPerKm);//bid minus the cost of travel
-                profitRatioList.Add(route[i + 1].Bid / CalcDistance(route[i].Location, route[i + 1].Location) * CostPerKm);//bid by the cost of travel
+                profitList.Add(route[i + 1].Bid - CalcDistance(route[i].Location, route[i + 1].Location) /** CostPerKm*/);//bid minus the cost of travel
+                profitRatioList.Add(route[i + 1].Bid / CalcDistance(route[i].Location, route[i + 1].Location) /** CostPerKm*/);//bid by the cost of travel
                 prof += profitList[i];
             }
             return prof;
@@ -386,7 +389,7 @@ namespace Round_the_world_challenge
             lblIter.Text = iteration.ToString();
             lblTemp.Text = String.Format("{0:F2}", temperature);
             lblDistance.Text = Math.Floor(distance).ToString() + " KM";
-            lblProfit.Text = ((int)profit).ToString();
+            lblProfit.Text = String.Format("{0:C0}", (int)profit);
             lblRouteLength.Text = length.ToString();
         }
 
@@ -680,6 +683,10 @@ namespace Round_the_world_challenge
 
                 package.Save();
             }
+        }
+        public void DisplayMessage(string message)
+        {
+            MessageBox.Show(message, "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void minHopDistanceBar_ValueChanged(object sender, EventArgs e)
