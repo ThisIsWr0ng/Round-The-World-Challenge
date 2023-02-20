@@ -50,6 +50,10 @@ namespace Round_the_world_challenge
 
         private double temperature = 3810;
         private double epsilon = 5.450;
+        //Display
+        Font font = new Font("Times New Roman", 12, FontStyle.Bold);
+        Color[] contColours = { Color.DarkBlue, Color.DarkGreen, Color.DarkRed, Color.Orange, Color.DarkMagenta, Color.Black };
+        Bitmap image = new Bitmap(Resources.World_Map_min);
 
         public MapView()
         {
@@ -245,78 +249,68 @@ namespace Round_the_world_challenge
 
         private City[] RemoveLowReturnRatio(City[] rt, int minProfit)
         {
-            City[] route = rt;
-            int index;
-            City[] newRoute = new City[route.Length - 1];
+            var route = new List<City>(rt);
+            var sortedIndexes = Enumerable.Range(0, rt.Length)
+                                          .OrderBy(i => profitRatioList[i]);
 
-            for (int p = 0; p < profitRatioList.Count; p++)
+            foreach (var index in sortedIndexes)
             {
-                int j = 0;
-                route = rt;
-                double lowestPr = profitRatioList.Min();
-                if (lowestPr > minProfit)//dont remove if city is over the profit limit
-                    return rt;
-                index = profitRatioList.IndexOf(profitRatioList.Find(x => x.Equals(lowestPr)));
-                if (index == route.Length | index == 0)//dont remove starting point
-                    profitRatioList[index] = int.MaxValue;
+                if (index == 0 || index == rt.Length - 1) // Don't remove starting/ending city
+                    continue;
+
+                if (profitRatioList[index] > minProfit) // Don't remove if the connection is profitable
+                    break;
+
+                var newRoute = new List<City>(route.Take(index).Concat(route.Skip(index + 1)));
+                if (CountContinentCities(newRoute) >= minContinentCities)
+                {
+                    route = newRoute;
+                    break;
+                }
                 else
                 {
-                    for (int i = 0; i < newRoute.Length; i++)
-                    {
-                        if (i == index)
-                            j++;
-                        newRoute[i] = route[j];
-                        j++;
-                    }
-                    if (CountContinentCities(newRoute) >= minContinentCities)
-                        return newRoute;
-                    else
-                        profitRatioList[index] = int.MaxValue;//make connection profitable if it cannot be removed due to restrictions
+                    profitRatioList[index] = int.MaxValue; // Make connection profitable if it cannot be removed due to restrictions
                 }
             }
-            return rt;//
+
+            return route.ToArray();
         }
 
         private City[] RemoveLeastProfitable(City[] rt, int minProfit)
         {
-            City[] route = rt;
-            int index;
-            City[] newRoute = new City[route.Length - 1];
+            var route = new List<City>(rt);
+            var sortedIndexes = Enumerable.Range(0, rt.Length)
+                                          .OrderBy(i => profitList[i]);
 
-            for (int p = 0; p < profitList.Count; p++)
+            foreach (var index in sortedIndexes)
             {
-                int j = 0;
-                route = rt;
-                double lowestPr = profitList.Min();
-                if (lowestPr > minProfit)//dont remove if city is over the profit limit
-                    return rt;
-                index = profitList.IndexOf(profitList.Find(x => x.Equals(lowestPr)));
-                if (index == route.Length | index == 0)//dont remove starting point
-                    profitList[index] = int.MaxValue;
+                if (index == 0 || index == rt.Length - 1) // Don't remove starting/ending city
+                    continue;
+
+                if (profitList[index] > minProfit) // Don't remove if the city is profitable
+                    break;
+
+                var newRoute = new List<City>(route.Take(index).Concat(route.Skip(index + 1)));
+                if (CountContinentCities(newRoute) >= minContinentCities)
+                {
+                    route = newRoute;
+                    break;
+                }
                 else
                 {
-                    for (int i = 0; i < newRoute.Length; i++)
-                    {
-                        if (i == index)
-                            j++;
-                        newRoute[i] = route[j];
-                        j++;
-                    }
-                    if (CountContinentCities(newRoute) >= minContinentCities)
-                        return newRoute;
-                    else
-                        profitList[index] = int.MaxValue;//make connection profitable if it cannot be removed due to restrictions
+                    profitList[index] = int.MaxValue; // Make connection profitable if it cannot be removed due to restrictions
                 }
             }
-            return rt;//
+
+            return route.ToArray();
         }
 
-        private int CountContinentCities(City[] route)//count how many cities each continent have on the route
+        private int CountContinentCities(List<City> route)//count how many cities each continent have on the route
         {
             int[] count = new int[6];
-            for (int i = 0; i < route.Length; i++)
+            foreach (City city in route)
             {
-                count[route[i].Continent]++;
+                count[city.Continent]++;
             }
             return count.Min();
         }
@@ -410,7 +404,6 @@ namespace Round_the_world_challenge
             worldMap1.Image = null;
             worldMap1.Refresh();
 
-            Bitmap image = new Bitmap(Resources.World_Mapsd_min);
 
             using (Graphics grap = worldMap1.CreateGraphics())
             {
@@ -418,14 +411,10 @@ namespace Round_the_world_challenge
 
                 if (chkCities.Checked == true)
                 {
-
-                    Color[] contColours = { Color.DarkBlue, Color.DarkGreen, Color.DarkRed, Color.Orange, Color.DarkMagenta, Color.Black };
-
                     //Draw cities on the map
                     for (int i = 0; i < continents.Length; i++)
                     {
                         Pen pen = new Pen(contColours[i], 4);//Different colours for each continent
-                                                             //List<City> list = new List<City>();
                         for (int j = 0; j < continents[i].Cities.Length; j++)
                         {
                             grap.DrawEllipse(pen, Convert.ToSingle(continents[i].Cities[j].Location.X) - 5, Convert.ToSingle(continents[i].Cities[j].Location.Y) - 5, 10, 10);
@@ -433,16 +422,16 @@ namespace Round_the_world_challenge
                     }
 
                     //Display Start Point
-
-                    Pen pen2 = new Pen(Color.LimeGreen, 6);
-                    pen2.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
-                    grap.DrawEllipse(pen2, startLoc.Location.X - 10, startLoc.Location.Y - 10, 20, 20);
-
+                    using (Pen pen = new Pen(Color.LimeGreen, 6))
+                    {
+                        pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+                        grap.DrawEllipse(pen, startLoc.Location.X - 10, startLoc.Location.Y - 10, 20, 20);
+                    }
 
                 }
                 if (chkNumbers.Checked == true)
                 {
-                    Font font = new Font("Times New Roman", 18, FontStyle.Bold);
+                   
                     //Graphics g = worldMap1.CreateGraphics();
                     for (int i = 0; i < route.Length - 1; i++)
                     {
@@ -452,7 +441,7 @@ namespace Round_the_world_challenge
                 }
                 if (chkDispCost.Checked == true)
                 {
-                    Font font = new Font("Times New Roman", 12, FontStyle.Bold);
+                    
 
                     for (int i = 0; i < route.Length - 1; i++)
                     {
@@ -460,98 +449,25 @@ namespace Round_the_world_challenge
                     }
                 }
 
-                using (Pen pen4 = new Pen(Color.Blue, 3))
+                using (Pen pen = new Pen(Color.Blue, 3))
                 {
-                    grap.DrawLines(pen4, ExtractPointFArray(route));
+                    grap.DrawLines(pen, ExtractPointFArray(route));
                 }
 
                 if (restrictions != null)
                 {
-                    using (Pen pen3 = new Pen(Color.Red, 3))
+                    using (Pen pen = new Pen(Color.Red, 3))
                     {
-                        pen3.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+                        pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
                         for (int i = 0; i < restrictions.GetLength(0); i++)
                         {
-                            grap.DrawLine(pen3, restrictions[i, 0], restrictions[i, 1]);
+                            grap.DrawLine(pen, restrictions[i, 0], restrictions[i, 1]);
                         }
                     }
                 }
             }
             return await Task.FromResult(1);
         }
-
-        private async Task<int> DisplayCosts(City[] route)
-        {
-            Font font = new Font("Times New Roman", 12, FontStyle.Bold);
-            Graphics g = worldMap1.CreateGraphics();
-            for (int i = 0; i < route.Length - 1; i++)
-            {
-                g.DrawString(route[i].Bid.ToString(), font, Brushes.Black, route[i].Location);
-            }
-
-            return 1;
-        }
-
-        private async Task<int> DisplayCities()
-        {
-            Color[] contColours = { Color.DarkBlue, Color.DarkGreen, Color.DarkRed, Color.Orange, Color.DarkMagenta, Color.Black };
-            //Graphics g = worldMap1.CreateGraphics();
-
-            //Draw cities on the map
-            for (int i = 0; i < continents.Length; i++)
-            {
-                Pen pen = new Pen(contColours[i], 4);//Different colours for each continent
-                //List<City> list = new List<City>();
-                for (int j = 0; j < continents[i].Cities.Length; j++)
-                {
-                    grap.DrawEllipse(pen, Convert.ToSingle(continents[i].Cities[j].Location.X) - 5, Convert.ToSingle(continents[i].Cities[j].Location.Y) - 5, 10, 10);
-                }
-            }
-
-            //Display Start Point
-
-            Pen pen2 = new Pen(Color.LimeGreen, 6);
-            pen2.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
-            grap.DrawEllipse(pen2, startLoc.Location.X - 10, startLoc.Location.Y - 10, 20, 20);
-            return 1;
-        }
-
-        private async Task<int> DisplayCityNumbers(City[] route)
-        {
-            Font font = new Font("Times New Roman", 18, FontStyle.Bold);
-            //Graphics g = worldMap1.CreateGraphics();
-            for (int i = 0; i < route.Length - 1; i++)
-            {
-                grap.DrawString(i.ToString(), font, Brushes.Black, route[i].Location);
-            }
-
-            return 1;
-        }
-
-        private async Task<int> DisplayRestrictions()
-        {
-            //Display restrictions
-            if (restrictions == null)
-                return 1;
-            //Graphics g = worldMap1.CreateGraphics();
-            Pen pen3 = new Pen(Color.Red, 3);
-            pen3.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;//dashed line
-            for (int i = 0; i < restrictions.GetLength(0); i++)
-            {
-                grap.DrawLine(pen3, restrictions[i, 0], restrictions[i, 1]);
-            }
-            return 1;
-        }
-
-        private async Task<int> DisplayLines(City[] route)
-        {
-            //display current route
-            Pen pen4 = new Pen(Color.Blue, 3);
-            //Graphics g = worldMap1.CreateGraphics();
-            grap.DrawLines(pen4, ExtractPointFArray(route));
-            return 1;
-        }
-
         private PointF[] ExtractPointFArray(City[] route)
         {
             PointF[] temp = new PointF[route.Length];
