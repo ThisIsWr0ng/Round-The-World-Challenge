@@ -1,7 +1,4 @@
-﻿using DocumentFormat.OpenXml.Spreadsheet;
-using DocumentFormat.OpenXml.Wordprocessing;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
-using Round_the_world_challenge.Properties;
+﻿using Round_the_world_challenge.Properties;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,12 +18,11 @@ namespace Round_the_world_challenge
         private readonly Stopwatch stopWatch;
         private bool stopSignal = false;
         private int iteration = 0;
-        private const int MapWidth = 40075;
-        private double CostPerKm = 0.3;//Cost of traveliing one KM
+        private const int WorldCircumference = 40075;
+        private double CostPerKm = 6;//Cost of traveliing one KM
 
         //initialize variables for continents and restrictions
         private Continent C = new Continent();
-
         private Continent[] continents = null;
         private PointF[,] restrictions = new PointF[0, 0];
         private bool keepMap = false;
@@ -35,7 +31,6 @@ namespace Round_the_world_challenge
 
         //Variables for routes
         private City startLoc = new City(false);
-
         private City[] bestRoute;
         private double distance;
         private double profit;
@@ -46,14 +41,16 @@ namespace Round_the_world_challenge
         private List<double[]> details = new List<double[]>();
 
         //Variables for Simmulated Annealing
-        private double alpha = 0.940;
+        private double Alpha = 0.940;
+        private double Temperature = 3810;
+        private double Epsilon = 5.450;
+        private double Beta = 1.3;
 
-        private double temperature = 3810;
-        private double epsilon = 5.450;
         //Display
-        Font font = new Font("Times New Roman", 12, FontStyle.Bold);
-        Color[] contColours = { Color.DarkBlue, Color.DarkGreen, Color.DarkRed, Color.Orange, Color.DarkMagenta, Color.Black };
-        Bitmap image = new Bitmap(Resources.World_Map_min);
+        private Font GenericFont = new Font("Times New Roman", 12, FontStyle.Bold);
+
+        private Color[] contColours = { Color.DarkBlue, Color.DarkGreen, Color.DarkRed, Color.Orange, Color.DarkMagenta, Color.Black };
+        private Bitmap BackImage = new Bitmap(Resources.World_Map_min);
 
         public MapView()
         {
@@ -70,9 +67,9 @@ namespace Round_the_world_challenge
             tbxMaxHop.Text = maxHopDistanceBar.Value.ToString();
             tbxMinTot.Text = minTotDistBar.Value.ToString();
             tbxMaxTot.Text = maxTotDistBar.Value.ToString();
-            lblSAAlpha.Text = alpha.ToString();
-            lblSATemp.Text = temperature.ToString();
-            lblSAEpsilon.Text = epsilon.ToString();
+            lblSAAlpha.Text = Alpha.ToString();
+            lblSATemp.Text = Temperature.ToString();
+            lblSAEpsilon.Text = Epsilon.ToString();
             lblCostPerKm.Text = String.Format("{0:F3}", (double)tbCostperKm.Value / 1000);
             this.Text = $"Blue Cow Route Finder {GetGitVersion()}";//display version number in the window name
 
@@ -84,18 +81,18 @@ namespace Round_the_world_challenge
             lblLengths.Visible = false;
 
             //update simulated annealing track bar values
-            tbAlpha.Value = (int)(alpha * 1000);
-            tbTemp.Value = (int)temperature;
-            tbEpsilon.Value = (int)(epsilon * 1000);
+            tbAlpha.Value = (int)(Alpha * 1000);
+            tbTemp.Value = (int)Temperature;
+            tbEpsilon.Value = (int)(Epsilon * 1000);
             splitContainer2.SplitterDistance = splitContainer2.Width;
         }
 
         private void btnStart_Click(object sender, EventArgs e)
         {
             //Set simulated annealing settings
-            temperature = tbTemp.Value;
-            alpha = (double)tbAlpha.Value / 1000;
-            epsilon = (double)tbEpsilon.Value / 1000;
+            Temperature = tbTemp.Value;
+            Alpha = (double)tbAlpha.Value / 1000;
+            Epsilon = (double)tbEpsilon.Value / 1000;
             CostPerKm = (double)tbCostperKm.Value / 1000;
             //Keep the same map if chosen
             if (chkKeepMap.Checked == true)
@@ -130,7 +127,7 @@ namespace Round_the_world_challenge
                 GenerateRestrictions(numRestrConn);
             }
 
-            int startTemp = (int)temperature;
+            int startTemp = (int)Temperature;
             int max = maxTotDistBar.Value;
             int min = minTotDistBar.Value;
 
@@ -150,7 +147,7 @@ namespace Round_the_world_challenge
             stopWatch.Stop();
 
             UpdateTrackBar(routes.Count);//populate track bar with all routes
-            DisplayRoute(bestRoute);
+            await DisplayRoute(bestRoute);
 
             lblTime.Text = stopWatch.ElapsedMilliseconds.ToString() + " ms";
             //UpdateDetails(iteration, temperature, 0, 0);//update final route details on gui
@@ -164,9 +161,11 @@ namespace Round_the_world_challenge
                 DisplayMessage("Route Invalid / Used restricted connection");
             else if (chk == -3) //If route is over limits
                 DisplayMessage("Route Invalid / Total distance not met");
+            if (Convert.ToInt16(lblRouteLength.Text) > numRouteLengthMax.Value)
+                DisplayMessage("Maximum number of cities not met");
             //log details for testing
             if (chkLog.Checked)
-                ExportData(new double[] { numCities, alpha, tbTemp.Value, epsilon, distance, profit, iteration, stopWatch.ElapsedMilliseconds });
+                ExportData(new double[] { numCities, Alpha, tbTemp.Value, Epsilon, distance, profit, iteration, stopWatch.ElapsedMilliseconds });
         }
 
         private async void StartAnnealing(int maxHop, int minHop)
@@ -176,7 +175,7 @@ namespace Round_the_world_challenge
                 restrictions = true;
 
             //while the temperature didnt reach epsilon
-            while ((temperature >= epsilon) & !stopSignal)//Find better route
+            while ((Temperature >= Epsilon) & !stopSignal)//Find better route
             {
                 profit = ProfitCheck(bestRoute);
                 City[] best = bestRoute;
@@ -212,8 +211,8 @@ namespace Round_the_world_challenge
                         }
                         else//if the distance and profit is worse
                         {
-                            double proba = random.NextDouble();//calculate probability
-                            double prob2 = Math.Exp(-distDelta / temperature);
+                            double proba = random.NextDouble();
+                            double prob2 = Math.Exp(-(Beta * (distDelta + profitDelta)) / Temperature);//calculate probability
                             if (proba < prob2)//swap cities if temperature is still high enough
                             {
                                 best = ReverseSwap(best, i, j);
@@ -234,17 +233,17 @@ namespace Round_the_world_challenge
                         if (i % 3 == 1)
                         {
                             await DisplayRoute(bestRoute);
-                            UpdateDetails(iteration, temperature, profit, bestRoute.Length); //refresh labels
+                            UpdateDetails(iteration, Temperature, profit, bestRoute.Length); //refresh labels
                         }
                 }
                 //Log details
                 routes.Add(bestRoute);
-                double[] d = new double[] { (int)distance, temperature, iteration, profit, best.Length };
+                double[] d = new double[] { (int)distance, Temperature, iteration, profit, best.Length };
                 details.Add(d);
                 iteration++;//increase iteration
-                temperature *= alpha;//Cooling down process
+                Temperature *= Alpha;//Cooling down process
             }
-            UpdateDetails(iteration, temperature, profit, bestRoute.Length); //refresh labels
+            UpdateDetails(iteration, Temperature, profit, bestRoute.Length); //refresh labels
         }
 
         private City[] RemoveLowReturnRatio(City[] rt, int minProfit)
@@ -314,7 +313,6 @@ namespace Round_the_world_challenge
             }
             return rt;//
         }
- 
 
         private int CountContinentCities(City[] route)//count how many cities each continent have on the route
         {
@@ -376,7 +374,7 @@ namespace Round_the_world_challenge
 
         private void DisplayLengths(int length, string txt)//displays lengths of hop and total distance restrictions under the map
         {
-            float len = Convert.ToSingle(length / (MapWidth / worldMap1.Width));
+            float len = Convert.ToSingle(length / (WorldCircumference / worldMap1.Width));
             lblLengths.Visible = true;
             lblLengths.Text = txt;
             var g = lengthsBox.CreateGraphics();
@@ -398,27 +396,25 @@ namespace Round_the_world_challenge
 
         private void SyncDistancesToWindow()//update distances as window shrinks and expands
         {
-            minHopDistanceBar.Maximum = MapWidth / 10;
-            maxHopDistanceBar.Maximum = MapWidth;
-            minTotDistBar.Maximum = MapWidth * multiplier;
-            maxTotDistBar.Maximum = MapWidth * multiplier;
+            minHopDistanceBar.Maximum = WorldCircumference / 10;
+            maxHopDistanceBar.Maximum = WorldCircumference;
+            minTotDistBar.Maximum = WorldCircumference * multiplier;
+            maxTotDistBar.Maximum = WorldCircumference * multiplier;
 
             minHopDistanceBar.Value = 300;
-            maxHopDistanceBar.Value = (int)Math.Floor(MapWidth * 0.9);
-            minTotDistBar.Value = (int)Math.Floor((MapWidth * multiplier) * 0.01);
-            maxTotDistBar.Value = (int)Math.Floor((MapWidth * multiplier) * 0.9);
+            maxHopDistanceBar.Value = (int)Math.Floor(WorldCircumference * 0.9);
+            minTotDistBar.Value = (int)Math.Floor((WorldCircumference * multiplier) * 0.01);
+            maxTotDistBar.Value = (int)Math.Floor((WorldCircumference * multiplier) * 0.9);
         }
 
         private async Task<int> DisplayRoute(City[] route)//async display for drawing
         {
-
             worldMap1.Image = null;
             worldMap1.Refresh();
 
-
             using (Graphics grap = worldMap1.CreateGraphics())
             {
-                grap.DrawImage(image, 0, 0, worldMap1.Width, worldMap1.Height);
+                grap.DrawImage(BackImage, 0, 0, worldMap1.Width, worldMap1.Height);
 
                 if (chkCities.Checked == true)
                 {
@@ -438,25 +434,20 @@ namespace Round_the_world_challenge
                         pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
                         grap.DrawEllipse(pen, startLoc.Location.X - 10, startLoc.Location.Y - 10, 20, 20);
                     }
-
                 }
                 if (chkNumbers.Checked == true)
                 {
-                   
                     //Graphics g = worldMap1.CreateGraphics();
                     for (int i = 0; i < route.Length - 1; i++)
                     {
-                        grap.DrawString(i.ToString(), font, Brushes.Black, route[i].Location);
+                        grap.DrawString(i.ToString(), GenericFont, Brushes.Black, route[i].Location);
                     }
-
                 }
                 if (chkDispCost.Checked == true)
                 {
-                    
-
                     for (int i = 0; i < route.Length - 1; i++)
                     {
-                        grap.DrawString(route[i].Bid.ToString(), font, Brushes.Black, route[i].Location);
+                        grap.DrawString(route[i].Bid.ToString(), GenericFont, Brushes.Black, route[i].Location);
                     }
                 }
 
@@ -479,6 +470,7 @@ namespace Round_the_world_challenge
             }
             return await Task.FromResult(1);
         }
+
         private PointF[] ExtractPointFArray(City[] route)
         {
             PointF[] temp = new PointF[route.Length];
@@ -492,9 +484,7 @@ namespace Round_the_world_challenge
 
         private void GenerateRoute(City[] cities)
         {
-            bool overTotAllowance = false;
-            int tries = 0;
-            int bestD = 999999999;
+            bool overTotAllowance;
             do
             {
                 distance = 0;
@@ -559,7 +549,7 @@ namespace Round_the_world_challenge
         private double CalcDistance(PointF p1, PointF p2, int max, int min)//calculate distance with max and min hop restrictions
         {
             // Pythagoras
-            double d = Math.Sqrt(((p2.X - p1.X) * (p2.X - p1.X)) + ((p2.Y - p1.Y) * (p2.Y - p1.Y))) * (MapWidth / worldMap1.Width);//Calculate distance and convert it to KM
+            double d = Math.Sqrt(((p2.X - p1.X) * (p2.X - p1.X)) + ((p2.Y - p1.Y) * (p2.Y - p1.Y))) * (WorldCircumference / worldMap1.Width);//Calculate distance and convert it to KM
             if (iteration != 0 & chkHopEnabled.Checked == true)
                 if (d > max || d < min)
                     return -1;
@@ -576,7 +566,7 @@ namespace Round_the_world_challenge
         private double CalcDistance(PointF p1, PointF p2)
         {
             // Pythagoras
-            double d = Math.Sqrt(((p2.X - p1.X) * (p2.X - p1.X)) + ((p2.Y - p1.Y) * (p2.Y - p1.Y))) * (MapWidth / worldMap1.Width);
+            double d = Math.Sqrt(((p2.X - p1.X) * (p2.X - p1.X)) + ((p2.Y - p1.Y) * (p2.Y - p1.Y))) * (WorldCircumference / worldMap1.Width);
 
             return d;
         }
@@ -637,7 +627,6 @@ namespace Round_the_world_challenge
 
         public static void ExportData(double[] details)
         {
- 
             try
             {
                 string filePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\Downloads\\test.xlsx";
@@ -670,10 +659,10 @@ namespace Round_the_world_challenge
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Could not save Log data: /n"+ ex.Message);
+                MessageBox.Show("Could not save Log data: /n" + ex.Message);
             }
-           
         }
+
         public void DisplayMessage(string message)
         {
             MessageBox.Show(message, "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -749,20 +738,20 @@ namespace Round_the_world_challenge
             double a = (double)tbAlpha.Value / 1000;
             lblSAAlpha.Text = String.Format("{0:F3}", a);
 
-            alpha = (double)tbAlpha.Value / 1000;
+            Alpha = (double)tbAlpha.Value / 1000;
         }
 
         private void tbTemp_ValueChanged(object sender, EventArgs e)
         {
             lblSATemp.Text = tbTemp.Value.ToString();
-            temperature = tbTemp.Value;
+            Temperature = tbTemp.Value;
         }
 
         private void tbEpsilon_ValueChanged(object sender, EventArgs e)
         {
             double a = (double)tbEpsilon.Value / 1000;
             lblSAEpsilon.Text = String.Format("{0:F3}", a);
-            epsilon = (double)tbEpsilon.Value / 1000;
+            Epsilon = (double)tbEpsilon.Value / 1000;
         }
 
         private void minHopDistanceBar_MouseHover(object sender, EventArgs e)
@@ -828,11 +817,11 @@ namespace Round_the_world_challenge
             SyncDistancesToWindow();
         }
 
-        private void trkProgress_ValueChanged(object sender, EventArgs e)
+        private async void trkProgress_ValueChanged(object sender, EventArgs e)
         {
             if (trkProgress.Enabled == false)
                 return;
-            DisplayRoute(routes[trkProgress.Value]);
+            await DisplayRoute(routes[trkProgress.Value]);
             lblDistance.Text = details[trkProgress.Value][0].ToString();
             UpdateDetails((int)details[trkProgress.Value][2],
             details[trkProgress.Value][1],
