@@ -37,10 +37,8 @@
             this.lblLengths = new System.Windows.Forms.Label();
             this.lengthsBox = new System.Windows.Forms.PictureBox();
             this.worldMap1 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.chkLog = new System.Windows.Forms.CheckBox();
-            this.lblCostPerKm = new System.Windows.Forms.Label();
-            this.label26 = new System.Windows.Forms.Label();
-            this.tbCostperKm = new System.Windows.Forms.TrackBar();
             this.chkDispCost = new System.Windows.Forms.CheckBox();
             this.chkPerform = new System.Windows.Forms.CheckBox();
             this.chkCities = new System.Windows.Forms.CheckBox();
@@ -102,7 +100,6 @@
             this.numCitiesSelector = new System.Windows.Forms.NumericUpDown();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -113,7 +110,7 @@
             this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lengthsBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.worldMap1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tbCostperKm)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbEpsilon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbTemp)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbAlpha)).BeginInit();
@@ -128,7 +125,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.maxHopDistanceBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minHopDistanceBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCitiesSelector)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -213,9 +209,6 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.chkLog);
-            this.splitContainer2.Panel2.Controls.Add(this.lblCostPerKm);
-            this.splitContainer2.Panel2.Controls.Add(this.label26);
-            this.splitContainer2.Panel2.Controls.Add(this.tbCostperKm);
             this.splitContainer2.Panel2.Controls.Add(this.chkDispCost);
             this.splitContainer2.Panel2.Controls.Add(this.chkPerform);
             this.splitContainer2.Panel2.Controls.Add(this.chkCities);
@@ -319,6 +312,16 @@
             this.worldMap1.TabIndex = 30;
             this.worldMap1.TabStop = false;
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox1.Image = global::Round_the_world_challenge.Properties.Resources.World_Map;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(1134, 601);
+            this.pictureBox1.TabIndex = 54;
+            this.pictureBox1.TabStop = false;
+            // 
             // chkLog
             // 
             this.chkLog.AutoSize = true;
@@ -328,39 +331,6 @@
             this.chkLog.TabIndex = 55;
             this.chkLog.Text = "Log test data";
             this.chkLog.UseVisualStyleBackColor = true;
-            // 
-            // lblCostPerKm
-            // 
-            this.lblCostPerKm.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblCostPerKm.AutoSize = true;
-            this.lblCostPerKm.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCostPerKm.Location = new System.Drawing.Point(98, 171);
-            this.lblCostPerKm.Name = "lblCostPerKm";
-            this.lblCostPerKm.Size = new System.Drawing.Size(18, 20);
-            this.lblCostPerKm.TabIndex = 54;
-            this.lblCostPerKm.Text = "0";
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label26.Location = new System.Drawing.Point(5, 171);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(73, 20);
-            this.label26.TabIndex = 53;
-            this.label26.Text = "Cost/KM:";
-            // 
-            // tbCostperKm
-            // 
-            this.tbCostperKm.Location = new System.Drawing.Point(5, 194);
-            this.tbCostperKm.Maximum = 999;
-            this.tbCostperKm.Minimum = 1;
-            this.tbCostperKm.Name = "tbCostperKm";
-            this.tbCostperKm.Size = new System.Drawing.Size(153, 45);
-            this.tbCostperKm.TabIndex = 52;
-            this.tbCostperKm.Value = 300;
-            this.tbCostperKm.ValueChanged += new System.EventHandler(this.tbCostperKm_ValueChanged);
             // 
             // chkDispCost
             // 
@@ -1076,16 +1046,6 @@
             this.btnStart.UseVisualStyleBackColor = false;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Image = global::Round_the_world_challenge.Properties.Resources.World_Map;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1134, 601);
-            this.pictureBox1.TabIndex = 54;
-            this.pictureBox1.TabStop = false;
-            // 
             // MapView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1109,7 +1069,7 @@
             this.splitContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.lengthsBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.worldMap1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tbCostperKm)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbEpsilon)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbTemp)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbAlpha)).EndInit();
@@ -1124,7 +1084,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.maxHopDistanceBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minHopDistanceBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCitiesSelector)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1201,9 +1160,6 @@
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.Label lblRouteLength;
         private System.Windows.Forms.Label label27;
-        private System.Windows.Forms.Label lblCostPerKm;
-        private System.Windows.Forms.Label label26;
-        private System.Windows.Forms.TrackBar tbCostperKm;
         private System.Windows.Forms.CheckBox chkLog;
         private System.Windows.Forms.PictureBox pictureBox1;
     }

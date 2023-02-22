@@ -19,7 +19,7 @@ namespace Round_the_world_challenge
         private bool stopSignal = false;
         private int iteration = 0;
         private const int WorldCircumference = 40075;
-        private double CostPerKm = 6;//Cost of traveliing one KM
+        //private double CostPerKm = 6;//Cost of traveliing one KM
 
         //initialize variables for continents and restrictions
         private Continent C = new Continent();
@@ -70,7 +70,7 @@ namespace Round_the_world_challenge
             lblSAAlpha.Text = Alpha.ToString();
             lblSATemp.Text = Temperature.ToString();
             lblSAEpsilon.Text = Epsilon.ToString();
-            lblCostPerKm.Text = String.Format("{0:F3}", (double)tbCostperKm.Value / 1000);
+            //lblCostPerKm.Text = String.Format("{0:F3}", (double)tbCostperKm.Value / 1000);
             this.Text = $"Blue Cow Route Finder {GetGitVersion()}";//display version number in the window name
 
             //Adjust distances to the window size
@@ -93,7 +93,7 @@ namespace Round_the_world_challenge
             Temperature = tbTemp.Value;
             Alpha = (double)tbAlpha.Value / 1000;
             Epsilon = (double)tbEpsilon.Value / 1000;
-            CostPerKm = (double)tbCostperKm.Value / 1000;
+            //CostPerKm = (double)tbCostperKm.Value / 1000;
             //Keep the same map if chosen
             if (chkKeepMap.Checked == true)
             {
@@ -331,8 +331,8 @@ namespace Round_the_world_challenge
             profitRatioList = new List<double>();
             for (int i = 0; i < route.Length - 1; i++)
             {
-                profitList.Add(route[i + 1].Bid - CalcDistance(route[i].Location, route[i + 1].Location) * CostPerKm);//bid minus the cost of travel
-                profitRatioList.Add(route[i + 1].Bid / CalcDistance(route[i].Location, route[i + 1].Location) * CostPerKm);//bid by the cost of travel
+                profitList.Add(route[i + 1].Bid - CalcDistance(route[i].Location, route[i + 1].Location) /** CostPerKm*/);//bid minus the cost of travel
+                profitRatioList.Add(route[i + 1].Bid / CalcDistance(route[i].Location, route[i + 1].Location) /** CostPerKm*/);//bid by the cost of travel
                 prof += profitList[i];
             }
             return prof;
@@ -837,14 +837,6 @@ namespace Round_the_world_challenge
             }
             else
                 splitContainer2.SplitterDistance = splitContainer2.Width;
-        }
-
-        private void tbCostperKm_ValueChanged(object sender, EventArgs e)
-        {
-            double a = (double)tbCostperKm.Value / 1000;
-            lblCostPerKm.Text = String.Format("{0:F3}", a);
-
-            CostPerKm = a;
         }
 
         private static string GetGitVersion()
