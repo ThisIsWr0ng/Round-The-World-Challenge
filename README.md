@@ -43,5 +43,9 @@ The Blue Cow problem required specific features and restrictions to be implement
 
 *	The calcDist method also checks each connection with the restrictions array and returns a negative value if any record is a match.
 
+# Performance testing
+![image](https://github.com/ThisIsWr0ng/Round-the-world-challenge/assets/99226094/e00b7267-8fd3-43fd-960a-6283df87121d)
+
+
 
 
