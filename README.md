@@ -9,9 +9,9 @@ For the implementation of the software, C# programming language and Windows Form
 
 The Blue Cow problem required specific features and restrictions to be implemented in the software. The following solutions were implemented for each feature and restriction:
 
-•	Optimising route and maximising income:
+*	Optimising route and maximising income:
 
-o	A profit check was performed on each iteration to check if the current route has better profitability than the previous best solution
+**	A profit check was performed on each iteration to check if the current route has better profitability than the previous best solution
   
 o	If the profit was lower, then the solution could still be chosen depending on the probability of the SA algorithm 
 
