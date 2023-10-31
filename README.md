@@ -11,19 +11,32 @@ The Blue Cow problem required specific features and restrictions to be implement
 
 •	Optimising route and maximising income:
 
-  o	A profit check was performed on each iteration to check if the current route has better profitability than the previous best solution
+o	A profit check was performed on each iteration to check if the current route has better profitability than the previous best solution
+  
 o	If the profit was lower, then the solution could still be chosen depending on the probability of the SA algorithm 
+
 •	Start and finish in the same city:
+
 o	The route is stored in an array, and the first city was added to the end of the array to make it a round trip; the 2-Opt algorithm was adjusted to not swap the first and last connections in the array.
+
 •	Given the minimum and maximum number of cities in the tour:
+
 o	The algorithm starts with a random route and optimises it in a few first iterations. Then, if the maximum limit is higher than the route length, connections with the lowest distance-to-bid ratio are removed until the limit is reached. To further optimise the route, connections with negative profit are removed in consequent iterations.
+
 •	Given minimum and maximum distance per flight:
+
 o	An algorithm calculates the distance between connections in each iteration. If any distance is over or under the limit, the CalcDist method returns a negative value.
+
 •	A number of cities visited on each continent:
+
 o	While removing the cities from the list to create a route with the desired length, an algorithm checks if the number of cities on this continent has not reached the minimum allowed. 
+
 •	Given minimum and maximum regarding total distance:
+
 o	The total distance is checked after each iteration. If it does not meet the limits, a solution is not allowed
+
 •	Flight restrictions between some cities:
+
 o	The calcDist method also checks each connection with the restrictions array and returns a negative value if any record is a match.
 
 
