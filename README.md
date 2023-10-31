@@ -31,13 +31,13 @@ The Blue Cow problem required specific features and restrictions to be implement
 
 *	While removing the cities from the list to create a route with the desired length, an algorithm checks if the number of cities on this continent has not reached the minimum allowed. 
 
-•	Given minimum and maximum regarding total distance:
+6. Given minimum and maximum regarding total distance:
 
-o	The total distance is checked after each iteration. If it does not meet the limits, a solution is not allowed
+*	The total distance is checked after each iteration. If it does not meet the limits, a solution is not allowed
 
-•	Flight restrictions between some cities:
+7.	Flight restrictions between some cities:
 
-o	The calcDist method also checks each connection with the restrictions array and returns a negative value if any record is a match.
+*	The calcDist method also checks each connection with the restrictions array and returns a negative value if any record is a match.
 
 
 
