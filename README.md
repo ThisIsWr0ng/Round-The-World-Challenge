@@ -5,7 +5,7 @@ For the implementation of the software, C# programming language and Windows Form
 
 ![image](https://github.com/ThisIsWr0ng/Round-the-world-challenge/assets/99226094/df567abb-0727-4677-b91f-a27c83c66765)
 
-Features and Restrictions
+# Features and Restrictions
 
 The Blue Cow problem required specific features and restrictions to be implemented in the software. The following solutions were implemented for each feature and restriction:
 
